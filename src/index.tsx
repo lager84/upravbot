@@ -1,16 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import App from '../src/components/App/App';
 import reportWebVitals from './reportWebVitals';
+import { AuthProvider } from "react-oidc-context";
+import {oidcConfig} from "./utils/IDS4"
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+
+
 root.render(
+  <AuthProvider {...oidcConfig}>
   <React.StrictMode>
     <App />
   </React.StrictMode>
+  </AuthProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
