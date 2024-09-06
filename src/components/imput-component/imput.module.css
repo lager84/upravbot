@@ -1,0 +1,41 @@
+.inputC{
+    overflow: hidden;
+  text-overflow: ellipsis;
+  height: 3.6em;
+  font-weight: bold;
+  width: 100%;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  padding: 0.9rem 0 0 0.65rem;
+  outline: 0;
+  margin: 0;
+  font-weight: normal;
+}
+
+.lableC{
+display: inline-block;
+font-weight: normal;
+box-sizing: border-box;
+margin: 0;
+margin-bottom: 0rem;
+line-height: 1em;
+background: transparent;
+font-size: 13px ;
+  background-color: transparent ;
+  left: 0.0rem ;
+  top: 0.0rem ;
+  border-radius: 6px;
+  width: calc(100% - 0.75rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #777;
+  position: absolute;
+  padding: 0.5rem 0 0.65rem 0.5rem;
+  z-index: 2;
+}

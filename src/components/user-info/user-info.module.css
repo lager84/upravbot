@@ -1,0 +1,29 @@
+.user{
+  padding-right: 0;
+  display: flex ;
+  justify-content: start;
+  align-items: center;
+  padding-left: 1em;
+  margin: 0em 1.5em 0.6em 1.5em;
+}
+
+.userLogin{
+  display: flex;
+  background: #eaeaea url("../../images/ub.png") center center;
+  background-size: cover;
+  border-radius: 8px;
+  height: 48px;
+  width: 48px;
+  line-height: 1em;
+}
+
+.divUser{
+  padding-left: 1em;
+ 
+}
+
+.strongUser{
+  font-size: 15px;
+  color: #095C68;
+  font-weight: bolder;
+}

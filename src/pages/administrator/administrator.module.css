@@ -1,0 +1,61 @@
+.shadow{
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  padding: 1.5rem;
+  width: 50%;
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+}
+
+.divH{
+  font-family: 'Montserrat', Roboto, sans-serif;
+  color: #020202;
+  display: flex ;
+  justify-content: start;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+.divInput{
+    height: 3.6rem;
+    position: relative;
+    min-width: 100px;
+    margin-bottom: 1rem;
+    width: 100%
+}
+
+.divBut{
+  flex: 0 0 100%;
+  max-width: 100%;
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.btn{
+  display: inline-flex;
+  background: #D11B25 linear-gradient(178.35deg, #D5242E -9.55%, #AB000B 109.96%);
+  border-radius: 8px;
+  color: #fff;
+  float: none;
+  width: content;
+  transform: skew(-10deg);
+  align-items: center;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  height: 56px;
+  outline: none;
+  cursor: pointer;
+  margin-right: .5rem;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  box-sizing: border-box;
+}

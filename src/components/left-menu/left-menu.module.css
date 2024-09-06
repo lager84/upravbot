@@ -1,0 +1,19 @@
+.lm_li{
+    padding-left: 1em;
+    margin: 0em 1.5em 0.6em 1.5em;
+    display: block;
+    padding-right: 0;
+    padding: .5rem 1rem;
+    text-align: left;
+    line-height: 1.5;
+}
+
+li{
+    list-style: none;
+}
+
+
+
+
+
+

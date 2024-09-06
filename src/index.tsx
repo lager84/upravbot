@@ -5,6 +5,11 @@ import App from '../src/components/App/App';
 import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from "react-oidc-context";
 import {oidcConfig} from "./utils/IDS4"
+import { BrowserRouter as Router } from 'react-router-dom';
+import {ApolloProvider} from '@apollo/client'
+import client from "./apollo/client"
+
+
 
 
 const root = ReactDOM.createRoot(
@@ -16,7 +21,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <AuthProvider {...oidcConfig}>
   <React.StrictMode>
+  <Router>
+  <ApolloProvider client={client}>
     <App />
+  </ApolloProvider>
+  </Router>
   </React.StrictMode>
   </AuthProvider>
 );
