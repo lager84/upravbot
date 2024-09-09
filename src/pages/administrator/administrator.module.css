@@ -40,7 +40,7 @@
   color: #fff;
   float: none;
   width: content;
-  transform: skew(-10deg);
+  /* transform: skew(-10deg); */
   align-items: center;
   cursor: pointer;
   text-overflow: ellipsis;
@@ -59,3 +59,4 @@
   transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
   box-sizing: border-box;
 }
+
