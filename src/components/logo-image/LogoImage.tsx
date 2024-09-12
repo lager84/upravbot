@@ -1,13 +1,16 @@
-import styles from "../logo-image/logoimage.module.css"
-import logo from "../../images/logo-new.svg";
+// import styles from "../logo-image/logoimage.module.css"
+// import '../../css/style.css';
+import logo from "../../img/logo-new.svg";
 
 
 const LogoImage = ()=>{
 
     return(
-        <a href="/" className={styles.logoUri}>
+       
+        <a href="/" >
         <img alt="logo" src={logo} title="Управбот"></img>
         </a>
+        
     )
 
 }

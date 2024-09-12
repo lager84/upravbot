@@ -1,8 +1,9 @@
 import styles from "./userlogout.module.css";
-import imguser from "../../images/user.svg";
-import imglogout from "../../images/logout.svg";
+import imguser from "../../img/user.svg";
+import imglogout from "../../img/logout.svg";
 import { useState } from "react";
 import { useAuth } from "react-oidc-context";
+import { transform } from "typescript";
 
 const UserLogout = () => {
   const [logout, setLogout] = useState(false);
@@ -18,12 +19,15 @@ const UserLogout = () => {
   const auth = useAuth();
 
   return (
-    <div className={styles.flexCenter}>
-      <button className={styles.buttonLogout} onClick={logoutClick}>
-        <img className={styles.imgLogout} src={imguser} alt="Выход"></img>
+    <>
+    <li className="nav-item"></li>
+    <li className="divider40"></li>
+    <li className="nav-item login">
+      <button className="nav-link transp border-0" onClick={logoutClick}>
+        <img className="w42" src={imguser} alt="Выход"></img>
       </button>
       {logout && (
-        <div className={styles.divExit}>
+        <div className="dropdown-menu show" style={{position:"absolute" ,  transform:"translate3d(-71px, 54px, 0px)", top: "0px" , left:"0px" ,  willChange: "transform"}}>
           <button
             className={styles.buttonExit}
             onClick={() => void auth.signoutRedirect()}
@@ -33,7 +37,8 @@ const UserLogout = () => {
           </button>
         </div>
       )}
-    </div>
+    </li>
+    </>
   );
 };
 

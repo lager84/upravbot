@@ -2,6 +2,8 @@ import { useAuth } from "react-oidc-context";
 import Loader from "../loader/Loader";
 import AppHeader from "../app-header/AppHeader";
 import styles from "../App/App.module.css";
+import '../../css/bootstrap.min.css';
+import '../../css/style.css';
 import { Routes, Route, useLocation } from "react-router-dom";
 import { URL_ROOT, URL_ADMINISTRATOR, URL_ANY, URL_MANAGER } from "../../utils/routes";
 import {MainPage , AdministratorPage, NotFound404 , ManagerPage }from "../../pages";
@@ -48,28 +50,33 @@ const App = () => {
   return (
     <>
     {console.log(auth)}
-      <div className={styles.App}>
-        <AppHeader />
-      </div>
-      <div className={styles.page}>
-      <div className={styles.lm}>
-      <ol className={styles.leftLogin}>
+    <AppHeader />
+    <main className="te p-0">  
+      <div className="row m-0 h-100">
+      <div className="col-lg-2half col-sm-12 p-0 bgWhite shadow-line">
+      <span className="h90"></span>
+      <ol className="block navbar-nav pt-3 w-100 shadow-menu">
        <UserInfo />
-       <li className={styles.line}></li>
-      </ol>
-      <ol className={styles.leftLoginLM}> 
+       <li className="dividerH ml-4 mr-4"></li>
+       <li className="nav-link ml-2"></li>
+      </ol> 
+      <ol className="navbar-nav mt-3 show-desktop">  
       <LeftMenu/> 
-      </ol>
+      </ol> 
       </div>
-      <div className={styles.main}>
+      <div className="col-lg-9half col-sm-12 p-0 min-vh-100 bgWhite  ">
+      <span className="h90"></span>
+      <div className="row w-100 m-0 min-vh-100">
         <Routes location={stateLocation || location}>
           <Route path={URL_ROOT} element={<ProtectedRoute startPage = {true} element= {<MainPage />} />} />
           <Route path={URL_ANY} element={<NotFound404 />} />
           <Route path={URL_ADMINISTRATOR} element={<ProtectedRoute administrator={true} element={<AdministratorPage />} />} />
           <Route path={URL_MANAGER} element={<ProtectedRoute manager={true}  element={<ManagerPage />} />} />
         </Routes>
+        </div>
       </div>
       </div>
+      </main>
     </>
   );
 };

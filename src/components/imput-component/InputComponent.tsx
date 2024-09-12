@@ -7,6 +7,7 @@ type TProps = {
     value:string;
     type?: 'text' | 'email' | 'password' | 'tel';
     name:string;
+    classCss?:string
     disabled?: boolean;
     onChange(e: React.ChangeEvent<HTMLInputElement>): void;
     onIconClick?(e: React.MouseEvent<HTMLDivElement>): void;
@@ -14,16 +15,17 @@ type TProps = {
     onFocus?(e?: React.FocusEvent<HTMLInputElement>): void;
 } 
 
-const InputComponent:FC<TProps> = ({children , id_name, value , type , name, onChange  }) =>{
+const InputComponent:FC<TProps> = ({children , id_name, value , type , classCss , name, onChange  }) =>{
     
    
 
 return(
-    <div>
-<input type={type} onChange={onChange} name={name} value={value || "" } id={id_name} className={styles.inputC}></input>
-<label className={styles.lableC} htmlFor={id_name} >{children}</label>
-                            
-    </div>
+    <div className="w-100 flexHoriz flex-wrap justify-content-between">
+    <div className="posRel w-100 mb-3">
+<input type={type} onChange={onChange} name={name} value={value || "" } id={id_name} className={classCss}></input>
+<label className="transp backLab" htmlFor={id_name} >{children}</label>
+</div>                     
+</div>
 )
 };
 

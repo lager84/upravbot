@@ -1,5 +1,7 @@
 import styles from "./user-info.module.css"
 import accountStore from '../../services/accountsStore'
+import ub from '../../img/ub.png'
+
 
 
 
@@ -10,11 +12,13 @@ const UserInfo = () => {
 
     return(  
 
-        <li className={styles.user}>
-        <span className={styles.userLogin}></span>
-         <div className={styles.divUser}>
-          <strong className={styles.strongUser}>
-       {data?.SecondName}{" "}{data?.FirstName}<br/>{data?.GivenName}<br/>{data?.role}<br/>{data?.Email}{" "}
+        <li className="nav-link flexHoriz ml-2">
+        <span className="d-block w48 h48 rounded8 flex-shrink-0 mr-3" style={{background:'#eaeaea no-repeat center center', backgroundImage:'url('+ ub +')' , backgroundSize:'contain'}}></span>
+         <div>
+          <strong className="font15 darkGreen">
+       {data?.SecondName}{" "}{data?.FirstName}
+       <br/>{data?.GivenName}
+       <br/>{data?.role}<br/>{data?.Email}{" "}
        </strong>
        </div>
       </li>

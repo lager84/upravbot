@@ -2,13 +2,13 @@
 import {UPDATE_ACCOUNT} from '../../apollo/updateAccount';
 import InputComponent from '../../components/imput-component/InputComponent';
 import  styles  from '../administrator/administrator.module.css';
-import { useCallback, useEffect } from 'react';
+import { FC, useCallback, useEffect } from 'react';
 import { useFormCallback } from '../../utils/use-form-callback';
 import { useMutation } from '@apollo/client';
 import {TState} from '../../utils/typesTS'
 import accountStore from '../../services/accountsStore'
 
-const AdministratorPage = () =>{
+const AdministratorPage:FC = () =>{
 
 
    
@@ -79,34 +79,51 @@ var userInfo = accountStore((state) => state)
 
 
     return (
-      <form className={styles.shadow} 
+      
+       
+          <div className="col-sm-12 p-0">
+            <div className="row p-4 m-0">
+              <div className="col-lg-6 col-sm-12">
+               
+            
+            <form className="bgWhite rounded16 shadow w-100 p-4"
       onSubmit={onSubmit}
       >
-        <h2 className={styles.divH}>Настройки профиля</h2>
-        <div className={styles.divInput}>
-        <InputComponent type='text' onChange={onChange} value={state.SecondName || ""} children='Фамилия' name='SecondName'  id_name='SecondName'/>
-        </div>
-        <div className={styles.divInput}>
-        <InputComponent type='text' onChange={onChange} value={state.FirstName || ""} children='Имя' name='FirstName' id_name='FirstName'/>
-        </div>
-        <div className={styles.divInput}>
-        <InputComponent type='text' onChange={onChange} value={state.GivenName || ""} children='Отчество' name='GivenName' id_name='GivenName'/>
-        </div>
-        <div className={styles.divInput}>
-        <InputComponent type='email' onChange={onChange} value={state.Email || ""} children='E-mail' name='Email' id_name='Email'/>
-        </div>
-        <div className={styles.divInput}>
-        <InputComponent  type='password' onChange={onChange} value={state.password || ""} children='Пароль' name='password' id_name='password'/>
-        </div>
-        <div className={styles.divInput}>
-        <InputComponent type='tel' onChange={onChange} value={state.phone_number || ""} children='Мобильный телефон' name='phone_number' id_name='phone_number'/>
-        </div>
-        <div className={styles.divBut}>
-        <button className={styles.btn} type="submit">
+        <div className="flexHoriz w-100">
+         <h2 className="font24b textBlack mb-3"> Настройки профиля</h2>
+          </div>
+
+      
+        <InputComponent type='text' onChange={onChange} value={state.SecondName || ""} children='Фамилия' name='SecondName' classCss='SecondName'  id_name='SecondName'/>
+        
+   
+        <InputComponent type='text' onChange={onChange} value={state.FirstName || ""} children='Имя' name='FirstName' classCss='FirstName' id_name='FirstName'/>
+    
+    
+        <InputComponent type='text' onChange={onChange} value={state.GivenName || ""} children='Отчество' name='GivenName' classCss='MiddleName' id_name='GivenName'/>
+   
+        
+        <InputComponent type='email' onChange={onChange} value={state.Email || ""} children='E-mail' name='Email' classCss='email' id_name='Email'/>
+       
+    
+        <InputComponent  type='password' onChange={onChange} value={state.password || ""} children='Пароль' name='password' classCss='pass' id_name='password'/>
+       
+   
+        <InputComponent type='tel' onChange={onChange} value={state.phone_number || ""} children='Мобильный телефон' name='phone_number' classCss='email' id_name='phone_number'/>
+    
+        <div className="row mt-3 mb-3">
+          <div className="col-sm-12">
+        <button className="btn btn1 h56 mr-2" type="submit">
           <strong>Сохранить изменения</strong>
           </button>
         </div>
+        </div>
         </form>
+        </div>
+        </div>
+        </div>
+       
+        
        )
 }
 

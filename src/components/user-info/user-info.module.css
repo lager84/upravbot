@@ -9,7 +9,7 @@
 
 .userLogin{
   display: flex;
-  background: #eaeaea url("../../images/ub.png") center center;
+  background: #eaeaea url("../../img/ub.png") center center;
   background-size: cover;
   border-radius: 8px;
   height: 48px;
