@@ -3,7 +3,7 @@ import imguser from "../../img/user.svg";
 import imglogout from "../../img/logout.svg";
 import { useState } from "react";
 import { useAuth } from "react-oidc-context";
-import { transform } from "typescript";
+import OutsideClickHandler from "react-outside-click-handler";
 
 const UserLogout = () => {
   const [logout, setLogout] = useState(false);
@@ -16,6 +16,9 @@ const UserLogout = () => {
     }
   };
 
+
+  
+
   const auth = useAuth();
 
   return (
@@ -23,6 +26,11 @@ const UserLogout = () => {
     <li className="nav-item"></li>
     <li className="divider40"></li>
     <li className="nav-item login">
+    <OutsideClickHandler
+         onOutsideClick={() => {
+           setLogout(false);
+         }}
+       >
       <button className="nav-link transp border-0" onClick={logoutClick}>
         <img className="w42" src={imguser} alt="Выход"></img>
       </button>
@@ -30,13 +38,14 @@ const UserLogout = () => {
         <div className="dropdown-menu show" style={{position:"absolute" ,  transform:"translate3d(-71px, 54px, 0px)", top: "0px" , left:"0px" ,  willChange: "transform"}}>
           <button
             className={styles.buttonExit}
-            onClick={() => void auth.signoutRedirect()}
+            onClick={() => void auth.signoutRedirect()} 
           >
             <img className={styles.imageExit} src={imglogout} alt="выход"></img>
             Выход
           </button>
         </div>
       )}
+      </OutsideClickHandler>
     </li>
     </>
   );

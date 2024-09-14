@@ -25,12 +25,7 @@
 }
 
 .divBut{
-  flex: 0 0 100%;
-  max-width: 100%;
-  position: relative;
-  width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
+display: flex;
 }
 
 .btn{
@@ -60,3 +55,9 @@
   box-sizing: border-box;
 }
 
+.button{
+  border: none;
+  background-color: transparent;
+  height: 3.6em;
+  
+}
