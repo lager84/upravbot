@@ -14,7 +14,7 @@ import {TState} from '../utils/typesTS'
       password:'' ,
       role:[''],
       phone_number:'',
-      updateBears: (newUser:TState) => set({ 
+      updateAccount: (newUser:TState) => set({ 
         SecondName:newUser.SecondName ,
         FirstName:newUser.FirstName,
         GivenName:newUser.GivenName,

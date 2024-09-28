@@ -8,12 +8,12 @@ import { TState } from "../../utils/typesTS";
 import accountStore from "../../services/accountsStore";
 import tasks from "../../img/tasks-ic-bl.svg";
 import OutsideClickHandler from "react-outside-click-handler";
+import Loader from "../../components/loader/Loader";
 
 const AdministratorPage: FC = () => {
-  const [updateAccount, { data, loading, error }] = useMutation(UPDATE_ACCOUNT);
+  const [updateAccount, { loading, error }] = useMutation(UPDATE_ACCOUNT);
 
   var userInfo = accountStore((state) => state);
-
   const [disabledMail, setDisableMail] = useState(true);
   const [disabledPass, setDisablePass] = useState(true);
 
@@ -33,16 +33,7 @@ const AdministratorPage: FC = () => {
     }
   };
 
-  useEffect(() => {
-    setState({
-      SecondName: userInfo.SecondName,
-      FirstName: userInfo.FirstName,
-      GivenName: userInfo.GivenName,
-      Email: userInfo.Email,
-      password: "",
-      phone_number: userInfo.phone_number,
-    });
-  }, [userInfo.SecondName]);
+ 
 
   const submitCallback = useCallback((state: TState) => {
     updateAccount({
@@ -53,9 +44,9 @@ const AdministratorPage: FC = () => {
         password: state.password,
         phoneNumber: state.phone_number,
         secondName: state.SecondName,
-        userID: userInfo.userID,
-      },
-    });
+        userID: state.userID, //
+      }
+    }, );
 
     accountStore.setState(() => ({
       SecondName: state.SecondName,
@@ -64,9 +55,9 @@ const AdministratorPage: FC = () => {
       Email: state.Email,
       password: state.password,
       phone_number: state.phone_number,
-      userID: userInfo.userID,
+      userID: state.userID, //
     }));
-  }, []);
+  }, [updateAccount]);
 
   const { state, setState, onChange, onSubmit } = useFormCallback(
     {
@@ -80,6 +71,27 @@ const AdministratorPage: FC = () => {
     },
     submitCallback
   );
+
+  useEffect(() => {
+    setState({
+      SecondName: userInfo.SecondName,
+      FirstName: userInfo.FirstName,
+      GivenName: userInfo.GivenName,
+      Email: userInfo.Email,
+      password: "",
+      phone_number: userInfo.phone_number,
+      userID: userInfo.userID, //
+    });
+  },[setState , userInfo.Email, userInfo.FirstName, userInfo.GivenName, userInfo.SecondName, userInfo.phone_number,  userInfo.userID] );
+
+  if (loading)
+    return (
+      <>
+       <Loader />
+      </>
+    );
+
+  if (error) return <>`Submission error! ${error.message}`</>;
 
   return (
     <div className="col-sm-12 p-0">

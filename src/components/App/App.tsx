@@ -1,19 +1,18 @@
 import { useAuth } from "react-oidc-context";
 import Loader from "../loader/Loader";
 import AppHeader from "../app-header/AppHeader";
-import styles from "../App/App.module.css";
 import '../../css/bootstrap.min.css';
 import '../../css/style.css';
 import { Routes, Route, useLocation } from "react-router-dom";
-import { URL_ROOT, URL_ADMINISTRATOR, URL_ANY, URL_MANAGER } from "../../utils/routes";
-import {MainPage , AdministratorPage, NotFound404 , ManagerPage }from "../../pages";
+import { URL_ROOT, URL_ADMINISTRATOR, URL_ANY, URL_MANAGER , URL_REGISTER_UO } from "../../utils/routes";
+import {MainPage , AdministratorPage, NotFound404 , ManagerPage , RegisterUOPage }from "../../pages";
 import ProtectedRoute from "../protected-route"
 import { withAuthenticationRequired } from "react-oidc-context";
 import UserInfo from "../user-info/UserInfo";
 import LeftMenu from "../left-menu/LeftMenu";
 import accountStore from '../../services/accountsStore'
 import {TState} from '../../utils/typesTS'
-import {  useEffect } from 'react';
+import {  useMemo } from 'react';
 
 
 const App = () => {
@@ -23,7 +22,7 @@ const App = () => {
 
   const auth = useAuth();
 
-  useEffect(() => {
+  useMemo(() => {
  
   accountStore.setState((state:TState) => ({SecondName: auth.user?.profile.family_name , 
     FirstName: auth.user?.profile.name, 
@@ -33,7 +32,7 @@ const App = () => {
     role: auth.user?.profile.role,
     userID:auth.user?.profile.sub,
     phone_number: auth.user?.profile.phone_number}))
-  },[]);
+  },[ auth.user?.profile.email, auth.user?.profile.family_name, auth.user?.profile.given_name, auth.user?.profile.name, auth.user?.profile.phone_number, auth.user?.profile.role, auth.user?.profile.sid, auth.user?.profile.sub]);
    
 
 
@@ -49,7 +48,6 @@ const App = () => {
   
   return (
     <>
-    {console.log(auth)}
     <AppHeader />
     <main className="te p-0">  
       <div className="row m-0 h-100">
@@ -71,6 +69,7 @@ const App = () => {
           <Route path={URL_ROOT} element={<ProtectedRoute startPage = {true} element= {<MainPage />} />} />
           <Route path={URL_ANY} element={<NotFound404 />} />
           <Route path={URL_ADMINISTRATOR} element={<ProtectedRoute administrator={true} element={<AdministratorPage />} />} />
+          <Route path={URL_REGISTER_UO} element={<ProtectedRoute administrator={true} element={<RegisterUOPage />} />} />
           <Route path={URL_MANAGER} element={<ProtectedRoute manager={true}  element={<ManagerPage />} />} />
         </Routes>
         </div>

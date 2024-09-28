@@ -1,59 +1,28 @@
 import { NavLink, useLocation } from "react-router-dom";
-import styles from "../left-menu-icon/left-menu-icon.module.css";
 import { FC } from "react";
-
-
 
 type TProps = {
   href: string;
   children: string;
-  icon:string;
+  icon: string;
 };
 
-
-
-const LeftMenuIcon: FC<TProps> = ({ icon , href, children }) => {
-
+const LeftMenuIcon: FC<TProps> = ({ icon, href, children }) => {
   const location = useLocation();
 
-  const activeURL = () =>{
-    if (href == location.pathname)
-    {
-      return true
+  const activeURL = () => {
+    if (href === location.pathname) {
+      return true;
     }
   };
 
- 
-
   return (
-    
-    // <NavLink to={href}>
-    //   {({ isActive }) => (
-    //     <li className={isActive? "nav-link active" : "nav-link"}>
-    //     <object>
-    //     <a className="flexHoriz">
-    //     <img className="w24 mr-3 flexHoriz" src={icon} alt=""></img>
-    //     <p className="font14b mb-0"> 
-    //         {children}
-    //       </p>
-    //     </a>
-    //     </object>
-    //     </li>
-    //   )}
-    // </NavLink>
-
-    
-     <li className={activeURL()? "nav-link active" :  "nav-link"}>
-    <NavLink to={href} className="flexHoriz">     
+    <li className={activeURL() ? "nav-link active" : "nav-link"}>
+      <NavLink to={href} className="flexHoriz">
         <img className="w24 mr-3" src={icon} alt=""></img>
-        <p className="font14b mb-0"> 
-            {children}
-          </p>
-    </NavLink>
+        <p className="font14b mb-0">{children}</p>
+      </NavLink>
     </li>
-
-
-  
   );
 };
 

@@ -16,37 +16,47 @@ const UserLogout = () => {
     }
   };
 
-
-  
-
   const auth = useAuth();
 
   return (
     <>
-    <li className="nav-item"></li>
-    <li className="divider40"></li>
-    <li className="nav-item login">
-    <OutsideClickHandler
-         onOutsideClick={() => {
-           setLogout(false);
-         }}
-       >
-      <button className="nav-link transp border-0" onClick={logoutClick}>
-        <img className="w42" src={imguser} alt="Выход"></img>
-      </button>
-      {logout && (
-        <div className="dropdown-menu show" style={{position:"absolute" ,  transform:"translate3d(-71px, 54px, 0px)", top: "0px" , left:"0px" ,  willChange: "transform"}}>
-          <button
-            className={styles.buttonExit}
-            onClick={() => void auth.signoutRedirect()} 
-          >
-            <img className={styles.imageExit} src={imglogout} alt="выход"></img>
-            Выход
+      <li className="nav-item"></li>
+      <li className="divider40"></li>
+      <li className="nav-item login">
+        <OutsideClickHandler
+          onOutsideClick={() => {
+            setLogout(false);
+          }}
+        >
+          <button className="nav-link transp border-0" onClick={logoutClick}>
+            <img className="w42" src={imguser} alt="Выход"></img>
           </button>
-        </div>
-      )}
-      </OutsideClickHandler>
-    </li>
+          {logout && (
+            <div
+              className="dropdown-menu show"
+              style={{
+                position: "absolute",
+                transform: "translate3d(-71px, 54px, 0px)",
+                top: "0px",
+                left: "0px",
+                willChange: "transform",
+              }}
+            >
+              <button
+                className={styles.buttonExit}
+                onClick={() => void auth.signoutRedirect()}
+              >
+                <img
+                  className={styles.imageExit}
+                  src={imglogout}
+                  alt="выход"
+                ></img>
+                Выход
+              </button>
+            </div>
+          )}
+        </OutsideClickHandler>
+      </li>
     </>
   );
 };
