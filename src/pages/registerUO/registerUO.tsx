@@ -94,13 +94,13 @@ const RegisterUOPage: FC = () => {
       <span className="h90"></span>
       <h2 className=" font24b textBlack ml-0 p-4">Управляющие организации</h2>
 
-      <div id="TableTools" className="flexHoriz w-100 m-0 p-4">
+      <div id="TableTools" className="flexHoriz w-100 m-0 p-4 ml-4">
         {isDisplayDataSet && (
           <InputSearch<TBalanceCompany[]> setOUorg={setOUorg} card={ouorg} />
         )}
 
         <SortingControl
-          label={"Имя"}
+          label={"Наименование организацииb:"}
           onSort={() => sortCountries("name")}
           value={countrySorting}
         />

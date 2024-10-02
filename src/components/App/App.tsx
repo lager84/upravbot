@@ -11,7 +11,6 @@ import { withAuthenticationRequired } from "react-oidc-context";
 import UserInfo from "../user-info/UserInfo";
 import LeftMenu from "../left-menu/LeftMenu";
 import accountStore from '../../services/accountsStore'
-import {TState} from '../../utils/typesTS'
 import {  useMemo } from 'react';
 
 
@@ -24,14 +23,14 @@ const App = () => {
 
   useMemo(() => {
  
-  accountStore.setState((state:TState) => ({SecondName: auth.user?.profile.family_name , 
+  accountStore.setState({SecondName: auth.user?.profile.family_name , 
     FirstName: auth.user?.profile.name, 
     GivenName: auth.user?.profile.given_name , 
     Email: auth.user?.profile.email ,
     password: auth.user?.profile.sid ,
-    role: auth.user?.profile.role,
+    role: auth.user?.profile.role  ,
     userID:auth.user?.profile.sub,
-    phone_number: auth.user?.profile.phone_number}))
+    phone_number: auth.user?.profile.phone_number})
   },[ auth.user?.profile.email, auth.user?.profile.family_name, auth.user?.profile.given_name, auth.user?.profile.name, auth.user?.profile.phone_number, auth.user?.profile.role, auth.user?.profile.sid, auth.user?.profile.sub]);
    
 

@@ -1,0 +1,50 @@
+.modalOrder {
+    display: flex;
+    flex-direction: column;
+    border-radius: 40px;
+    background: #1f1f24;
+    z-index: 1;
+    position: absolute;
+    overflow: hidden;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 720px;
+    transition: all 0.3s;
+}
+
+.div_closeButton {
+    background-color: transparent;
+    border: none;
+    transition: all 0.3s;
+}
+
+
+.order_closeButton {
+    align-self: center;
+    cursor: pointer;
+    flex: 0 0 auto;
+    width: 40px;
+    display: flex;
+    margin-top: 40px;
+   
+    
+}
+
+.order_closeButton:hover {
+    opacity: 0.6;
+}
+
+.ingredient_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 650px;
+    margin-left: 40px;
+    
+}
+
+.ingredient_title {
+    max-width: 520px;
+    margin-top: 40px;
+}
