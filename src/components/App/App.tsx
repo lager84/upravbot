@@ -83,6 +83,6 @@ const App = () => {
 //return <button onClick={() => void auth.signinRedirect()}>Log in</button>;
 
 //export default App;
-export default withAuthenticationRequired(App, {
-  OnRedirecting: () => (<div></div>)
-});
+ export default withAuthenticationRequired(App, {
+   OnRedirecting: () => (<div></div>)
+ });

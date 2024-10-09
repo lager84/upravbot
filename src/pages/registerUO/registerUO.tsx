@@ -14,9 +14,9 @@ import { useSearchParams } from "react-router-dom";
 export const ASC = "asc";
 export const DESC = "desc";
 
-const sortCb = (countrySorting: string) => {
-  if (countrySorting) {
-    if (countrySorting === ASC) {
+const sortCb = (nameSorting: string) => {
+  if (nameSorting) {
+    if (nameSorting === ASC) {
       return (a: any, b: any) =>
         a.props.card.name > b.props.card.name ? 1 : -1;
     } else {
@@ -30,10 +30,10 @@ const RegisterUOPage: FC = () => {
   const [isDisplayDataSet, setIsDisplayDataSet] = useState(false);
   const [ouorg, setOUorg] = useState<TBalanceCompany[]>();
 
-  const [countrySorting, setCountrySorting] = useState(ASC);
+  const [nameSorting, setNameSorting] = useState(ASC);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  
+  const [queryFilter, setQueryFilter] = useState("");
 
   var userInfo = accountStore((state) => state);
 
@@ -51,33 +51,46 @@ const RegisterUOPage: FC = () => {
   }, [isDisplayDataSet, ouorg, data, loading]);
 
   useEffect(() => {
-    if (searchParams.get("name")) {
-      setCountrySorting(searchParams.get("name") as SetStateAction<string>);
-    } else {
-      setCountrySorting(ASC);
+    if (searchParams.get("name") && searchParams.get("query")) {
+      setNameSorting(searchParams.get("name") as SetStateAction<string>);
+      setQueryFilter(searchParams.get("query") as SetStateAction<string>);
+    } else if (searchParams.get("query")) {
+      setQueryFilter(searchParams.get("query") as SetStateAction<string>);
+    } else if (searchParams.get("name")) {
+      setNameSorting(searchParams.get("name") as SetStateAction<string>);
+      //setSearchParams({'name':searchParams.get("name") as string})
     }
-  }, [searchParams]);
+
+    setSearchParams(searchParams);
+  }, [searchParams, setSearchParams]);
 
   const sortCountries = useCallback(
     (type: any) => {
       let nextSortingValue;
       switch (type) {
         case "name": {
-          nextSortingValue = countrySorting
-            ? countrySorting === ASC
+          nextSortingValue = nameSorting
+            ? nameSorting === ASC
               ? DESC
               : ASC
             : ASC;
           break;
         }
+
         default: {
           break;
         }
       }
-
-      setSearchParams({ [type]: nextSortingValue as any });
+      setSearchParams(
+        searchParams.get("query")
+          ? {
+              query: searchParams.get("query") as string,
+              [type]: nextSortingValue as any,
+            }
+          : { [type]: nextSortingValue as any }
+      );
     },
-    [countrySorting, setSearchParams]
+    [nameSorting, setSearchParams, searchParams]
   );
 
   if (loading)
@@ -96,13 +109,17 @@ const RegisterUOPage: FC = () => {
 
       <div id="TableTools" className="flexHoriz w-100 m-0 p-4 ml-4">
         {isDisplayDataSet && (
-          <InputSearch<TBalanceCompany[]> setOUorg={setOUorg} card={ouorg} />
+          <InputSearch<TBalanceCompany[]>
+            filterValue={queryFilter}
+            setOUorg={setOUorg}
+            card={ouorg}
+          />
         )}
 
         <SortingControl
-          label={"Наименование организацииb:"}
+          label={"Наименование организации:"}
           onSort={() => sortCountries("name")}
-          value={countrySorting}
+          value={nameSorting}
         />
 
         <button
@@ -119,8 +136,9 @@ const RegisterUOPage: FC = () => {
             .map((detail: TBalanceCompany) => (
               <UOListItem card={detail} key={detail.id} />
             ))
-            .sort(sortCb(countrySorting))}
+            .sort(sortCb(nameSorting))}
       </div>
+      <span className="h90"></span>
     </div>
   );
 };

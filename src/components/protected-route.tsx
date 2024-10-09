@@ -1,4 +1,4 @@
-import { useAuth, withAuthenticationRequired } from "react-oidc-context";
+import { useAuth } from "react-oidc-context";
 import Loader from "./loader/Loader";
 import {FC} from "react";
 import { Navigate, useLocation } from "react-router-dom";
@@ -57,8 +57,12 @@ type TProps = {
    
  
       return element
+      
     
 
   };
 
   export default ProtectedRoute
+//    export default withAuthenticationRequired(ProtectedRoute, {
+//    OnRedirecting: () => (<div>Перенаправляем на страницу логина</div>)
+//  });
