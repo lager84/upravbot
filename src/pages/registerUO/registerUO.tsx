@@ -40,8 +40,12 @@ const RegisterUOPage: FC = () => {
   const client_ID = userInfo.userID;
 
   const { data, loading, error } = useQuery(GET_UO_ORG, {
-    variables: { client_ID },
+    variables: { client_ID }
   });
+
+
+
+
 
   useEffect(() => {
     if (!loading && !isDisplayDataSet) {
@@ -60,6 +64,9 @@ const RegisterUOPage: FC = () => {
       setNameSorting(searchParams.get("name") as SetStateAction<string>);
       //setSearchParams({'name':searchParams.get("name") as string})
     }
+
+   
+
 
     setSearchParams(searchParams);
   }, [searchParams, setSearchParams]);
@@ -93,6 +100,12 @@ const RegisterUOPage: FC = () => {
     [nameSorting, setSearchParams, searchParams]
   );
 
+
+
+
+
+
+
   if (loading)
     return (
       <>
@@ -101,7 +114,7 @@ const RegisterUOPage: FC = () => {
     );
 
   if (error) return <>`Submission error! ${error.message}`</>;
-
+ 
   return (
     <div className="col-lg-9half col-sm-12 p-0 min-vh-100 bgWhite  ">
       <span className="h90"></span>

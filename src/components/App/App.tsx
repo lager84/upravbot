@@ -4,8 +4,8 @@ import AppHeader from "../app-header/AppHeader";
 import '../../css/bootstrap.min.css';
 import '../../css/style.css';
 import { Routes, Route, useLocation } from "react-router-dom";
-import { URL_ROOT, URL_ADMINISTRATOR, URL_ANY, URL_MANAGER , URL_REGISTER_UO } from "../../utils/routes";
-import {MainPage , AdministratorPage, NotFound404 , ManagerPage , RegisterUOPage }from "../../pages";
+import { URL_ROOT, URL_ADMINISTRATOR, URL_ANY, URL_MANAGER , URL_REGISTER_UO , URL_CREATE_ORG } from "../../utils/routes";
+import {MainPage , AdministratorPage, NotFound404 , ManagerPage , RegisterUOPage, CreateOrgPage }from "../../pages";
 import ProtectedRoute from "../protected-route"
 import { withAuthenticationRequired } from "react-oidc-context";
 import UserInfo from "../user-info/UserInfo";
@@ -69,6 +69,7 @@ const App = () => {
           <Route path={URL_ANY} element={<NotFound404 />} />
           <Route path={URL_ADMINISTRATOR} element={<ProtectedRoute administrator={true} element={<AdministratorPage />} />} />
           <Route path={URL_REGISTER_UO} element={<ProtectedRoute administrator={true} element={<RegisterUOPage />} />} />
+          <Route path={`${URL_REGISTER_UO}/${URL_CREATE_ORG}/:id`} element={<ProtectedRoute administrator={true} element={<CreateOrgPage />} />} />
           <Route path={URL_MANAGER} element={<ProtectedRoute manager={true}  element={<ManagerPage />} />} />
         </Routes>
         </div>

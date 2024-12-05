@@ -11,10 +11,16 @@ const LeftMenuIcon: FC<TProps> = ({ icon, href, children }) => {
   const location = useLocation();
 
   const activeURL = () => {
-    if (href === location.pathname) {
+    //if (href === location.pathname) 
+    if (location.pathname.includes(href)) 
+    {
+      
       return true;
+      
     }
   };
+
+  
 
   return (
     <li className={activeURL() ? "nav-link active" : "nav-link"}>

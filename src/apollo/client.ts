@@ -42,7 +42,25 @@ const httpLink = createHttpLink({
 
 const client = new ApolloClient({
     link: authLink.concat(httpLink),
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache(
+      {
+      typePolicies: {
+      Query: {
+        fields: {
+          balanceCompany:{
+            read(_, { args, toReference }) {
+              return toReference({
+                __typename: 'BalanceCompany',
+                id: args?.id,
+              });
+          }
+        }
+
+      }
+    }
+    }
+  }
+),
     
 })
 
