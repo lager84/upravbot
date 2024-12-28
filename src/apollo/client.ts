@@ -3,6 +3,8 @@ import { setContext } from '@apollo/client/link/context';
 import { User } from "oidc-client-ts"
 
 
+
+
 function getUser() {
   const oidcStorage = sessionStorage.getItem(`oidc.user:https://upravbot.ru/IDS4:mvc`)
   if (!oidcStorage) {
@@ -40,27 +42,36 @@ const httpLink = createHttpLink({
     }
   });
 
+
 const client = new ApolloClient({
     link: authLink.concat(httpLink),
     cache: new InMemoryCache(
       {
-      typePolicies: {
+       typePolicies: {
+           //   CompanyBills:{
+               
+            // keyFields:["balanceCompanyId"] 
+          
+          //     },
       Query: {
-        fields: {
-          balanceCompany:{
-            read(_, { args, toReference }) {
-              return toReference({
-                __typename: 'BalanceCompany',
-                id: args?.id,
+         fields: {
+           companyBills:{  
+            read(_, { args, toReference  }) {
+              return  toReference({
+                 __typename: 'CompanyBills' ,
+                 id:args?.id
+                            
               });
-          }
-        }
 
-      }
+           }
+         }
+
+
+       }
     }
-    }
-  }
-),
+     }
+   }
+  ),
     
 })
 

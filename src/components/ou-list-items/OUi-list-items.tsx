@@ -14,7 +14,7 @@ const UOListItem: FC<TProp> = ({ card }) => {
 
 
   return (
-    <div className={styles.divCard} onClick={() => navigate(`${URL_CREATE_ORG}/${card.id}`)}>
+    <div className={styles.divCard} onClick={() => navigate(`${URL_CREATE_ORG}/${card.cBid}`)}>
       <h3 className="h3">{card.name}</h3>
 
       <div>ИНН: {card.inn}</div>

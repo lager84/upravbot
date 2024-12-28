@@ -6,14 +6,20 @@ import plus from "../../img/ic-plus.svg";
 import UOListItem from "../../components/ou-list-items/OUi-list-items";
 import { GET_UO_ORG } from "../../apollo/GetUOorg";
 import accountStore from "../../services/accountsStore";
-import { TBalanceCompany } from "../../utils/typesTS";
+import { TBalanceCompany  } from "../../utils/typesTS";
 import InputSearch from "../../components/input-search/InputSearch";
 import { SortingControl } from "../../components/sorting-control/SortingControl";
 import { useSearchParams } from "react-router-dom";
 
+
+
+
+
+
+
+
 export const ASC = "asc";
 export const DESC = "desc";
-
 const sortCb = (nameSorting: string) => {
   if (nameSorting) {
     if (nameSorting === ASC) {
@@ -38,18 +44,22 @@ const RegisterUOPage: FC = () => {
   var userInfo = accountStore((state) => state);
 
   const client_ID = userInfo.userID;
+  
+  
 
   const { data, loading, error } = useQuery(GET_UO_ORG, {
+    //fetchPolicy: "cache-and-network",
     variables: { client_ID }
   });
 
-
+  
 
 
 
   useEffect(() => {
     if (!loading && !isDisplayDataSet) {
-      setOUorg(data.balanceCompany);
+      console.log(data)
+      setOUorg(data.companyBills.map((comp:any ) =>({ cBid: comp.id , ...comp.balanceCompany})));
       setIsDisplayDataSet(true);
     }
   }, [isDisplayDataSet, ouorg, data, loading]);
@@ -114,7 +124,7 @@ const RegisterUOPage: FC = () => {
     );
 
   if (error) return <>`Submission error! ${error.message}`</>;
- 
+
   return (
     <div className="col-lg-9half col-sm-12 p-0 min-vh-100 bgWhite  ">
       <span className="h90"></span>
@@ -144,7 +154,7 @@ const RegisterUOPage: FC = () => {
       </div>
 
       <div className={styles.divRoot}>
-        {ouorg &&
+        {ouorg && 
           ouorg
             .map((detail: TBalanceCompany) => (
               <UOListItem card={detail} key={detail.id} />

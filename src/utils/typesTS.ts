@@ -13,28 +13,42 @@ export type TState = {
 
 
 export type TBalanceCompany = {
-  name: string;
-  inn: number;
-  email:string;
   id: number;
-  ogrn_OgrnIP: number;
-  kpp: number;
-  okpo: number;
+  name: string;
   adress: string;
   phone: string;
-  sprTypeBalanceCompany:TsprTypeBalanceCompany
+  email:string;
+  inn: string;
+  kpp: string;
+  okpo: string;
+  ogrn_OgrnIP: string;
+  sprTypeBalanceCompany:TsprTypeBalanceCompany;
+  cBid?:string;
+  
+ 
 }
-
-export type TUOorg = TBalanceCompany & {
-  BIK: number;
-  BankName?: string;
-  korShet?: number;
-  rasShet: number;
-  TBankID: number;
-};
 
 export type TsprTypeBalanceCompany = {
+  id:number
   compType:string
 }
+
+
+export type TUOorg = TBalanceCompany & TsprBank & {
+  id:number
+  balanceCompanyId:string
+  rs:string
+  ks:string
+  typeOrg:string
+};
+
+export type TsprBank = {
+bank_NAME:string
+bank_OGRN:string
+bank_BIK:string
+bank_INN:string
+bank_KRS:string 
+}
+
 
 
