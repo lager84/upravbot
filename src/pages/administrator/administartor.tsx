@@ -181,6 +181,7 @@ const AdministratorPage: FC = () => {
                   name="password"
                   classCss={disabledPass ? "pass bgLightGrey" : "pass"}
                   id_name="password"
+                  autocomplete="on"
                 />
                 <button
                   className={styles.button}

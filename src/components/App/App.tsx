@@ -15,9 +15,9 @@ import {  useMemo } from 'react';
 
 
 const App = () => {
-  const location = useLocation();
+  //const location = useLocation();
 
-  const stateLocation = location.state && location.state.location;
+ // const stateLocation = location.state && location.state.location;
 
   const auth = useAuth();
 
@@ -64,7 +64,8 @@ const App = () => {
       <div className="col-lg-9half col-sm-12 p-0 min-vh-100 bgWhite  ">
       <span className="h90"></span>
       <div className="row w-100 m-0 min-vh-100">
-        <Routes location={stateLocation || location}>
+       {/* <Routes location={stateLocation || location}> */}
+        <Routes>
           <Route path={URL_ROOT} element={<ProtectedRoute startPage = {true} element= {<MainPage />} />} />
           <Route path={URL_ANY} element={<NotFound404 />} />
           <Route path={URL_ADMINISTRATOR} element={<ProtectedRoute administrator={true} element={<AdministratorPage />} />} />

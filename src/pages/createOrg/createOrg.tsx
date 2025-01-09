@@ -114,7 +114,7 @@ const CreateOrg: FC = () => {
       },
     });
 
-    //navigate('/registerUO');
+
   
   };
 
@@ -132,7 +132,7 @@ const CreateOrg: FC = () => {
   const [
     updateUO,
     { data: data_upd_UO, loading: loading_upd_UO, error: error_upd_UO },
-  ] = useMutation(UPDATE_UO);
+  ] = useMutation(UPDATE_UO ,{onCompleted:()=>{navigate('/registerUO');}});
 
   useEffect(() => {
     if (data) {
