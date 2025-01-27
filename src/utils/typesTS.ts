@@ -22,31 +22,26 @@ export type TBalanceCompany = {
   kpp: string;
   okpo: string;
   ogrn_OgrnIP: string;
-  sprTypeBalanceCompany:TsprTypeBalanceCompany;
+  sprTypeBalanceCompany:string;
   cBid?:string;
-  
- 
-}
 
-export type TsprTypeBalanceCompany = {
-  id:number
-  compType:string
 }
 
 
-export type TUOorg = TBalanceCompany & TsprBank & {
+
+export type TUOorg = TBalanceCompany &  {
   id:number
   balanceCompanyId:string
   rs:string
   ks:string
-  typeOrg:string
+  sprBank:TsprBank
 };
 
 export type TsprBank = {
-bank_NAME:string
-bank_OGRN:string
+bank_NAME?:string
+bank_OGRN?:string
 bank_BIK:string
-bank_INN:string
+bank_INN?:string
 bank_KRS:string 
 }
 

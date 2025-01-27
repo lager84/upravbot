@@ -27,10 +27,7 @@ export const GET_UO_ORG = gql`
         kpp,
         okpo,
         ogrn_OgrnIP,
-        sprTypeBalanceCompany {
-        id
-        compType
-        }
+        sprTypeBalanceCompanyId 
       }
  
     }
@@ -64,12 +61,22 @@ query CompanyBills($id:ID ) {
         kpp,
         okpo,
         ogrn_OgrnIP,
-        sprTypeBalanceCompany {
-        id
-        compType
-        }
+        sprTypeBalanceCompanyId
       }
     
   }
 }
+`
+
+export const Get_bik = gql`  
+query sprBank{
+  sprBank {
+    bank_BIK,
+    bank_NAME,
+    bank_INN,
+    bank_KRS,
+    bank_OGRN,
+    __typename
+  }
+  }
 `

@@ -12,6 +12,7 @@ import UserInfo from "../user-info/UserInfo";
 import LeftMenu from "../left-menu/LeftMenu";
 import accountStore from '../../services/accountsStore'
 import {  useMemo } from 'react';
+import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
 
 
 const App = () => {
@@ -46,7 +47,8 @@ const App = () => {
 
   
   return (
-    <>
+    
+    <PrimeReactProvider>
     <AppHeader />
     <main className="te p-0">  
       <div className="row m-0 h-100">
@@ -77,7 +79,8 @@ const App = () => {
       </div>
       </div>
       </main>
-    </>
+      </PrimeReactProvider>
+    
   );
 };
 //auth.signinRedirect();

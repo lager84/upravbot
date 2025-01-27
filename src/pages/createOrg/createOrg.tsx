@@ -1,56 +1,77 @@
 import InputComponent from "../../components/imput-component/InputComponent";
-import { FC, useCallback, useEffect, useState } from "react";
-import { useFormCallback } from "../../utils/use-form-callback";
-import {
-  ApolloClient,
-  gql,
-  InMemoryCache,
-  useApolloClient,
-  useMutation,
-  useQuery,
-  useReactiveVar,
-} from "@apollo/client";
-import { TUOorg } from "../../utils/typesTS";
+import { FC, useEffect, useState } from "react";
+import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
+import { TUOorg, TsprBank } from "../../utils/typesTS";
 import Loader from "../../components/loader/Loader";
 import { UPDATE_UO } from "../../apollo/updateUO";
-import { READ_OU_ITEM } from "../../apollo/GetUOorg";
+import { READ_OU_ITEM, Get_bik } from "../../apollo/GetUOorg";
 import { useNavigate, useParams } from "react-router-dom";
 import accountStore from "../../services/accountsStore";
-import imgBin from "../../img/ic-bin.svg"
-
-
+import imgBin from "../../img/ic-bin.svg";
+import {
+  AutoComplete,
+  AutoCompleteCompleteEvent,
+} from "primereact/autocomplete";
 
 type TState = TUOorg;
+type TStateBIK = TsprBank;
+//let BIK: string;
 
 const CreateOrg: FC = () => {
-
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   var userInfo = accountStore((state) => state);
   let { id } = useParams();
-  const [infoUO, setInfoUO] = useState<TState>({ 
+
+  const [itemsBik, setItemsBik] = useState<TStateBIK[]>([]);
+  const [getBIK, { loading: loadingBIK, error: errorBIK, data: dataBIK }] = useLazyQuery(Get_bik);
+  const [filteredBIK, setFilteredBIK] = useState<TStateBIK[]>();
+
+
+  const search = (event: AutoCompleteCompleteEvent) => {
+    let _filteredBIK;
+
+    if (!event.query.trim().length) {
+      _filteredBIK = [...itemsBik];
+    } else {
+      _filteredBIK = itemsBik.filter((BIK) => {
+        return BIK.bank_BIK.toLowerCase().startsWith(event.query.toLowerCase());
+      });
+    }
+
+    setFilteredBIK(_filteredBIK);
+  };
+
+  const onClickBIK = () => {
+    getBIK();
+    if (dataBIK) {
+      setItemsBik(dataBIK.sprBank);
+    }
+  };
+
+  const [infoUO, setInfoUO] = useState<TState>({
     id: 1,
     adress: "",
     email: "",
     inn: "",
     kpp: "",
-    bank_KRS: "",
     name: "",
     ogrn_OgrnIP: "",
     okpo: "",
     phone: "",
+    sprBank:{
     bank_BIK: "",
+    bank_NAME: "",
+    bank_KRS: "",
     bank_INN: "",
     bank_OGRN: "",
+   },
     rs: "",
-    ks:"",
-    balanceCompanyId:"",
-    bank_NAME:"",
-    sprTypeBalanceCompany: { compType: ""  , id:1},
-    typeOrg:""
-    });
-
-
+    ks: "",
+    balanceCompanyId: "",
+    sprTypeBalanceCompany:"" 
+ 
+  });
 
   const onChange = (event: any) => {
     const { name, value } = event.target;
@@ -58,6 +79,14 @@ const CreateOrg: FC = () => {
       ...prevFormData,
       [name]: value,
     }));
+    // if (name == "bank_BIK") {
+    //   setInfoUO((prevFormData) => ({
+    //     ...prevFormData,
+    //     bank_NAME: value.bank_NAME,
+    //     ks:value.bank_KRS,
+    //     //bank_BIK:value.bank_BIK
+    //   }));
+    // }
   };
 
   const handleSubmit = (event: any) => {
@@ -69,130 +98,105 @@ const CreateOrg: FC = () => {
       email,
       inn,
       kpp,
+      sprBank:{
+      bank_BIK,
+      bank_NAME,
       bank_KRS,
       bank_INN,
-      bank_NAME,
-      bank_OGRN,
-      sprTypeBalanceCompany,
+      bank_OGRN
+      },
       name,
       ogrn_OgrnIP,
       okpo,
       phone,
-      bank_BIK,  
       rs,
       ks,
       balanceCompanyId,
     } = infoUO;
 
-    
     // Execute the mutation
     updateUO({
       variables: {
-      id,
-      adress,
-      email,
-      inn,
-      kpp,
-      name,
-      ogrn_OgrnIP,
-      okpo,
-      phone,
-      rs,
-      sprTypeBalanceCompanyId:infoUO.typeOrg,
-      balanceCompanyId,
-      sprBankId:bank_BIK,
-      bank_BIK:bank_BIK,
-      bank_INN,
-      bank_KRS,
-      bank_NAME,
-      bank_OGRN,
-      compType:sprTypeBalanceCompany.compType , 
-      compId:sprTypeBalanceCompany.id ,
-      ks,
-      client_ID:userInfo.userID
-
+        id,
+        adress,
+        email,
+        inn,
+        kpp,
+        name,
+        ogrn_OgrnIP,
+        okpo,
+        phone,
+        rs,
+        sprTypeBalanceCompanyId: Math.floor(parseFloat(infoUO.sprTypeBalanceCompany)),
+        balanceCompanyId,
+        sprBankId: infoUO.sprBank.bank_BIK,
+       // bank_BIK: BIK,
+        bank_INN,
+        bank_KRS,
+        bank_NAME,
+        bank_OGRN,
+        ks,
+        client_ID: userInfo.userID,
       },
     });
-
-
-  
   };
 
-
- 
-
-
-  
   const { data, loading, error } = useQuery(READ_OU_ITEM, {
     //fetchPolicy: "cache-only",
-    variables:{id} ,
+    variables: { id },
   });
-
 
   const [
     updateUO,
     { data: data_upd_UO, loading: loading_upd_UO, error: error_upd_UO },
-  ] = useMutation(UPDATE_UO ,{onCompleted:()=>{navigate('/registerUO');}});
+  ] = useMutation(UPDATE_UO, {
+    onCompleted: () => {
+      navigate("/registerUO");
+    },
+  });
 
   useEffect(() => {
     if (data) {
-      // const info = data?.companyBills.filter(
-      //   (f: any) => f.balanceCompanyId == id
-      // )[0];
       setInfoUO({
-        id:  data.companyBills.id,
+        id: data.companyBills.id,
         adress: data.companyBills.balanceCompany.adress,
         email: data.companyBills.balanceCompany.email,
         inn: data.companyBills.balanceCompany.inn,
         kpp: data.companyBills.balanceCompany.kpp,
+        sprBank:{
+        bank_NAME: data.companyBills.sprBank.bank_NAME,
+        bank_BIK: data.companyBills.sprBank.bank_BIK,
+        bank_INN: data.companyBills.sprBank.bank_INN,
+        bank_OGRN: data.companyBills.sprBank.bank_OGRN,
         bank_KRS: data.companyBills.ks,
+        },
         name: data.companyBills.balanceCompany.name,
         ogrn_OgrnIP: data.companyBills.balanceCompany.ogrn_OgrnIP,
         okpo: data.companyBills.balanceCompany.okpo,
         phone: data.companyBills.balanceCompany.phone,
-        bank_BIK: data.companyBills.sprBank.bank_BIK,
-        bank_INN: data.companyBills.sprBank.bank_INN,
-        bank_OGRN: data.companyBills.sprBank.bank_OGRN,
-        rs:data.companyBills.rs,
-        sprTypeBalanceCompany: { compType: data.companyBills.balanceCompany.sprTypeBalanceCompany.compType , id:data.companyBills.balanceCompany.sprTypeBalanceCompany.id },
-        bank_NAME:data.companyBills.sprBank.bank_NAME,
-        balanceCompanyId:data.companyBills.balanceCompanyId,
-        ks:data.companyBills.ks,
-        typeOrg:data.companyBills.balanceCompany.sprTypeBalanceCompany.id
+        rs: data.companyBills.rs,
+        sprTypeBalanceCompany: data.companyBills.balanceCompany.sprTypeBalanceCompanyId,
+        balanceCompanyId: data.companyBills.balanceCompanyId,
+        ks: data.companyBills.ks,
       });
-console.log(data)
-      
     }
   }, [data]);
 
- 
-
-  
-
   console.log(infoUO);
-  //console.log(state);
-
-  // const client = useApolloClient()
-  // // получаем кешированную задачу с `id === 5`
-  // const  todo  = client.readQuery({
-  //   query: READ_TODO,
-  //   variables: { // передаем переменную
-  //     id: id
-  //   },
-  // })
-
-  //console.log(data)
 
   if (loading) return <Loader />;
   if (error) return <div>${error.message}</div>;
   if (loading_upd_UO) return <Loader />;
   if (error_upd_UO) return <div>${error_upd_UO.message}</div>;
+  if (loadingBIK) return <Loader />;
+  if (errorBIK) return <div>{errorBIK.message}</div>;
+
+  
 
   return (
     <div className="col-sm-12 p-0">
       <div className="row p-4 m-0">
         <div className="col-lg-6 col-sm-12">
-        {/* {infoUO && ( */}
           <form
             className="bgWhite rounded16 shadow w-100 p-4"
             onSubmit={handleSubmit}
@@ -200,24 +204,35 @@ console.log(data)
             <div className="flexHoriz w-100">
               <h2 className="font24b textBlack">{infoUO.name}</h2>
               <button id="DeleteUO" className="transp border-0 ml-auto">
-                                <img src={imgBin} className="mr-3 position-absolute d-flex ml-n4 " alt=""></img>
-                                <span id="delspan" className="font16b reddish">Удалить организацию</span>
-                            </button>
+                <img
+                  src={imgBin}
+                  className="mr-3 position-absolute d-flex ml-n4 "
+                  alt=""
+                ></img>
+                <span id="delspan" className="font16b reddish">
+                  Удалить организацию
+                </span>
+              </button>
             </div>
 
             <div className="flexHoriz justify-content-between mt-3">
-                            <div className="posRel w-100 mb-3">
-                            <label className="transp backLab">Вид организации*</label>
-                                <select name="typeOrg" title="Вид организации" defaultValue={infoUO.sprTypeBalanceCompany.id} onChange={onChange} className="select2-hidden-accessible" >
-                                    <option value={2}>Индивидуальный предприниматель</option>
-                                    <option value={1}>Юридическое лицо</option>
-                                </select>                   
-                                
-                            </div>
-
-                        </div>
-
-    
+              <div className="posRel w-100 mb-3">
+                <label className="transp backLab">Вид организации*</label>
+                <select
+                  name="sprTypeBalanceCompany"
+                  title="Вид организации"
+                  value={infoUO.sprTypeBalanceCompany}
+                  onChange={onChange}
+                  className="select2-hidden-accessible"
+                >
+                  <option value={1}>{"Юридическое лицо"}</option>
+                  <option value={2}>{"Индивидуальный предприниматель"}</option>
+                
+                
+                 
+                </select>
+              </div>
+            </div>
 
             <InputComponent
               type="text"
@@ -279,7 +294,7 @@ console.log(data)
               maxLength={10}
             />
 
-<h5 className="font16b pt-2 pb-1">Юридический адрес</h5>
+            <h5 className="font16b pt-2 pb-1">Юридический адрес</h5>
 
             <InputComponent
               type="tel"
@@ -291,8 +306,8 @@ console.log(data)
               id_name="adress"
             />
 
-        <h5 className="font16b pt-2 pb-1">Банковские реквизиты</h5>
-
+            <h5 className="font16b pt-2 pb-1">Банковские реквизиты</h5>
+            {/* 
         <InputComponent
               type="text"
               onChange={onChange}
@@ -303,12 +318,35 @@ console.log(data)
               id_name="bank_BIK"
               required={true}
               maxLength={9}
-            />
+            /> */}
+            <div className="w-100 flexHoriz flex-wrap justify-content-between">
+              <div className="posRel w-100 mb-3">
+                <AutoComplete
+                  unstyled
+                  type="text"
+                  name="sprBank"
+                  className="bik"
+                  id="sprBank"
+                  required={true}
+                  maxLength={9}
+                  value={infoUO.sprBank}
+                  suggestions={filteredBIK}
+                  completeMethod={search}
+                  onClick={onClickBIK}
+                  onChange={onChange}
+                  field="bank_BIK"
+                  panelStyle={{ background: "white", overflowY: "scroll" }}
+                />
+                <label className="transp backLab" htmlFor="bank_BIK">
+                  БИК*
+                </label>
+              </div>
+            </div>
 
-<InputComponent
+            <InputComponent
               type="text"
               onChange={onChange}
-              value={infoUO.bank_NAME}
+              value={infoUO.sprBank.bank_NAME}
               children="Наименование банка"
               name="bank_NAME"
               classCss="BNAME"
@@ -316,17 +354,16 @@ console.log(data)
               disabled={true}
             />
 
-<InputComponent
+            <InputComponent
               type="text"
               onChange={onChange}
-              value={infoUO.ks}
+              value={infoUO.sprBank.bank_KRS}
               children="Корреспондентский счет"
               name="ks"
               classCss="BKRS"
               id_name="ks"
               maxLength={20}
               disabled={true}
-
             />
             <InputComponent
               type="text"
@@ -340,9 +377,9 @@ console.log(data)
               maxLength={20}
             />
 
-<h5 className="font16b pt-2 pb-1">Контактные данные</h5>
+            <h5 className="font16b pt-2 pb-1">Контактные данные</h5>
 
-<InputComponent
+            <InputComponent
               type="text"
               onChange={onChange}
               value={infoUO.phone}
@@ -353,7 +390,7 @@ console.log(data)
               required={true}
             />
 
-<InputComponent
+            <InputComponent
               type="text"
               onChange={onChange}
               value={infoUO.email}
@@ -371,7 +408,7 @@ console.log(data)
               </div>
             </div>
           </form>
-        {/* )} */}
+          {/* )} */}
         </div>
       </div>
     </div>
