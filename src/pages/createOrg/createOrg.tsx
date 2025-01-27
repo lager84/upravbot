@@ -15,7 +15,6 @@ import {
 
 type TState = TUOorg;
 type TStateBIK = TsprBank;
-//let BIK: string;
 
 const CreateOrg: FC = () => {
   const navigate = useNavigate();
@@ -24,9 +23,9 @@ const CreateOrg: FC = () => {
   let { id } = useParams();
 
   const [itemsBik, setItemsBik] = useState<TStateBIK[]>([]);
-  const [getBIK, { loading: loadingBIK, error: errorBIK, data: dataBIK }] = useLazyQuery(Get_bik);
+  const [getBIK, { loading: loadingBIK, error: errorBIK, data: dataBIK }] =
+    useLazyQuery(Get_bik);
   const [filteredBIK, setFilteredBIK] = useState<TStateBIK[]>();
-
 
   const search = (event: AutoCompleteCompleteEvent) => {
     let _filteredBIK;
@@ -59,18 +58,17 @@ const CreateOrg: FC = () => {
     ogrn_OgrnIP: "",
     okpo: "",
     phone: "",
-    sprBank:{
-    bank_BIK: "",
-    bank_NAME: "",
-    bank_KRS: "",
-    bank_INN: "",
-    bank_OGRN: "",
-   },
+    sprBank: {
+      bank_BIK: "",
+      bank_NAME: "",
+      bank_KRS: "",
+      bank_INN: "",
+      bank_OGRN: "",
+    },
     rs: "",
     ks: "",
     balanceCompanyId: "",
-    sprTypeBalanceCompany:"" 
- 
+    sprTypeBalanceCompany: "",
   });
 
   const onChange = (event: any) => {
@@ -79,14 +77,6 @@ const CreateOrg: FC = () => {
       ...prevFormData,
       [name]: value,
     }));
-    // if (name == "bank_BIK") {
-    //   setInfoUO((prevFormData) => ({
-    //     ...prevFormData,
-    //     bank_NAME: value.bank_NAME,
-    //     ks:value.bank_KRS,
-    //     //bank_BIK:value.bank_BIK
-    //   }));
-    // }
   };
 
   const handleSubmit = (event: any) => {
@@ -98,13 +88,7 @@ const CreateOrg: FC = () => {
       email,
       inn,
       kpp,
-      sprBank:{
-      bank_BIK,
-      bank_NAME,
-      bank_KRS,
-      bank_INN,
-      bank_OGRN
-      },
+      sprBank: { bank_NAME, bank_KRS, bank_INN, bank_OGRN },
       name,
       ogrn_OgrnIP,
       okpo,
@@ -127,10 +111,11 @@ const CreateOrg: FC = () => {
         okpo,
         phone,
         rs,
-        sprTypeBalanceCompanyId: Math.floor(parseFloat(infoUO.sprTypeBalanceCompany)),
+        sprTypeBalanceCompanyId: Math.floor(
+          parseFloat(infoUO.sprTypeBalanceCompany)
+        ),
         balanceCompanyId,
         sprBankId: infoUO.sprBank.bank_BIK,
-       // bank_BIK: BIK,
         bank_INN,
         bank_KRS,
         bank_NAME,
@@ -142,7 +127,6 @@ const CreateOrg: FC = () => {
   };
 
   const { data, loading, error } = useQuery(READ_OU_ITEM, {
-    //fetchPolicy: "cache-only",
     variables: { id },
   });
 
@@ -163,19 +147,20 @@ const CreateOrg: FC = () => {
         email: data.companyBills.balanceCompany.email,
         inn: data.companyBills.balanceCompany.inn,
         kpp: data.companyBills.balanceCompany.kpp,
-        sprBank:{
-        bank_NAME: data.companyBills.sprBank.bank_NAME,
-        bank_BIK: data.companyBills.sprBank.bank_BIK,
-        bank_INN: data.companyBills.sprBank.bank_INN,
-        bank_OGRN: data.companyBills.sprBank.bank_OGRN,
-        bank_KRS: data.companyBills.ks,
+        sprBank: {
+          bank_NAME: data.companyBills.sprBank.bank_NAME,
+          bank_BIK: data.companyBills.sprBank.bank_BIK,
+          bank_INN: data.companyBills.sprBank.bank_INN,
+          bank_OGRN: data.companyBills.sprBank.bank_OGRN,
+          bank_KRS: data.companyBills.ks,
         },
         name: data.companyBills.balanceCompany.name,
         ogrn_OgrnIP: data.companyBills.balanceCompany.ogrn_OgrnIP,
         okpo: data.companyBills.balanceCompany.okpo,
         phone: data.companyBills.balanceCompany.phone,
         rs: data.companyBills.rs,
-        sprTypeBalanceCompany: data.companyBills.balanceCompany.sprTypeBalanceCompanyId,
+        sprTypeBalanceCompany:
+          data.companyBills.balanceCompany.sprTypeBalanceCompanyId,
         balanceCompanyId: data.companyBills.balanceCompanyId,
         ks: data.companyBills.ks,
       });
@@ -190,8 +175,6 @@ const CreateOrg: FC = () => {
   if (error_upd_UO) return <div>${error_upd_UO.message}</div>;
   if (loadingBIK) return <Loader />;
   if (errorBIK) return <div>{errorBIK.message}</div>;
-
-  
 
   return (
     <div className="col-sm-12 p-0">
@@ -227,9 +210,6 @@ const CreateOrg: FC = () => {
                 >
                   <option value={1}>{"Юридическое лицо"}</option>
                   <option value={2}>{"Индивидуальный предприниматель"}</option>
-                
-                
-                 
                 </select>
               </div>
             </div>
@@ -307,18 +287,7 @@ const CreateOrg: FC = () => {
             />
 
             <h5 className="font16b pt-2 pb-1">Банковские реквизиты</h5>
-            {/* 
-        <InputComponent
-              type="text"
-              onChange={onChange}
-              value={infoUO.bank_BIK}
-              children="БИК*"
-              name="bank_BIK"
-              classCss="bik"
-              id_name="bank_BIK"
-              required={true}
-              maxLength={9}
-            /> */}
+
             <div className="w-100 flexHoriz flex-wrap justify-content-between">
               <div className="posRel w-100 mb-3">
                 <AutoComplete
@@ -408,7 +377,6 @@ const CreateOrg: FC = () => {
               </div>
             </div>
           </form>
-          {/* )} */}
         </div>
       </div>
     </div>
