@@ -4,7 +4,7 @@ import NotFound404 from "./404/404"
 import AccessDenied from "./access_denied/access_denied"
 import ManagerPage from "./manager/manager"
 import RegisterUOPage from "./registerUO/registerUO"
-import CreateOrgPage from "./createOrg/createOrg"
+import EditOrgPage from "./editOrg/editOrg"
 
 
 export {
@@ -14,6 +14,6 @@ export {
   AccessDenied,
   ManagerPage,
   RegisterUOPage,
-  CreateOrgPage
+  EditOrgPage
 
 };
