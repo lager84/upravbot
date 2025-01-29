@@ -9,7 +9,8 @@ import accountStore from "../../services/accountsStore";
 import { TBalanceCompany  } from "../../utils/typesTS";
 import InputSearch from "../../components/input-search/InputSearch";
 import { SortingControl } from "../../components/sorting-control/SortingControl";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { URL_CREATE_ORG } from "../../utils/routes";
 
 
 
@@ -44,6 +45,8 @@ const RegisterUOPage: FC = () => {
   var userInfo = accountStore((state) => state);
 
   const client_ID = userInfo.userID;
+
+  const navigate = useNavigate();
   
   
 
@@ -146,6 +149,7 @@ const RegisterUOPage: FC = () => {
         />
 
         <button
+        onClick={() => navigate(`${URL_CREATE_ORG}`)}
           title="gds"
           className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"
         >

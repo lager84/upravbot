@@ -62,12 +62,19 @@ const client = new ApolloClient({
                  id:args?.id
                             
               });
+           },
 
-           }
+           merge(existing, incoming) {
+            return incoming;
+        }
+          
          }
+         
+        
 
 
        }
+       
     }
      }
    }

@@ -5,6 +5,7 @@ import AccessDenied from "./access_denied/access_denied"
 import ManagerPage from "./manager/manager"
 import RegisterUOPage from "./registerUO/registerUO"
 import EditOrgPage from "./editOrg/editOrg"
+import CreateOrgPage from "./createOrg/createOrg"
 
 
 export {
@@ -14,6 +15,8 @@ export {
   AccessDenied,
   ManagerPage,
   RegisterUOPage,
-  EditOrgPage
+  EditOrgPage,
+  CreateOrgPage
+
 
 };

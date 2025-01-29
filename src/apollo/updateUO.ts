@@ -46,3 +46,37 @@ mutation UpdateOU($bank_OGRN:String ,$bank_NAME:String ,$bank_KRS: String , $ban
   }
 }
 `
+
+export const DELETE_UO = gql`
+mutation deleteCompanyBills($idCB:Int! , $idC:Int!){
+  deleteCompanyBills(id:$idCB)
+  deletebalanceCompany(id:$idC)
+  
+}
+`
+
+export const CREATE_UO = gql`
+mutation CreateOU($ks: String, $rs: String,  $sprBankId: String, $inn: String, $adress: String, $sprTypeBalanceCompanyId: Int!, $client_ID: String, $email: String, $kpp: String, $licence: String, $name: String, $ogrn_OgrnIP: String, $okpo: String, $phone: String) {
+  addBalanceCompany(
+    inn: $inn
+    adress: $adress
+    typeBalanceCompanyID: $sprTypeBalanceCompanyId
+    client_ID: $client_ID
+    email: $email
+    kpp: $kpp
+    licence: $licence
+    name: $name
+    ogrn_OgrnIP: $ogrn_OgrnIP
+    okpo: $okpo
+    phone: $phone
+    ks: $ks
+    rs: $rs
+    sprBankId: $sprBankId
+  ) {
+    id
+    __typename
+  }
+  
+}
+
+`
