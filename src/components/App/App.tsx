@@ -3,24 +3,26 @@ import Loader from "../loader/Loader";
 import AppHeader from "../app-header/AppHeader";
 import '../../css/bootstrap.min.css';
 import '../../css/style.css';
-import { Routes, Route, useLocation } from "react-router-dom";
-import { URL_ROOT, URL_ADMINISTRATOR, URL_ANY, URL_MANAGER , URL_REGISTER_UO , URL_EDIT_ORG , URL_CREATE_ORG } from "../../utils/routes";
-import {MainPage , AdministratorPage, NotFound404 , ManagerPage , RegisterUOPage, CreateOrgPage ,EditOrgPage }from "../../pages";
+import { Routes, Route} from "react-router-dom";
+import { URL_ROOT, URL_ADMINISTRATOR, URL_ANY, URL_MANAGER , URL_REGISTER_UO , URL_EDIT_ORG , URL_CREATE_ORG, URL_PROJECTS, URL_CREATE_PROJECT } from "../../utils/routes";
+import {MainPage , AdministratorPage, NotFound404 , ManagerPage , RegisterUOPage, CreateOrgPage ,EditOrgPage, ProjectsPage, CreateProjectPage }from "../../pages";
 import ProtectedRoute from "../protected-route"
 import { withAuthenticationRequired } from "react-oidc-context";
 import UserInfo from "../user-info/UserInfo";
 import LeftMenu from "../left-menu/LeftMenu";
 import accountStore from '../../services/accountsStore'
 import {  useMemo } from 'react';
-import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
+import { PrimeReactProvider } from 'primereact/api';
+
 
 
 const App = () => {
-  //const location = useLocation();
+  // const location = useLocation();
 
- // const stateLocation = location.state && location.state.location;
+  // const stateLocation = location.state && location.state.location;
 
   const auth = useAuth();
+
 
   useMemo(() => {
  
@@ -74,6 +76,8 @@ const App = () => {
           <Route path={URL_REGISTER_UO} element={<ProtectedRoute administrator={true} element={<RegisterUOPage />} />} />
           <Route path={`${URL_REGISTER_UO}/${URL_EDIT_ORG}/:id`} element={<ProtectedRoute administrator={true} element={<EditOrgPage />} />} />
           <Route path={`${URL_REGISTER_UO}/${URL_CREATE_ORG}`} element={<ProtectedRoute administrator={true} element={<CreateOrgPage />} />} />
+          <Route path={URL_PROJECTS} element={<ProtectedRoute administrator={true} element={<ProjectsPage />} />} />
+          <Route path={`${URL_PROJECTS}/${URL_CREATE_PROJECT}`} element={<ProtectedRoute administrator={true} element={<CreateProjectPage />} />} />
           <Route path={URL_MANAGER} element={<ProtectedRoute manager={true}  element={<ManagerPage />} />} />
         </Routes>
         </div>

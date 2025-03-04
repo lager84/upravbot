@@ -2,7 +2,7 @@ import { useEffect, useCallback, FC} from 'react';
 import ReactDOM from 'react-dom';
 import styles from '../modal/modal.module.css'
 import ModalOverlay from '../modal-overlay/ModalOverlay';
-import  {CloseIcon}  from '../../components/close-icon/close-icon';
+import { Button } from 'primereact/button';
 
 
 
@@ -42,7 +42,7 @@ const Modal:FC<TProps> = ({ title, children, btnClose }) => {
             <div data-test="modal" className={styles.modalOrder}>
                 <div className={styles.ingredient_header}>
                     <h2 className={styles.ingredient_title}>{title}</h2>
-                    <div className={styles.order_closeButton}><CloseIcon type="primary" onClick={btnClose} /></div>
+                    <div className={styles.order_closeButton}><Button icon="pi pi-times" rounded severity="danger" aria-label="Cancel" onClick={()=>btnClose} /> </div>
                 </div>
                 {children}
             </div>

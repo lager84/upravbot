@@ -6,6 +6,8 @@ import ManagerPage from "./manager/manager"
 import RegisterUOPage from "./registerUO/registerUO"
 import EditOrgPage from "./editOrg/editOrg"
 import CreateOrgPage from "./createOrg/createOrg"
+import ProjectsPage from "./projects/projects"
+import CreateProjectPage from "./createProject/createProject"
 
 
 export {
@@ -16,7 +18,9 @@ export {
   ManagerPage,
   RegisterUOPage,
   EditOrgPage,
-  CreateOrgPage
+  CreateOrgPage,
+  ProjectsPage,
+  CreateProjectPage
 
 
 };

@@ -46,4 +46,11 @@ bank_KRS:string
 }
 
 
+export type TsprProject =
+{
+  id:string
+  projectName:string
+  client_id:string
+}
+
 
