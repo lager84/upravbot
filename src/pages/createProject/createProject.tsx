@@ -11,7 +11,7 @@ import { CREATE_PROJECT, GET_PROJECT } from "../../apollo/QLProjects";
 
 type TState = TsprProject;
 
-const CreateOrg: FC = () => {
+const CreateProject: FC = () => {
   const navigate = useNavigate();
 
   var userInfo = accountStore((state) => state);
@@ -105,4 +105,4 @@ const CreateOrg: FC = () => {
   );
 };
 
-export default CreateOrg;
+export default CreateProject;

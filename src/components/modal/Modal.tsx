@@ -37,7 +37,7 @@ const Modal:FC<TProps> = ({ title, children, btnClose }) => {
 
 
 
-    return ReactDOM.createPortal((
+    return (
         <>
             <div data-test="modal" className={styles.modalOrder}>
                 <div className={styles.ingredient_header}>
@@ -49,7 +49,7 @@ const Modal:FC<TProps> = ({ title, children, btnClose }) => {
             <ModalOverlay onClick={btnClose} />
         </>
 
-    ), document.getElementById('modals') as Element);
+    )
 }
 
 

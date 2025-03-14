@@ -1,16 +1,25 @@
 .divCard{
    
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     border-radius: 16px;
     overflow: hidden;  
     box-shadow:  0 .5rem 1rem rgba(0, 0, 0, .15) !important; 
     margin-left: 5%;
     padding: 2%;
+    width: 50%;
+    
 
 }
 
 .divCard:hover {
     background-color: #FFF1F1;
     border: 1px solid red;
+}
+
+.inputList{
+    font-size: 1.75rem;
+    border: none !important; 
+    height: 2em !important;
+    color: #020202;
 }

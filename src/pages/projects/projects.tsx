@@ -1,123 +1,46 @@
-import styles from "../registerUO/registerUO.module.css";
-import { FC, SetStateAction, useCallback, useEffect, useState } from "react";
+import styles from "../projects/projects.module.css";
+import { FC, useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import Loader from "../../components/loader/Loader";
 import plus from "../../img/ic-plus.svg";
 import ProjectListItem from "../../components/project-list-items/Project-list-items";
 import { GET_PROJECT } from "../../apollo/QLProjects";
 import accountStore from "../../services/accountsStore";
-import { TsprProject  } from "../../utils/typesTS";
+import sortStore from "../../services/sortStore";
+import { TsprProject } from "../../utils/typesTS";
 import InputSearch from "../../components/input-search/InputSearch";
-import { SortingControl } from "../../components/sorting-control/SortingControl";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  SortingControl,
+  sortCb,
+} from "../../components/sorting-control/SortingControl";
+import { useNavigate } from "react-router-dom";
 import { URL_CREATE_PROJECT } from "../../utils/routes";
-
-
-
-
-
-
-
-
-
-export const ASC = "asc";
-export const DESC = "desc";
-const sortCb = (nameSorting: string) => {
-  if (nameSorting) {
-    if (nameSorting === ASC) {
-      return (a: any, b: any) =>
-        a.props.card.name > b.props.card.name ? 1 : -1;
-    } else {
-      return (a: any, b: any) =>
-        a.props.card.name > b.props.card.name ? -1 : 1;
-    }
-  }
-};
 
 const ProjectsPage: FC = () => {
   const [isDisplayDataSet, setIsDisplayDataSet] = useState(false);
   const [ouorg, setOUorg] = useState<TsprProject[]>();
 
-  const [nameSorting, setNameSorting] = useState(ASC);
-  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [queryFilter, setQueryFilter] = useState("");
 
   var userInfo = accountStore((state) => state);
+  var sort = sortStore((sortName) => sortName);
 
   const client_ID = userInfo.userID;
 
   const navigate = useNavigate();
-  
-  
 
   const { data, loading, error } = useQuery(GET_PROJECT, {
     //fetchPolicy: "cache-and-network",
-    variables: { client_ID }
+    variables: { client_ID },
   });
-
-  
-
-
 
   useEffect(() => {
     if (!loading && !isDisplayDataSet) {
-      console.log(data)
-      setOUorg(data.sprGilFindProjects.map((comp:any ) =>(comp)));
+      console.log(data);
+      setOUorg(data.sprGilFindProjects.map((comp: TsprProject) => comp));
       setIsDisplayDataSet(true);
     }
   }, [isDisplayDataSet, ouorg, data, loading]);
-
-  useEffect(() => {
-    if (searchParams.get("name") && searchParams.get("query")) {
-      setNameSorting(searchParams.get("name") as SetStateAction<string>);
-      setQueryFilter(searchParams.get("query") as SetStateAction<string>);
-    } else if (searchParams.get("query")) {
-      setQueryFilter(searchParams.get("query") as SetStateAction<string>);
-    } else if (searchParams.get("name")) {
-      setNameSorting(searchParams.get("name") as SetStateAction<string>);
-      //setSearchParams({'name':searchParams.get("name") as string})
-    }
-
-   
-
-
-    setSearchParams(searchParams);
-  }, [searchParams, setSearchParams]);
-
-  const sortCountries = useCallback(
-    (type: any) => {
-      let nextSortingValue;
-      switch (type) {
-        case "name": {
-          nextSortingValue = nameSorting
-            ? nameSorting === ASC
-              ? DESC
-              : ASC
-            : ASC;
-          break;
-        }
-
-        default: {
-          break;
-        }
-      }
-      setSearchParams(
-        searchParams.get("query")
-          ? {
-              query: searchParams.get("query") as string,
-              [type]: nextSortingValue as any,
-            }
-          : { [type]: nextSortingValue as any }
-      );
-    },
-    [nameSorting, setSearchParams, searchParams]
-  );
-
-
-
-
-
 
   if (loading)
     return (
@@ -127,7 +50,9 @@ const ProjectsPage: FC = () => {
     );
 
   if (error) return <>`Submission error! ${error.message}`</>;
- 
+
+  console.log(ouorg);
+
   return (
     <div className="col-lg-9half col-sm-12 p-0 min-vh-100 bgWhite  ">
       <span className="h90"></span>
@@ -136,20 +61,24 @@ const ProjectsPage: FC = () => {
       <div id="TableTools" className="flexHoriz w-100 m-0 p-4 ml-4">
         {isDisplayDataSet && (
           <InputSearch<TsprProject[]>
-            filterValue={queryFilter}
             setOUorg={setOUorg}
-            card={ouorg}
+            card={ouorg?.map(({ id, projectName }) => {
+              return { id, projectName };
+            })}
           />
         )}
 
-        <SortingControl
-          label={"Наименование проекта:"}
-          onSort={() => sortCountries("name")}
-          value={nameSorting}
-        />
+        <SortingControl label={"Наименование проекта:"} />
+
+        {/* <Link className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"
+        to={`${URL_CREATE_PROJECT}`}
+        state={{ location: location }}
+      >
+<img src={plus} className="w16 reddishSvg" alt=""></img>
+      </Link> */}
 
         <button
-        onClick={() => navigate(`${URL_CREATE_PROJECT}`)}
+          onClick={() => navigate(`${URL_CREATE_PROJECT}`)}
           title="gds"
           className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"
         >
@@ -158,12 +87,12 @@ const ProjectsPage: FC = () => {
       </div>
 
       <div className={styles.divRoot}>
-        {ouorg && 
+        {ouorg &&
           ouorg
             .map((detail: TsprProject) => (
               <ProjectListItem card={detail} key={detail.id} />
             ))
-            .sort(sortCb(nameSorting))}
+            .sort(sortCb(sort.sortName))}
       </div>
       <span className="h90"></span>
     </div>

@@ -50,7 +50,9 @@ export type TsprProject =
 {
   id:string
   projectName:string
-  client_id:string
+  client_id?:string
 }
 
-
+export type TSortState = {
+  sortName:string;
+}
