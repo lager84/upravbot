@@ -27,3 +27,19 @@ export const CREATE_PROJECT = gql`
 }
 `;
 
+export const UPDATE_PROJECT = gql`
+mutation UpdateProject($id: Int!, $projectName:String! , $client_id:String!){
+  updateProject(sprGilFindProjects: {id:$id , projectName:$projectName , client_ID:$client_id} ){
+    id,
+    projectName,
+    client_ID
+  }
+}
+`;
+
+export const DELETE_PROJECT = gql`
+mutation DeleteProject($id: Int!  ){
+  deleteProject(id: $id )
+}
+
+`;

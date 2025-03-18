@@ -16,17 +16,17 @@ type TProps = {
     onBlur?(e?: React.FocusEvent<HTMLInputElement>): void;
     onFocus?(e?: React.FocusEvent<HTMLInputElement>): void;
     autocomplete?:string;
-    
+    ref?:React.Ref<HTMLInputElement>;
 } 
 
-const InputComponent:FC<TProps> = ({children , id_name, value , type, disabled  , classCss , name, onChange ,  required , maxLength , autocomplete }) =>{
+const InputComponent:FC<TProps> = ({children , id_name, value , type, disabled  , classCss , name, onChange ,  required , maxLength , autocomplete , ref }) =>{
     
    
 
 return(
     <div className="w-100 flexHoriz flex-wrap justify-content-between">
     <div className="posRel w-100 mb-3">
-<input type={type} onChange={onChange} autoComplete={autocomplete} name={name} value={value || "" } id={id_name} disabled={disabled} required={required} maxLength={maxLength}  className={classCss}></input>
+<input type={type} onChange={onChange} autoComplete={autocomplete} name={name} value={value || "" } id={id_name} disabled={disabled} required={required} maxLength={maxLength}  className={classCss} ref={ref}></input>
  <label className="transp backLab" htmlFor={id_name} >{children}</label>
 </div>                     
 </div>

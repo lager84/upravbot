@@ -70,9 +70,6 @@ const client = new ApolloClient({
           
          }
          
-        
-
-
        }
        
     }

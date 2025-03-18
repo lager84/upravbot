@@ -17,7 +17,7 @@ import {
 } from "../../components/sorting-control/SortingControl";
 
 const RegisterUOPage: FC = () => {
-  const [isDisplayDataSet, setIsDisplayDataSet] = useState(false);
+  
   const [ouorg, setOUorg] = useState<TBalanceCompany[]>();
 
   var userInfo = accountStore((state) => state);
@@ -33,7 +33,7 @@ const RegisterUOPage: FC = () => {
   });
 
   useEffect(() => {
-    if (!loading && !isDisplayDataSet) {
+    if (!loading ) {
       console.log(data);
       setOUorg(
         data.companyBills.map((comp: any) => ({
@@ -41,9 +41,9 @@ const RegisterUOPage: FC = () => {
           ...comp.balanceCompany,
         }))
       );
-      setIsDisplayDataSet(true);
+     
     }
-  }, [isDisplayDataSet, ouorg, data, loading]);
+  }, [ data, loading]);
 
   if (loading)
     return (
@@ -60,11 +60,11 @@ const RegisterUOPage: FC = () => {
       <h2 className=" font24b textBlack ml-0 p-4">Управляющие организации</h2>
 
       <div id="TableTools" className="flexHoriz w-100 m-0 p-4 ml-4">
-        {isDisplayDataSet && (
+        {ouorg && (
           <InputSearch<TBalanceCompany[]> setOUorg={setOUorg} card={ouorg} />
         )}
 
-        <SortingControl label={"Наименование организации:"} />
+        <SortingControl  label={"Наименование организации:"} />
 
         <button
           onClick={() => navigate(`${URL_CREATE_ORG}`)}
@@ -81,7 +81,7 @@ const RegisterUOPage: FC = () => {
             .map((detail: TBalanceCompany) => (
               <UOListItem card={detail} key={detail.id} />
             ))
-            .sort(sortCb(sort.sortName))}
+            .sort(sortCb(sort.sortName,'name'))}
       </div>
       <span className="h90"></span>
     </div>

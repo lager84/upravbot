@@ -1,4 +1,4 @@
-import React, { FC, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
+import  { FC, SetStateAction, useCallback, useEffect,  useState } from 'react';
 import sorting_asc from '../../img/sort_asc.png';
 import sorting_desc from '../../img/sort_desc.png';
 import styles from "../sorting-control/sorting-control.module.css"
@@ -7,20 +7,20 @@ import sortStore from '../../services/sortStore';
 
 type SortingControlProps = {
   label:string, 
-  //value:string
+  
 
 }
 
 export const ASC = "asc";
 export const DESC = "desc";
-export const sortCb = (nameSorting: string) => {
+export const sortCb = (nameSorting: string ,  sortField: string) => {
   if (nameSorting) {
     if (nameSorting === ASC) {
       return (a: any, b: any) =>
-        a.props.card.name > b.props.card.name ? 1 : -1;
+        a.props.card[sortField] > b.props.card[sortField] ? 1 : -1;
     } else {
       return (a: any, b: any) =>
-        a.props.card.name > b.props.card.name ? -1 : 1;
+        a.props.card[sortField]> b.props.card[sortField] ? -1 : 1;
     }
   }
 };
@@ -34,7 +34,7 @@ export const SortingControl:FC<SortingControlProps> = ({ label }) => {
    const [searchParams, setSearchParams] = useSearchParams();
   
 
-
+   
    
 
      useEffect(() => {
