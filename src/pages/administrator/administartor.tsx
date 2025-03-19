@@ -113,6 +113,7 @@ const AdministratorPage: FC = () => {
               name="SecondName"
               classCss="SecondName"
               id_name="SecondName"
+              required={true}
             />
 
             <InputComponent
@@ -123,6 +124,7 @@ const AdministratorPage: FC = () => {
               name="FirstName"
               classCss="FirstName"
               id_name="FirstName"
+              required={true}
             />
 
             <InputComponent
@@ -150,6 +152,7 @@ const AdministratorPage: FC = () => {
                   name="Email"
                   classCss={disabledMail ? "email bgLightGrey" : "email"}
                   id_name="Email"
+                  required={true}
                 />
                 <button
                   className={styles.button}
@@ -182,6 +185,7 @@ const AdministratorPage: FC = () => {
                   classCss={disabledPass ? "pass bgLightGrey" : "pass"}
                   id_name="password"
                   autocomplete="on"
+                  required={true}
                 />
                 <button
                   className={styles.button}
@@ -206,6 +210,7 @@ const AdministratorPage: FC = () => {
               name="phone_number"
               classCss="email"
               id_name="phone_number"
+              required={true}
             />
 
             <div className="row mt-3 mb-3">

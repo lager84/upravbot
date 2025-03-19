@@ -1,13 +1,17 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC,  useRef, useState } from "react";
 import { TsprProject } from "../../utils/typesTS";
 import styles from "./Projectlistitems.module.css";
 import InputComponent from "../imput-component/InputComponent";
 import OutsideClickHandler from "react-outside-click-handler";
 import saveImg from "../../img/ic_terms.png"
 import { useMutation } from "@apollo/client";
-import { DELETE_PROJECT, UPDATE_PROJECT , GET_PROJECT } from "../../apollo/QLProjects";
+import { DELETE_PROJECT, UPDATE_PROJECT  } from "../../apollo/QLProjects";
 import Loader from "../loader/Loader";
 import accountStore from "../../services/accountsStore";
+import { ConfirmDialog } from 'primereact/confirmdialog';
+import { Toast } from 'primereact/toast';
+import 'primereact/resources/themes/lara-light-blue/theme.css'
+
 
 type TProp = {
   card: TsprProject;
@@ -18,12 +22,22 @@ const ProjectListItem: FC<TProp> = ({ card , refetch }) => {
 
   const [disable , setDisable] = useState<boolean>(true);
   var userInfo = accountStore((state) => state);
+  
+  const toast = useRef<Toast>(null);
+  const [visible, setVisible] = useState<boolean>(false);
 
-  const [project, setProject] = useState<TsprProject>({
-    id: "",
-    projectName: "",
-    client_id: ""
-  })
+  const accept =  () => {
+    
+    const event = new Event('click');
+    handleDelete();
+   
+}
+
+const reject = () => {
+    toast.current?.show({ severity: 'warn', summary: 'Отмена', detail: 'Вы отменили удаление проекта', life: 3000 });
+
+}
+
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -51,8 +65,8 @@ const ProjectListItem: FC<TProp> = ({ card , refetch }) => {
     
     
     
-    const handleDelete = (event: any) => {
-      event.preventDefault();
+    const handleDelete = () => {
+   
 
     deleteProject({
       variables: {
@@ -143,8 +157,12 @@ const ProjectListItem: FC<TProp> = ({ card , refetch }) => {
     {!disable && <button className="administrator_button__WAzsm" type="button" title="редактировать" onClick={handleSubmit}>
     <img src={saveImg} className="w24 reddishSvg mr-2 ml-2" alt=""></img>
     </button>}
- 
-    <button id="DeletePr"  type="button" className="administrator_button__WAzsm"  title="удалить" onClick={handleDelete}>
+    
+    <Toast ref={toast} position="bottom-right" />
+    <ConfirmDialog className="modal-contentProject  bgWhite rounded16 p-4 shadow   col-12 col-lg-6" acceptLabel="Удалить" acceptClassName="btn btn1 h56 mr-2" rejectLabel="Отмена" rejectClassName="btn btn1 h56 mr-2ml-auto btn btn1 h56 outline shadow-none flexCenter CancelProject" group="declarative"  visible={visible} onHide={() => setVisible(false)} message="Вы уверены что хотите удалить проект?" 
+                icon="pi pi-exclamation-triangle" accept={accept} reject={reject} />
+
+    <button id="DeletePr"  type="button" className="administrator_button__WAzsm"  title="удалить" onClick={() => setVisible(true)}>
       <img src="/static/media/ic-bin.b2f853337f6ee57b98d1fd97194cbe3c.svg" className="w24 reddishSvg mr-2 ml-2" alt=""></img>
       </button>
       

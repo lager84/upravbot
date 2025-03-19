@@ -1,5 +1,5 @@
 import InputComponent from "../../components/imput-component/InputComponent";
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { TUOorg, TsprBank } from "../../utils/typesTS";
 import Loader from "../../components/loader/Loader";
@@ -12,12 +12,28 @@ import {
   AutoComplete,
   AutoCompleteCompleteEvent,
 } from "primereact/autocomplete";
+import { ConfirmDialog } from 'primereact/confirmdialog';
+import { Toast } from 'primereact/toast';
+import 'primereact/resources/themes/lara-light-blue/theme.css'
 
 type TState = TUOorg;
 type TStateBIK = TsprBank;
 
 const EditOrg: FC = () => {
   const navigate = useNavigate();
+
+    const toast = useRef<Toast>(null);
+    const [visible, setVisible] = useState<boolean>(false);
+
+    const accept =  () => { 
+      onDelete(); 
+     
+  }
+  
+  const reject = () => {
+      toast.current?.show({ severity: 'warn', summary: 'Отмена', detail: 'Вы отменили удаление проекта', life: 3000 });
+  
+  }
 
   var userInfo = accountStore((state) => state);
   let { id } = useParams();
@@ -198,7 +214,11 @@ const EditOrg: FC = () => {
           >
             <div className="flexHoriz w-100">
               <h2 className="font24b textBlack">{infoUO.name}</h2>
-              <button id="DeleteUO" type="button" onClick={onDelete} className="transp border-0 ml-auto">
+
+              <Toast ref={toast} position="bottom-right" />
+    <ConfirmDialog className="modal-contentProject  bgWhite rounded16 p-4 shadow   col-12 col-lg-6" acceptLabel="Удалить" acceptClassName="btn btn1 h56 mr-2" rejectLabel="Отмена" rejectClassName="btn btn1 h56 mr-2ml-auto btn btn1 h56 outline shadow-none flexCenter CancelProject" group="declarative"  visible={visible} onHide={() => setVisible(false)} message="Вы уверены что хотите удалить проект?" 
+                icon="pi pi-exclamation-triangle" accept={accept} reject={reject} />
+              <button id="DeleteUO" type="button" onClick={() => setVisible(true)} className="transp border-0 ml-auto">
                 <img
                   src={imgBin}
                   className="mr-3 position-absolute d-flex ml-n4 "
