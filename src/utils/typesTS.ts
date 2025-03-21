@@ -56,3 +56,32 @@ export type TsprProject =
 export type TSortState = {
   sortName:string;
 }
+
+export type TsprObjectFull = {
+  gilFindObjects:TsprObject
+}
+
+export type sprStreet = {
+  oblast:string,
+  city:string
+  sName:string
+
+}
+        
+export type gilFindProject = {
+  projectName:string
+}
+
+export type balanceCompany={
+name: string,
+client_ID: string
+}
+
+export type TsprObject  =  sprStreet & gilFindProject & balanceCompany &{
+  id: number,
+  houseNumber: string,
+  sprStreetId: number,
+  gilFindProjectId: number,
+  balanceCompanyId: number,
+  imageHouse?:string
+}
