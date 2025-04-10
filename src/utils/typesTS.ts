@@ -48,7 +48,7 @@ bank_KRS:string
 
 export type TsprProject =
 {
-  id:string
+  id:number
   projectName:string
   client_id?:string
 }
@@ -62,9 +62,11 @@ export type TsprObjectFull = {
 }
 
 export type sprStreet = {
+  id: number,
   oblast:string,
-  city:string
-  sName:string
+  city:string,
+  sName:string,
+  raion?:string
 
 }
         

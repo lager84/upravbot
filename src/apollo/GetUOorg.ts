@@ -80,3 +80,14 @@ query sprBank{
   }
   }
 `
+
+
+export const GET_UO_ORG_LIGHT = gql`
+  query BalanceCompany($client_ID: String!) {
+    balanceCompany(where: { client_ID: { eq: $client_ID } }) {     
+        id
+        name      
+      }
+ 
+    }  
+`;

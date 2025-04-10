@@ -18,7 +18,8 @@ export const GET_OBJECTS = gql`
     sprStreet{
       oblast,
       city,
-      sName
+      sName,
+      raion
     }
     gilFindProjectId,
     gilFindProject{
@@ -34,29 +35,57 @@ export const GET_OBJECTS = gql`
 }
 `;
 
-export const CREATE_PROJECT = gql`
- mutation AddProject( $projectName:String!,$client_ID: String!){
-   addProject (projectName:$projectName , client_ID:$client_ID ){
+export const READ_OBJECT_ITEM = gql`  
+query GilFindObjects($id:ID ) {
+  gilFindObjects(id:$id ) {
     id,
-    projectName,
-    client_ID
+    houseNumber,
+    sprStreetId,
+    sprStreet{
+      oblast,
+      city,
+      sName,
+      raion
+    }
+    gilFindProjectId,
+    gilFindProject{
+      projectName
+    },
+    balanceCompanyId,
+    balanceCompany{
+      name,
+      client_ID
+    },
+    imageHouse
+    
+  }
+}
+`
+
+export const UPDATE_OBJECT = gql`
+mutation UpdateGilFindObject($id: Int!, $balanceCompanyId: Int!, $gilFindProjectId: Int!, $sprStreetId: Int!, $houseNumber: String!, $imageHouse: String){
+  updateGilFindObject(
+    gilFindObjects: {id: $id, balanceCompanyId: $balanceCompanyId, gilFindProjectId: $gilFindProjectId, sprStreetId: $sprStreetId, houseNumber: $houseNumber, imageHouse: $imageHouse}
+    )
+    {
+  id,
+  houseNumber,
+  sprStreetId,
+  gilFindProjectId,
+  balanceCompanyId,
+  imageHouse
   }
 }
 `;
 
-export const UPDATE_PROJECT = gql`
-mutation UpdateProject($id: Int!, $projectName:String! , $client_id:String!){
-  updateProject(sprGilFindProjects: {id:$id , projectName:$projectName , client_ID:$client_id} ){
+export const GET_STREETS = gql`
+ query   SprStreets($client_ID: String!){
+  sprStreets(where:{client_ID:  {eq: $client_ID}}){
     id,
-    projectName,
-    client_ID
+    oblast,
+    city,
+    raion,
+    sName
   }
 }
-`;
-
-export const DELETE_PROJECT = gql`
-mutation DeleteProject($id: Int!  ){
-  deleteProject(id: $id )
-}
-
 `;

@@ -9,6 +9,7 @@ import CreateOrgPage from "./createOrg/createOrg"
 import ProjectsPage from "./projects/projects"
 import CreateProjectPage from "./createProject/createProject"
 import ObjectsPage from "./objects/objects"
+import EditObjectPage from "./editObject/editObject"
 
 
 export {
@@ -22,7 +23,8 @@ export {
   CreateOrgPage,
   ProjectsPage,
   CreateProjectPage,
-  ObjectsPage
+  ObjectsPage,
+  EditObjectPage
 
 
 };

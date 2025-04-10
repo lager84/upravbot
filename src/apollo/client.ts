@@ -1,9 +1,12 @@
 import {ApolloClient , createHttpLink, InMemoryCache} from '@apollo/client'
 import { setContext } from '@apollo/client/link/context';
 import { User } from "oidc-client-ts"
+import { makeVar } from '@apollo/client';
 
 
-
+export const selectedProjectIdVar = makeVar<number| null>(null);
+export const selectedOUVar = makeVar<number | null>(null);
+export const selectedStreetVar = makeVar<number | null>(null);
 
 function getUser() {
   const oidcStorage = sessionStorage.getItem(`oidc.user:https://upravbot.ru/IDS4:mvc`)
@@ -68,7 +71,22 @@ const client = new ApolloClient({
             return incoming;
         }
           
-         }
+         },
+         gilFindObjects:{  
+          read(_, { args, toReference  }) {
+            return  toReference({
+               __typename: 'GilFindObjects' ,
+               id:args?.id
+                          
+            });
+         },
+
+         merge(existing, incoming) {
+          return incoming;
+      }
+        
+       }
+
          
        }
        

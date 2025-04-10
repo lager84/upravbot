@@ -12,6 +12,7 @@ import client from "./apollo/client"
 
 
 
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

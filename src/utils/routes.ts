@@ -8,3 +8,4 @@ export const URL_EDIT_ORG = "editOrg";
 export const URL_PROJECTS = "/projects";
 export const URL_CREATE_PROJECT ="createProject";
 export const URL_OBJECTS = "/objects";
+export const URL_EDIT_OBJECT = "editObject";

@@ -17,7 +17,7 @@ const CreateProject: FC = () => {
   var userInfo = accountStore((state) => state);
 
   const [infoProject, setInfoProject] = useState<TState>({
-    id: "",
+    id: 1,
     projectName: "",
     client_id: "",
   });
