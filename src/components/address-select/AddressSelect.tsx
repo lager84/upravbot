@@ -25,7 +25,8 @@ const AddressSelect: FC<TState> = ({id , oblast , city , raion , sName}) => {
       oblast:oblast,
       city:city,
       sName:sName,
-      raion:raion
+      raion:raion,
+      client_ID:client_ID || "",
     });
 
     const [disabled , setDisabled] = useState(true);
@@ -40,11 +41,24 @@ const AddressSelect: FC<TState> = ({id , oblast , city , raion , sName}) => {
 
       const onChange = (event: any) => {
         const { name, value } = event.target;
-        setStreet((prevFormData) => ({
-          ...prevFormData,
-          [name]: value,
-        }));
-      
+        if (name === 'id') {
+          const selectedStreet = data.sprStreets.find((street: TState) => street.id === parseInt(value));
+          if (selectedStreet) {
+            setStreet((prevFormData) => ({
+              ...prevFormData,
+              id: selectedStreet.id,
+              oblast: selectedStreet.oblast,
+              city: selectedStreet.city,
+              raion: selectedStreet.raion,
+              sName: selectedStreet.sName,
+            }));
+          }
+        } else {
+          setStreet((prevFormData) => ({
+            ...prevFormData,
+            [name]: value,
+          }));
+        }
         selectedStreetVar(Math.floor(parseFloat(value || "")));
       };
     

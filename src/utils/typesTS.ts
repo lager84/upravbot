@@ -67,6 +67,7 @@ export type sprStreet = {
   city:string,
   sName:string,
   raion?:string
+  client_ID:string
 
 }
         

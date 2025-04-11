@@ -1,32 +1,34 @@
 import InputComponent from "../../components/imput-component/InputComponent";
-import { FC, useEffect, useState } from "react";
+import { FC,  useState } from "react";
 import { useMutation } from "@apollo/client";
-import { TsprProject } from "../../utils/typesTS";
+import { sprStreet } from "../../utils/typesTS";
 import Loader from "../../components/loader/Loader";
 import { useLocation, useNavigate } from "react-router-dom";
 import accountStore from "../../services/accountsStore";
-import { URL_PROJECTS } from "../../utils/routes";
-import { CREATE_PROJECT, GET_PROJECT } from "../../apollo/QLProjects";
+import { CREATE_STREET, GET_STREETS } from "../../apollo/QLObjects";
 
 
-type TState = TsprProject;
+type TState = sprStreet;
 
-const CreateProject: FC = () => {
+const CreateStreet: FC = () => {
   const navigate = useNavigate();
 
 
 
   var userInfo = accountStore((state) => state);
 
-  const [infoProject, setInfoProject] = useState<TState>({
+  const [infoStreet, setInfoStreet] = useState<TState>({
     id: 1,
-    projectName: "",
-    client_id: "",
+    oblast: "",
+    city: "",
+    raion: "",
+    sName: "",
+    client_ID : ""
   });
 
   const onChange = (event: any) => {
     const { name, value } = event.target;
-    setInfoProject((prevFormData) => ({
+    setInfoStreet((prevFormData) => ({
       ...prevFormData,
       [name]: value,
     }));
@@ -35,21 +37,24 @@ const CreateProject: FC = () => {
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
-    const { id, projectName, client_id } = infoProject;
+    const {  oblast, city, raion, sName } = infoStreet;
 
     // Execute the mutation
-    createProject({
+    createStreet({
       variables: {
-        projectName,
+        oblast, 
+        city, 
+        raion, 
+        sName,
         client_ID: userInfo.userID,
       },
       awaitRefetchQueries: true,
-      refetchQueries: [GET_PROJECT, "SprGilFindProjects"],
+      refetchQueries: [GET_STREETS, "SprStreets"],
     });
   };
 
-  const [createProject, { data, loading, error }] = useMutation(
-    CREATE_PROJECT,
+  const [createStreet, { data, loading, error }] = useMutation(
+    CREATE_STREET,
     {
       onCompleted: () => {
      
@@ -73,19 +78,65 @@ const CreateProject: FC = () => {
             onSubmit={handleSubmit}
           >
             <div className="flexHoriz w-100">
-              <h2 className="font24b textBlack">Создание Проекта</h2>
+              <h2 className="font24b textBlack">Создание Улицы</h2>
             </div>
 
-            <InputComponent
-              type="text"
-              onChange={onChange}
-              value={infoProject.projectName}
-              children="Проекты*"
-              name="projectName"
-              classCss="project"
-              id_name="PROJECT"
-              required={true}
-            />
+            <div style={{flexDirection:"column" , width:"100%"}}>
+<InputComponent
+      type="text"
+      onChange={onChange}
+      value={infoStreet.oblast}
+      children="Область *"
+      name="oblast"
+      classCss="Oblast"
+      id_name="oblast"
+      maxLength={200}
+      required={true}
+    />
+ 
+
+     <InputComponent
+      type="text"
+      onChange={onChange}
+      value={infoStreet.city}
+      children="Город *"
+      name="city"
+      classCss= "City"  
+      id_name="city"
+      maxLength={200}
+      required={true}
+      
+    />
+
+<InputComponent
+      type="text"
+       onChange={onChange}
+       value={infoStreet.raion}
+       children="Район"
+       name="raion"
+       classCss="Raion"  
+       id_name="raion"
+       maxLength={200}
+   
+     />
+
+    <InputComponent
+      type="text"
+      onChange={onChange}
+      value={infoStreet.sName}
+      children="Улица *"
+      name="sName"
+      classCss= "Street"  
+      id_name="sName"
+      maxLength={200}
+      required={true}
+      
+    />
+ 
+   
+  
+ 
+     </div>
 
             <div className="row mt-3 mb-3">
               <div className="col-sm-12">
@@ -109,4 +160,4 @@ const CreateProject: FC = () => {
   );
 };
 
-export default CreateProject;
+export default CreateStreet;

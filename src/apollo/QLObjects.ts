@@ -89,3 +89,17 @@ export const GET_STREETS = gql`
   }
 }
 `;
+
+export const CREATE_STREET = gql`
+mutation AddStreet( $oblast:String,$raion:String, $city:String ,$sName:String!,$client_ID: String!){
+  addStreet(oblast:$oblast, raion:$raion, city:$city, sName:$sName , client_ID:$client_ID)
+  {
+    oblast,
+    city,
+    raion,
+    sName,
+    id,
+    client_ID
+  }
+}
+`;

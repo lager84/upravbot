@@ -5,7 +5,7 @@ import { TsprObject } from "../../utils/typesTS";
 import Loader from "../../components/loader/Loader";
 import { UPDATE_OBJECT } from "../../apollo/QLObjects";
 import { READ_OBJECT_ITEM} from "../../apollo/QLObjects";
-import { useNavigate, useParams } from "react-router-dom"
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import imgBin from "../../img/ic-bin.svg";
 import {
   AutoComplete,
@@ -20,6 +20,8 @@ import { selectedOUVar } from "../../apollo/client";
 import { selectedStreetVar } from "../../apollo/client";
 import UOSelect from "../../components/UO-select/UOSelect";
 import AddressSelect from "../../components/address-select/AddressSelect";
+import plus from "../../img/ic-plus.svg";
+
 
 
 
@@ -32,7 +34,7 @@ const EditObject: FC = () => {
   const selectedProjectId = useReactiveVar(selectedProjectIdVar);
   const selectedOUVarId = useReactiveVar(selectedOUVar);
   const selectedStreetVarId = useReactiveVar(selectedStreetVar);
-  
+  const location = useLocation();
 
     const [visible, setVisible] = useState<boolean>(false);
 
@@ -178,7 +180,7 @@ const EditObject: FC = () => {
             onSubmit={handleSubmit}
           >
             <div className="flexHoriz w-100">
-              <h2 className="font24b textBlack">{infoObject.name}</h2>
+              <h2 className="font24b textBlack">Добавить объект</h2>
 
 
               <button id="DeleteUO" type="button" onClick={() => setVisible(true)} className="transp border-0 ml-auto">
@@ -194,12 +196,22 @@ const EditObject: FC = () => {
             </div>
             <div className="flexHoriz justify-content-between mt-3">
               <UOSelect cardId={data?.gilFindObjects?.balanceCompanyId}/>
+              <Link to="/registerUO/createOrg" title="Добавить УК" className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"  >         
+                       <img src={plus} className="w16 reddishSvg" alt=""></img>
+                     </Link>
+
             </div>
             <div className="flexHoriz justify-content-between mt-3">
              <ProjectsSelect  cardId={data?.gilFindObjects?.gilFindProjectId} />
+             <Link to="/projects/createProject" title="Добавить проект" className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"  >         
+                       <img src={plus} className="w16 reddishSvg" alt=""></img>
+                     </Link>
             </div>
             <div className="flexHoriz justify-content-between mt-3">
-            <AddressSelect id={data?.gilFindObjects?.sprStreetId} city={data.gilFindObjects.sprStreet.city} oblast={data.gilFindObjects.sprStreet.oblast} raion={data.gilFindObjects.sprStreet.raion} sName={data.gilFindObjects.sprStreet.sName} />
+            <AddressSelect id={data?.gilFindObjects?.sprStreetId} city={data.gilFindObjects.sprStreet.city} oblast={data.gilFindObjects.sprStreet.oblast} raion={data.gilFindObjects.sprStreet.raion} sName={data.gilFindObjects.sprStreet.sName} client_ID="" />
+            <Link to="/objects/editObject/createStreet" title="Добавить улицу" style={{marginTop:"212px"}} state={{ location: location }} className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"  >         
+                       <img src={plus} className="w16 reddishSvg" alt=""></img>
+                     </Link>
             </div>
 
               

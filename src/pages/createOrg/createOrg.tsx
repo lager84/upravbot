@@ -130,7 +130,7 @@ const CreateOrg: FC = () => {
     { data, loading, error },
   ] = useMutation(CREATE_UO, {
     onCompleted: () => {
-      navigate("/registerUO");
+      navigate(-1);
     },
   });
 
@@ -331,7 +331,7 @@ const CreateOrg: FC = () => {
                 <button className="btn btn1 h56 mr-2" type="submit">
                   <strong>Сохранить</strong>
                 </button>
-                <button onClick={() => navigate(`${URL_REGISTER_UO}`)} type="button" className="btn btn1 h56 outline shadow-none flexCenter" id="backUo">Назад</button>
+                <button onClick={() => navigate(-1)} type="button" className="btn btn1 h56 outline shadow-none flexCenter" id="backUo">Назад</button>
               </div>
             </div>
           </form>

@@ -3,16 +3,18 @@ import Loader from "../loader/Loader";
 import AppHeader from "../app-header/AppHeader";
 import '../../css/bootstrap.min.css';
 import '../../css/style.css';
-import { Routes, Route, useLocation} from "react-router-dom";
-import { URL_ROOT, URL_ADMINISTRATOR, URL_ANY, URL_MANAGER , URL_REGISTER_UO , URL_EDIT_ORG , URL_CREATE_ORG, URL_PROJECTS, URL_CREATE_PROJECT , URL_OBJECTS , URL_EDIT_OBJECT } from "../../utils/routes";
-import {MainPage , AdministratorPage, NotFound404 , ManagerPage , RegisterUOPage, CreateOrgPage ,EditOrgPage, ProjectsPage, CreateProjectPage, ObjectsPage , EditObjectPage }from "../../pages";
+import { Routes, Route, useLocation, useNavigate} from "react-router-dom";
+import { URL_ROOT, URL_ADMINISTRATOR, URL_ANY, URL_MANAGER , URL_REGISTER_UO , URL_EDIT_ORG , URL_CREATE_ORG, URL_PROJECTS, URL_CREATE_PROJECT , URL_OBJECTS , URL_EDIT_OBJECT , URL_CREATE_STREET } from "../../utils/routes";
+import {MainPage , AdministratorPage, NotFound404 , ManagerPage , RegisterUOPage, CreateOrgPage ,EditOrgPage, ProjectsPage, CreateProjectPage, ObjectsPage , EditObjectPage, CreateStreetPage } from "../../pages";
 import ProtectedRoute from "../protected-route"
 import { withAuthenticationRequired } from "react-oidc-context";
 import UserInfo from "../user-info/UserInfo";
 import LeftMenu from "../left-menu/LeftMenu";
 import accountStore from '../../services/accountsStore'
-import {  useMemo, useState } from 'react';
+import {  useEffect, useMemo, useState } from 'react';
 import { PrimeReactProvider } from 'primereact/api';
+import { Dialog } from "primereact/dialog";
+import CreateStreet from "../../pages/createStreet/createStreet";
 // import { Dialog } from 'primereact/dialog';
 // import CreateProject from "../../pages/createProject/createProject";
 // import 'primereact/resources/themes/lara-light-blue/theme.css'
@@ -20,13 +22,20 @@ import { PrimeReactProvider } from 'primereact/api';
 
 
 const App = () => {
-  //  const location = useLocation();
+    const location = useLocation();
 
-  //  const stateLocation = location.state && location.state.location;
+   const stateLocation = location.state && location.state.location;
 
   const auth = useAuth();
 
   const [visible, setVisible] = useState(true);
+   const navigate = useNavigate();
+
+   useEffect(() => {
+    if (stateLocation) {
+      setVisible(true);
+    }
+  }, [stateLocation]);
 
 
   useMemo(() => {
@@ -73,8 +82,8 @@ const App = () => {
       <div className="col-lg-9half col-sm-12 p-0 min-vh-100 bgWhite  ">
       <span className="h90"></span>
       <div className="row w-100 m-0 min-vh-100">
-        {/* <Routes location={stateLocation || location}> */}
-        <Routes>
+        <Routes location={stateLocation || location}>
+       
           <Route path={URL_ROOT} element={<ProtectedRoute startPage = {true} element= {<MainPage />} />} />
           <Route path={URL_ANY} element={<NotFound404 />} />
           <Route path={URL_ADMINISTRATOR} element={<ProtectedRoute administrator={true} element={<AdministratorPage />} />} />
@@ -85,18 +94,20 @@ const App = () => {
           <Route path={`${URL_PROJECTS}/${URL_CREATE_PROJECT}`} element={<ProtectedRoute administrator={true} element={<CreateProjectPage />} />} />
           <Route path={URL_OBJECTS} element={<ProtectedRoute administrator={true} element={<ObjectsPage />} />} />
           <Route path={`${URL_OBJECTS}/${URL_EDIT_OBJECT}/:id`} element={<ProtectedRoute administrator={true} element={<EditObjectPage />} />} />
+          <Route path={`${URL_OBJECTS}/${URL_EDIT_OBJECT}/${URL_CREATE_STREET}`} element={<ProtectedRoute administrator={true} element={<CreateStreetPage />} />} />
           <Route path={URL_MANAGER} element={<ProtectedRoute manager={true}  element={<ManagerPage />} />} />
+          
         </Routes>
-        {/* {stateLocation &&
+        {stateLocation &&
                     <Routes>
-                        <Route path={`${URL_PROJECTS}/${URL_CREATE_PROJECT}`} element={
-                              <Dialog visible={visible} style={{ width: '50vw'}}  dismissableMask={true} onHide={() => {if (!stateLocation) return; setVisible(false); }}>
-                              <CreateProject/>
+                        <Route path={`${URL_OBJECTS}/${URL_EDIT_OBJECT}/${URL_CREATE_STREET}`} element={
+                              <Dialog visible={visible} style={{ width: '50vw'}}  dismissableMask={true} onHide={() => {if (!stateLocation) return;  setVisible(false); navigate(-1) ; }}>
+                              <CreateStreet/>
                            </Dialog>}
                              />
                        
                     </Routes>
-        } */}
+        }
         </div>
       </div>
       </div>

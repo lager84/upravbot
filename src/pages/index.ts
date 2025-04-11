@@ -10,6 +10,7 @@ import ProjectsPage from "./projects/projects"
 import CreateProjectPage from "./createProject/createProject"
 import ObjectsPage from "./objects/objects"
 import EditObjectPage from "./editObject/editObject"
+import CreateStreetPage from "./createStreet/createStreet"
 
 
 export {
@@ -24,7 +25,8 @@ export {
   ProjectsPage,
   CreateProjectPage,
   ObjectsPage,
-  EditObjectPage
+  EditObjectPage,
+  CreateStreetPage
 
 
 };
