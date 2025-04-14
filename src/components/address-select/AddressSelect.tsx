@@ -7,19 +7,25 @@ import { GET_STREETS } from "../../apollo/QLObjects";
 import {selectedStreetVar } from "../../apollo/client";
 import InputComponent from "../imput-component/InputComponent";
 import { Column } from "primereact/column";
+import saveImg from "../../img/ic_terms.png"
+import { Link, useLocation } from "react-router-dom";
+import plus from "../../img/ic-plus.svg";
 
 
 
-type TState = sprStreet;
+type TState = sprStreet ;
+
 
 
 
 const AddressSelect: FC<TState> = ({id , oblast , city , raion , sName}) => {
 
- 
+
 
     var userInfo = accountStore((state) => state);
     const client_ID = userInfo.userID;
+    const location = useLocation();
+
     const [street , setStreet] = useState<TState>({
       id: id,
       oblast:oblast,
@@ -27,7 +33,9 @@ const AddressSelect: FC<TState> = ({id , oblast , city , raion , sName}) => {
       sName:sName,
       raion:raion,
       client_ID:client_ID || "",
+
     });
+
 
     const [disabled , setDisabled] = useState(true);
 
@@ -80,9 +88,9 @@ console.log(street)
       onChange={onChange}
       value={street.oblast}
       children="Область *"
-      name="Oblast"
+      name="oblast"
       classCss={disabled ? "Oblast bgLightGrey" : "Oblast"  }
-      id_name="Oblast"
+      id_name="oblast"
       maxLength={200}
       disabled={disabled}
     />
@@ -93,9 +101,9 @@ console.log(street)
       onChange={onChange}
       value={street.city}
       children="Город *"
-      name="City"
+      name="city"
       classCss={disabled ? "City bgLightGrey" : "City"  }
-      id_name="City"
+      id_name="city"
       maxLength={200}
       disabled={disabled}
       
@@ -108,13 +116,18 @@ console.log(street)
        onChange={onChange}
        value={street.raion}
        children="Район"
-       name="Raion"
+       name="raion"
        classCss={disabled ? "Raion bgLightGrey" : "Raion"  }
-       id_name="Raion"
+       id_name="raion"
        maxLength={200}
        disabled={disabled}
      />
-   
+
+
+      
+ 
+   {disabled ?
+   <div className="flexHoriz justify-content-between">
         <div className="posRel flex-grow-1 mr-3">
                 <label className="transp backLab">Улица *</label>
                 <select
@@ -127,9 +140,42 @@ console.log(street)
                   {data && data.sprStreets.map((ditail:TState)=>(<option key={ditail.id} value={ditail.id}>{ditail.sName}</option>))}
                   
                 </select>
-
+               
               </div>
-              
+              <div>
+              <Link to="/objects/editObject/createStreet" title="Добавить улицу" style={{marginRight:"10px"}}  state={{ location: location }} className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"  >         
+              <img src={plus} className="w16 reddishSvg" alt=""></img>
+            </Link>
+          <button  title="Редактировать улицу"  onClick={()=>setDisabled(false)}  type="button" className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"  >         
+              <img src="/static/media/tasks-ic-bl.3e35cee28294ee173b3c7a76f6cf3529.svg" className="w16  reddishSvg" alt=""></img>
+          </button>   
+            
+          </div>   
+          
+        </div>
+              :
+              <div style={{gap:"10px"}}  className="flexHoriz justify-content-between">
+
+              <InputComponent
+      type="text"
+       onChange={onChange}
+       value={street.sName}
+       children="Улица"
+       name="sName"
+       classCss={"Raion"}
+       id_name="sName"
+       maxLength={200}
+     
+     />
+
+
+     <button  title="Редактировать улицу"   type="button" className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"  >         
+     <img src={saveImg} className="w16  reddishSvg" alt=""></img>
+</button>
+
+</div>
+
+              }
               </div>
 
               

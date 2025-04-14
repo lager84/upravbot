@@ -25,6 +25,9 @@ import plus from "../../img/ic-plus.svg";
 
 
 
+
+
+
 type TState = TsprObject;
 
 
@@ -34,7 +37,7 @@ const EditObject: FC = () => {
   const selectedProjectId = useReactiveVar(selectedProjectIdVar);
   const selectedOUVarId = useReactiveVar(selectedOUVar);
   const selectedStreetVarId = useReactiveVar(selectedStreetVar);
-  const location = useLocation();
+  
 
     const [visible, setVisible] = useState<boolean>(false);
 
@@ -43,6 +46,15 @@ const EditObject: FC = () => {
      
   // }
   
+  const visibleFunc = () => {
+  
+      setVisible(true);
+    
+  }
+
+  const closeModalDetail = () => {
+    navigate(-1);
+  }
   
   var userInfo = accountStore((state) => state);
   const client_ID = userInfo.userID;
@@ -208,10 +220,7 @@ const EditObject: FC = () => {
                      </Link>
             </div>
             <div className="flexHoriz justify-content-between mt-3">
-            <AddressSelect id={data?.gilFindObjects?.sprStreetId} city={data.gilFindObjects.sprStreet.city} oblast={data.gilFindObjects.sprStreet.oblast} raion={data.gilFindObjects.sprStreet.raion} sName={data.gilFindObjects.sprStreet.sName} client_ID="" />
-            <Link to="/objects/editObject/createStreet" title="Добавить улицу" style={{marginTop:"212px"}} state={{ location: location }} className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"  >         
-                       <img src={plus} className="w16 reddishSvg" alt=""></img>
-                     </Link>
+            <AddressSelect  id={data?.gilFindObjects?.sprStreetId} city={data.gilFindObjects.sprStreet.city} oblast={data.gilFindObjects.sprStreet.oblast} raion={data.gilFindObjects.sprStreet.raion} sName={data.gilFindObjects.sprStreet.sName} client_ID="" />
             </div>
 
               

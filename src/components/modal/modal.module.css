@@ -1,16 +1,21 @@
 .modalOrder {
-    display: flex;
-    flex-direction: column;
-    border-radius: 40px;
-    background: #1f1f24;
-    z-index: 1;
     position: absolute;
+   
+    margin: auto;
+
+    border: 1px solid #888;
+  
+    border-radius: 16px;
     overflow: hidden;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 720px;
-    transition: all 0.3s;
+    background: #fff !important;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+    padding: 1.5rem !important;
+    width: 75% !important;
+   
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+    z-index: 10002;
+  
 }
 
 .div_closeButton {
@@ -47,4 +52,5 @@
 .ingredient_title {
     max-width: 520px;
     margin-top: 40px;
+   
 }

@@ -4,7 +4,7 @@ import AppHeader from "../app-header/AppHeader";
 import '../../css/bootstrap.min.css';
 import '../../css/style.css';
 import { Routes, Route, useLocation, useNavigate} from "react-router-dom";
-import { URL_ROOT, URL_ADMINISTRATOR, URL_ANY, URL_MANAGER , URL_REGISTER_UO , URL_EDIT_ORG , URL_CREATE_ORG, URL_PROJECTS, URL_CREATE_PROJECT , URL_OBJECTS , URL_EDIT_OBJECT , URL_CREATE_STREET } from "../../utils/routes";
+import { URL_ROOT, URL_ADMINISTRATOR, URL_ANY, URL_MANAGER , URL_REGISTER_UO , URL_EDIT_ORG , URL_CREATE_ORG, URL_PROJECTS, URL_CREATE_PROJECT , URL_OBJECTS , URL_EDIT_OBJECT , URL_CREATE_STREET  } from "../../utils/routes";
 import {MainPage , AdministratorPage, NotFound404 , ManagerPage , RegisterUOPage, CreateOrgPage ,EditOrgPage, ProjectsPage, CreateProjectPage, ObjectsPage , EditObjectPage, CreateStreetPage } from "../../pages";
 import ProtectedRoute from "../protected-route"
 import { withAuthenticationRequired } from "react-oidc-context";
@@ -13,11 +13,9 @@ import LeftMenu from "../left-menu/LeftMenu";
 import accountStore from '../../services/accountsStore'
 import {  useEffect, useMemo, useState } from 'react';
 import { PrimeReactProvider } from 'primereact/api';
-import { Dialog } from "primereact/dialog";
 import CreateStreet from "../../pages/createStreet/createStreet";
-// import { Dialog } from 'primereact/dialog';
-// import CreateProject from "../../pages/createProject/createProject";
-// import 'primereact/resources/themes/lara-light-blue/theme.css'
+import Modal from "../modal/Modal";
+
 
 
 
@@ -26,16 +24,18 @@ const App = () => {
 
    const stateLocation = location.state && location.state.location;
 
+ 
+
   const auth = useAuth();
 
-  const [visible, setVisible] = useState(true);
+
    const navigate = useNavigate();
 
-   useEffect(() => {
-    if (stateLocation) {
-      setVisible(true);
-    }
-  }, [stateLocation]);
+   const closeModalDetail = () => {
+    navigate(-1);
+  }
+
+  
 
 
   useMemo(() => {
@@ -101,9 +101,9 @@ const App = () => {
         {stateLocation &&
                     <Routes>
                         <Route path={`${URL_OBJECTS}/${URL_EDIT_OBJECT}/${URL_CREATE_STREET}`} element={
-                              <Dialog visible={visible} style={{ width: '50vw'}}  dismissableMask={true} onHide={() => {if (!stateLocation) return;  setVisible(false); navigate(-1) ; }}>
+                              <Modal btnClose={closeModalDetail}>
                               <CreateStreet/>
-                           </Dialog>}
+                           </Modal>}
                              />
                        
                     </Routes>

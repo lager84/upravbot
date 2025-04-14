@@ -13,6 +13,7 @@ import EditObjectPage from "./editObject/editObject"
 import CreateStreetPage from "./createStreet/createStreet"
 
 
+
 export {
   MainPage,
   AdministratorPage,
@@ -26,7 +27,8 @@ export {
   CreateProjectPage,
   ObjectsPage,
   EditObjectPage,
-  CreateStreetPage
+  CreateStreetPage,
+
 
 
 };
