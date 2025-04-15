@@ -11,6 +11,7 @@ import CreateProjectPage from "./createProject/createProject"
 import ObjectsPage from "./objects/objects"
 import EditObjectPage from "./editObject/editObject"
 import CreateStreetPage from "./createStreet/createStreet"
+import CreateObjectPage from "./createObject/createObject"
 
 
 
@@ -28,6 +29,7 @@ export {
   ObjectsPage,
   EditObjectPage,
   CreateStreetPage,
+  CreateObjectPage
 
 
 

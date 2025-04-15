@@ -22,7 +22,7 @@ const ProjectsSelect: FC<TProp> = ({cardId}) => {
     const client_ID = userInfo.userID;
     const [projects , setProjects] = useState<TState>({
       id: cardId,
-      projectName: "",
+      projectName: "Выберите проект *",
       client_id:""
     });
 
@@ -63,6 +63,7 @@ console.log(projects)
                   onChange={onChange}
                   className="pt-3 select2-hidden-accessible"
                 >
+                  {cardId==-1 &&  <option value={cardId}>{projects.projectName}</option>}
                   {data && data.sprGilFindProjects.map((ditail:TState)=>(<option key={ditail.id} value={ditail.id}>{ditail.projectName}</option>))}
                   
                 </select>

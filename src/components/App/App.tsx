@@ -4,8 +4,8 @@ import AppHeader from "../app-header/AppHeader";
 import '../../css/bootstrap.min.css';
 import '../../css/style.css';
 import { Routes, Route, useLocation, useNavigate} from "react-router-dom";
-import { URL_ROOT, URL_ADMINISTRATOR, URL_ANY, URL_MANAGER , URL_REGISTER_UO , URL_EDIT_ORG , URL_CREATE_ORG, URL_PROJECTS, URL_CREATE_PROJECT , URL_OBJECTS , URL_EDIT_OBJECT , URL_CREATE_STREET  } from "../../utils/routes";
-import {MainPage , AdministratorPage, NotFound404 , ManagerPage , RegisterUOPage, CreateOrgPage ,EditOrgPage, ProjectsPage, CreateProjectPage, ObjectsPage , EditObjectPage, CreateStreetPage } from "../../pages";
+import { URL_ROOT, URL_ADMINISTRATOR, URL_ANY, URL_MANAGER , URL_REGISTER_UO , URL_EDIT_ORG , URL_CREATE_ORG, URL_PROJECTS, URL_CREATE_PROJECT , URL_OBJECTS , URL_EDIT_OBJECT , URL_CREATE_STREET , URL_CREATE_OBJECT  } from "../../utils/routes";
+import {MainPage , AdministratorPage, NotFound404 , ManagerPage , RegisterUOPage, CreateOrgPage ,EditOrgPage, ProjectsPage, CreateProjectPage, ObjectsPage , EditObjectPage, CreateStreetPage , CreateObjectPage } from "../../pages";
 import ProtectedRoute from "../protected-route"
 import { withAuthenticationRequired } from "react-oidc-context";
 import UserInfo from "../user-info/UserInfo";
@@ -94,6 +94,7 @@ const App = () => {
           <Route path={`${URL_PROJECTS}/${URL_CREATE_PROJECT}`} element={<ProtectedRoute administrator={true} element={<CreateProjectPage />} />} />
           <Route path={URL_OBJECTS} element={<ProtectedRoute administrator={true} element={<ObjectsPage />} />} />
           <Route path={`${URL_OBJECTS}/${URL_EDIT_OBJECT}/:id`} element={<ProtectedRoute administrator={true} element={<EditObjectPage />} />} />
+          <Route path={`${URL_OBJECTS}/${URL_CREATE_OBJECT}`} element={<ProtectedRoute administrator={true} element={<CreateObjectPage />} />} />
           <Route path={`${URL_OBJECTS}/${URL_EDIT_OBJECT}/${URL_CREATE_STREET}`} element={<ProtectedRoute administrator={true} element={<CreateStreetPage />} />} />
           <Route path={URL_MANAGER} element={<ProtectedRoute manager={true}  element={<ManagerPage />} />} />
           

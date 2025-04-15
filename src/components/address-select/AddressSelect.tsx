@@ -1,12 +1,11 @@
 import { FC,   useEffect,   useState } from "react";
 import { sprStreet} from "../../utils/typesTS";
 import accountStore from "../../services/accountsStore";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import Loader from "../loader/Loader";
-import { GET_STREETS } from "../../apollo/QLObjects";
+import { GET_STREETS , EDIT_STREET} from "../../apollo/QLObjects";
 import {selectedStreetVar } from "../../apollo/client";
 import InputComponent from "../imput-component/InputComponent";
-import { Column } from "primereact/column";
 import saveImg from "../../img/ic_terms.png"
 import { Link, useLocation } from "react-router-dom";
 import plus from "../../img/ic-plus.svg";
@@ -43,6 +42,44 @@ const AddressSelect: FC<TState> = ({id , oblast , city , raion , sName}) => {
         variables: { client_ID },
       });
 
+      const [
+          updateStreet,
+          { data: data_upd_Street, loading: loading_upd_Street, error: error_upd_Street },
+        ] = useMutation(EDIT_STREET, {
+          onCompleted: () => {
+           setDisabled(true);
+           selectedStreetVar(id)
+          },
+        });
+
+        const handleStreetSubmit = (event: any) => {
+          event.preventDefault();
+      
+          const {
+            id,
+            oblast,
+            city,
+            sName,
+            raion,
+            client_ID
+      
+          } = street;
+        
+          // Execute the mutation
+          updateStreet({
+            variables: {
+             id, 
+             oblast,
+            city,
+            sName,
+            raion,
+            client_ID
+              
+            },
+          });
+        }
+        
+
       useEffect(() => {
         selectedStreetVar(id);
     }, [selectedStreetVar]);
@@ -70,15 +107,12 @@ const AddressSelect: FC<TState> = ({id , oblast , city , raion , sName}) => {
         selectedStreetVar(Math.floor(parseFloat(value || "")));
       };
     
-      if (loading)
-        return (
-          <>
-            <Loader />
-          </>
-        );
-    
-      if (error) return <>`Submission error! ${error.message}`</>;
-console.log(street)
+      
+  if (loading) return <Loader />;
+  if (error) return <div>${error.message}</div>;
+  if (loading_upd_Street) return <Loader />;
+  if (error_upd_Street) return <div>${error_upd_Street.message}</div>;
+
     return (
       
  
@@ -137,6 +171,7 @@ console.log(street)
                   onChange={onChange}
                   className="pt-3 select2-hidden-accessible"
                 >
+                  {id==-1 &&  <option value={id}>{sName}</option>}
                   {data && data.sprStreets.map((ditail:TState)=>(<option key={ditail.id} value={ditail.id}>{ditail.sName}</option>))}
                   
                 </select>
@@ -169,7 +204,7 @@ console.log(street)
      />
 
 
-     <button  title="Редактировать улицу"   type="button" className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"  >         
+     <button  title="Редактировать улицу"   type="button" onClick={handleStreetSubmit} className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"  >         
      <img src={saveImg} className="w16  reddishSvg" alt=""></img>
 </button>
 

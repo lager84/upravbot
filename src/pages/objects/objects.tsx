@@ -18,7 +18,7 @@ import { Button } from "primereact/button";
 import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
 import { InputText } from 'primereact/inputtext';
-import { URL_EDIT_OBJECT } from "../../utils/routes";
+import { URL_CREATE_OBJECT, URL_EDIT_OBJECT } from "../../utils/routes";
 //import "primereact/resources/themes/lara-light-blue/theme.css"
 
 
@@ -136,7 +136,7 @@ const renderHeader = () => {
       <div id="TableTools" className="flexHoriz w-100 m-0 p-4 ml-4">
 
         <button
-          // onClick={() => navigate(`${URL_CREATE_PROJECT}`)}
+           onClick={() => navigate(`${URL_CREATE_OBJECT}`)}
           title="Добавить объект"
           className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"
         >

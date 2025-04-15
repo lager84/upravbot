@@ -27,9 +27,11 @@ const UOSelect: FC<TProp> = ({cardId}) => {
 
     var userInfo = accountStore((state) => state);
     const client_ID = userInfo.userID;
+
+  
     const [UO , setUO] = useState<TState>({
       id: cardId,
-     name: "",
+     name: "Выберите УК *",
     });
 
      const { data, loading, error ,refetch } = useQuery(GET_UO_ORG_LIGHT, {
@@ -46,6 +48,8 @@ const UOSelect: FC<TProp> = ({cardId}) => {
           ...prevFormData,
           [name]: value,
         }));
+
+       
       
         selectedOUVar(Math.floor(parseFloat(value || "")));
       };
@@ -67,12 +71,16 @@ console.log(UO)
                   name="id"
                   title="Управляющая организация"
                   value={UO.id}                 
-                  onChange={onChange}
-                  className="pt-3 select2-hidden-accessible"
+                  onChange={onChange}          
+                  className="pt-3 select2-hidden-accessible" 
+                  required
+                
                 >
-                  {data && data.balanceCompany.map((ditail:TState)=>(<option key={ditail.id}  value={ditail.id}>{ditail.name}</option>))}
+                {cardId==-1 &&  <option value={cardId}>{UO.name}</option>}
+                  {data && data.balanceCompany.map((ditail:TState)=>(<option key={ditail.id}   value={ditail.id}>{ditail.name}</option>))}
                   
                 </select>
+              
               </div>
             );
 };

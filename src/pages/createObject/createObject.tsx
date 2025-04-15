@@ -3,7 +3,7 @@ import { FC, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { TsprObject } from "../../utils/typesTS";
 import Loader from "../../components/loader/Loader";
-import { UPDATE_OBJECT } from "../../apollo/QLObjects";
+import { CREATE_OBJECT } from "../../apollo/QLObjects";
 import { READ_OBJECT_ITEM} from "../../apollo/QLObjects";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import imgBin from "../../img/ic-bin.svg";
@@ -31,7 +31,7 @@ import plus from "../../img/ic-plus.svg";
 type TState = TsprObject;
 
 
-const EditObject: FC = () => {
+const CreateObject: FC = () => {
   const navigate = useNavigate();
 
   const selectedProjectId = useReactiveVar(selectedProjectIdVar);
@@ -50,7 +50,7 @@ const EditObject: FC = () => {
   
   var userInfo = accountStore((state) => state);
   const client_ID = userInfo.userID;
-  let { id } = useParams();
+  // let { id } = useParams();
 
   
   // const [deleteUO, { loading: loadingDUO, error: errorDUO, data: dataDUO }] =
@@ -71,17 +71,17 @@ const EditObject: FC = () => {
 
 
   const [infoObject, setInfoObject] = useState<TState>({
-   id:1,
+   id:-1,
    city:"",
-   balanceCompanyId:1,
+   balanceCompanyId:-1,
    client_ID:userInfo.userID || "",
-   gilFindProjectId:1,
+   gilFindProjectId:-1,
    houseNumber:"",
    name:"",
    oblast:"",
    projectName:"",
    sName:"",
-   sprStreetId:1,
+   sprStreetId:-1,
    raion:""
   
   });
@@ -112,11 +112,15 @@ const EditObject: FC = () => {
      raion
 
     } = infoObject;
+
+    if (selectedOUVarId === -1 || selectedProjectId === -1 || selectedStreetVarId === -1 ) {
+      alert('Пожалуйста, выберите все необходимые поля');
+      return;
+    }
   
     // Execute the mutation
-    updateObject({
-      variables: {
-       id:Math.floor(parseFloat(id || "")) , 
+    createObject({
+      variables: { 
        balanceCompanyId:selectedOUVarId, 
        gilFindProjectId:selectedProjectId, 
        sprStreetId:selectedStreetVarId,
@@ -128,48 +132,48 @@ const EditObject: FC = () => {
   }
   
 
-  const { data, loading, error } = useQuery(READ_OBJECT_ITEM, {
-    variables: { id },
-  });
+  // const { data, loading, error } = useQuery(READ_OBJECT_ITEM, {
+  //   variables: { id },
+  // });
 
   const [
-    updateObject,
+    createObject,
     { data: data_upd_Object, loading: loading_upd_Object, error: error_upd_Object },
-  ] = useMutation(UPDATE_OBJECT, {
+  ] = useMutation(CREATE_OBJECT, {
     onCompleted: () => {
       navigate("/objects");
     },
   });
 
-  useEffect(() => {
-    if (data) {
-      setInfoObject({
-        id:data.id,
-        city:data.gilFindObjects.sprStreet.city,
-        balanceCompanyId:data.gilFindObjects.balanceCompanyId,
-        client_ID:userInfo.userID || "",
-        gilFindProjectId:data.gilFindObjects.gilFindProjectId,
-        houseNumber:data.gilFindObjects.houseNumber,
-        oblast:data.gilFindObjects.sprStreet.oblast,
-        sName:data.gilFindObjects.sprStreet.sName,
-        projectName:data.gilFindObjects.gilFindProject.projectName,
-        sprStreetId:data.gilFindObjects.sprStreetId,
-        name:data.gilFindObjects.balanceCompany.name,
-        raion:data.gilFindObjects.sprStreet.raion,
+  // useEffect(() => {
+  //   if (data) {
+  //     setInfoObject({
+  //       id:data.id,
+  //       city:data.gilFindObjects.sprStreet.city,
+  //       balanceCompanyId:data.gilFindObjects.balanceCompanyId,
+  //       client_ID:userInfo.userID || "",
+  //       gilFindProjectId:data.gilFindObjects.gilFindProjectId,
+  //       houseNumber:data.gilFindObjects.houseNumber,
+  //       oblast:data.gilFindObjects.sprStreet.oblast,
+  //       sName:data.gilFindObjects.sprStreet.sName,
+  //       projectName:data.gilFindObjects.gilFindProject.projectName,
+  //       sprStreetId:data.gilFindObjects.sprStreetId,
+  //       name:data.gilFindObjects.balanceCompany.name,
+  //       raion:data.gilFindObjects.sprStreet.raion,
 
         
-      });
+  //     });
       
-   }
+  //  }
    
-  }, [data]);
+  // }, [data]);
 
 
 
   
 
-  if (loading) return <Loader />;
-  if (error) return <div>${error.message}</div>;
+  // if (loading) return <Loader />;
+  // if (error) return <div>${error.message}</div>;
   if (loading_upd_Object) return <Loader />;
   if (error_upd_Object) return <div>${error_upd_Object.message}</div>;
  
@@ -183,7 +187,7 @@ const EditObject: FC = () => {
             onSubmit={handleSubmit}
           >
             <div className="flexHoriz w-100">
-              <h2 className="font24b textBlack">Редактировать объект</h2>
+              <h2 className="font24b textBlack">Добавить объект</h2>
 
 
               <button id="DeleteUO" type="button" onClick={() => setVisible(true)} className="transp border-0 ml-auto">
@@ -198,20 +202,20 @@ const EditObject: FC = () => {
               </button>
             </div>
             <div className="flexHoriz justify-content-between mt-3">
-              <UOSelect cardId={data?.gilFindObjects?.balanceCompanyId}/>
+              <UOSelect cardId={infoObject.balanceCompanyId}/>
               <Link to="/registerUO/createOrg" title="Добавить УК" className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"  >         
                        <img src={plus} className="w16 reddishSvg" alt=""></img>
                      </Link>
 
             </div>
             <div className="flexHoriz justify-content-between mt-3">
-             <ProjectsSelect  cardId={data?.gilFindObjects?.gilFindProjectId} />
+             <ProjectsSelect  cardId={infoObject.gilFindProjectId} />
              <Link to="/projects/createProject" title="Добавить проект" className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"  >         
                        <img src={plus} className="w16 reddishSvg" alt=""></img>
                      </Link>
             </div>
             <div className="flexHoriz justify-content-between mt-3">
-            <AddressSelect  id={data?.gilFindObjects?.sprStreetId} city={data.gilFindObjects.sprStreet.city} oblast={data.gilFindObjects.sprStreet.oblast} raion={data.gilFindObjects.sprStreet.raion} sName={data.gilFindObjects.sprStreet.sName} client_ID="" />
+            <AddressSelect  id={infoObject.id} city={infoObject.city} oblast={infoObject.oblast} raion={infoObject.raion} sName={"Выберете улицу *"} client_ID="" />
             </div>
 
               
@@ -243,4 +247,4 @@ const EditObject: FC = () => {
   );
 };
 
-export default EditObject;
+export default CreateObject;
