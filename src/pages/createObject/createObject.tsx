@@ -190,16 +190,7 @@ const CreateObject: FC = () => {
               <h2 className="font24b textBlack">Добавить объект</h2>
 
 
-              <button id="DeleteUO" type="button" onClick={() => setVisible(true)} className="transp border-0 ml-auto">
-                <img
-                  src={imgBin}
-                  className="mr-3 position-absolute d-flex ml-n4 "
-                  alt=""
-                ></img>
-                <span id="delspan" className="font16b reddish">
-                  Удалить объект
-                </span>
-              </button>
+             
             </div>
             <div className="flexHoriz justify-content-between mt-3">
               <UOSelect cardId={infoObject.balanceCompanyId}/>

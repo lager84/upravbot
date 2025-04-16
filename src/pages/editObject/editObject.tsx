@@ -3,7 +3,7 @@ import { FC, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { TsprObject } from "../../utils/typesTS";
 import Loader from "../../components/loader/Loader";
-import { UPDATE_OBJECT } from "../../apollo/QLObjects";
+import { UPDATE_OBJECT , DELETE_OBJECT } from "../../apollo/QLObjects";
 import { READ_OBJECT_ITEM} from "../../apollo/QLObjects";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import imgBin from "../../img/ic-bin.svg";
@@ -21,6 +21,8 @@ import { selectedStreetVar } from "../../apollo/client";
 import UOSelect from "../../components/UO-select/UOSelect";
 import AddressSelect from "../../components/address-select/AddressSelect";
 import plus from "../../img/ic-plus.svg";
+import { ConfirmDialog } from 'primereact/confirmdialog';
+import { Toast } from 'primereact/toast';
 
 
 
@@ -40,12 +42,18 @@ const EditObject: FC = () => {
   
 
     const [visible, setVisible] = useState<boolean>(false);
-
-  //   const accept =  () => { 
-  //     onDelete(); 
+    const toast = useRef<Toast>(null);
+    
+    const accept =  () => {
+    
+      const event = new Event('click');
+      handleDelete();
      
-  // }
-  
+  }
+  const reject = () => {
+    toast.current?.show({ severity: 'warn', summary: 'Отмена', detail: 'Вы отменили удаление проекта', life: 3000 });
+
+}
 
   
   var userInfo = accountStore((state) => state);
@@ -53,17 +61,6 @@ const EditObject: FC = () => {
   let { id } = useParams();
 
   
-  // const [deleteUO, { loading: loadingDUO, error: errorDUO, data: dataDUO }] =
-  // useMutation(DELETE_UO , {onCompleted: () => {
-  //   navigate("/registerUO");
-  // },});
-
-  // const onDelete = () =>{
-  //   deleteUO({variables:{
-  //     idCB:Math.floor(parseFloat(id || "")),
-  //    // idC:Math.floor(parseFloat(infoUO.balanceCompanyId || ""))
-  //   }})
-  // }
 
   
 
@@ -141,6 +138,26 @@ const EditObject: FC = () => {
     },
   });
 
+  const [
+    deleteObject,
+    { data: data_del_Object, loading: loading_del_Object, error: error_del_Object },
+  ] = useMutation(DELETE_OBJECT, {
+    onCompleted: () => {
+      navigate("/objects");
+    },
+  });
+
+  const handleDelete = () => {
+   
+
+    deleteObject({
+      variables: {
+        id:Math.floor(parseFloat(id || ""))
+      }
+ 
+    });
+  };
+
   useEffect(() => {
     if (data) {
       setInfoObject({
@@ -172,6 +189,8 @@ const EditObject: FC = () => {
   if (error) return <div>${error.message}</div>;
   if (loading_upd_Object) return <Loader />;
   if (error_upd_Object) return <div>${error_upd_Object.message}</div>;
+  if (loading_del_Object) return <Loader />;
+  if (error_del_Object) return <div>${error_del_Object.message}</div>;
  
 
   return (
@@ -185,7 +204,9 @@ const EditObject: FC = () => {
             <div className="flexHoriz w-100">
               <h2 className="font24b textBlack">Редактировать объект</h2>
 
-
+              <Toast ref={toast} position="bottom-right" />
+            <ConfirmDialog className="modal-contentProject  bgWhite rounded16 p-4 shadow   col-12 col-lg-6" acceptLabel="Удалить" acceptClassName="btn btn1 h56 mr-2" rejectLabel="Отмена" rejectClassName="btn btn1 h56 mr-2ml-auto btn btn1 h56 outline shadow-none flexCenter CancelProject" group="declarative"  visible={visible} onHide={() => setVisible(false)} message="Вы уверены что хотите удалить проект?" 
+                icon="pi pi-exclamation-triangle" accept={accept} reject={reject} />
               <button id="DeleteUO" type="button" onClick={() => setVisible(true)} className="transp border-0 ml-auto">
                 <img
                   src={imgBin}

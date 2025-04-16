@@ -133,3 +133,8 @@ mutation UpdateStreet( $id:Int! $oblast:String,$raion:String, $city:String ,$sNa
   }
 }
 `;
+export const DELETE_OBJECT = gql`
+mutation DeleteGilFindObjects($id: Int!  ){
+  deleteGilFindObjects(id: $id )
+}
+`

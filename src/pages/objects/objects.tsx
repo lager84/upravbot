@@ -130,11 +130,12 @@ const renderHeader = () => {
 
   return (
     <div className="col-lg-9half col-sm-12 p-0 min-vh-100 bgWhite  ">
-      <span className="h90"></span>
-      <h2 className=" font24b textBlack ml-0 p-4">Объекты</h2>
-
+   
       <div id="TableTools" className="flexHoriz w-100 m-0 p-4 ml-4">
-
+      <h2  className="font24b textBlack ml-0 p-4">Объекты</h2>
+      <span className="h90"></span>
+     
+     
         <button
            onClick={() => navigate(`${URL_CREATE_OBJECT}`)}
           title="Добавить объект"
