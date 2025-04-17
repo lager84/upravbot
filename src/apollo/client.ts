@@ -85,7 +85,22 @@ const client = new ApolloClient({
           return incoming;
       }
         
-       }
+       },
+       usersInfo:{  
+        read(_, { args, toReference  }) {
+          return  toReference({
+             __typename: 'UsersInfo' ,
+             id:args?.id
+                        
+          });
+       },
+
+       merge(existing, incoming) {
+        return incoming;
+    }
+      
+     }
+
 
          
        }

@@ -11,5 +11,8 @@ export const URL_OBJECTS = "/objects";
 export const URL_CREATE_OBJECT ="createObject";
 export const URL_EDIT_OBJECT = "editObject";
 export const URL_CREATE_STREET ="createStreet";
+export const URL_ACCOUNT = "/account";
+export const URL_CREATE_ACCOUNT ="createAccount";
+export const URL_EDIT_ACCOUNT = "editAccount";
 
 
