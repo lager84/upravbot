@@ -21,28 +21,18 @@ export const GET_ACCOUNTS = gql`
 }
 `;
 
-export const READ_OBJECT_ITEM = gql`  
-query GilFindObjects($id:ID ) {
-  gilFindObjects(id:$id ) {
-    id,
-    houseNumber,
-    sprStreetId,
-    sprStreet{
-      oblast,
-      city,
-      sName,
-      raion
-    }
-    gilFindProjectId,
-    gilFindProject{
-      projectName
-    },
-    balanceCompanyId,
-    balanceCompany{
-      name,
-      client_ID
-    },
-    imageHouse
+export const READ_ACCOUNT_ITEM = gql`  
+query UsersInfo($id:ID ) {
+  usersInfo(id:$id ) {
+  userId
+  userName
+  secondName
+  firstName
+  middleName
+  clientID
+  role
+  clientEmail
+  clientPhoneNumber
     
   }
 }

@@ -3,7 +3,7 @@ export const oidcConfig = {
   client_id: "mvc",
   redirect_uri: "https://localhost:5002/",
   response_type: "code",
-  scope: "api1 openid profile",
+  scope: "api1 openid profile offline_access", 
   client_secret: "secret",
   //monitorSession: true,
   post_logout_redirect_uri: "https://localhost:5002/signout-callback-oidc",

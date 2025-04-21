@@ -1,14 +1,16 @@
-import React, { FC } from 'react';
-import { useFormik } from 'formik';
+import React, { FC } from "react";
+import AddEditAccount from "../../components/add-edit-account/AddEditAccount";
+
+
+
 
 const CreateAccountPage: FC = () => {
+  
+   
 
-    
-    return (
-        <div>
-            <h1>Administrator</h1>
-        </div>
-    )
-}
+  return (
+    <AddEditAccount card={false}  Email={""}  FirstName={""}  SecondName={""}  userID={""}  phone_number={""}  role={[]}  GivenName={""}/>
+  );
+};
 
-export default CreateAccountPage
+export default CreateAccountPage;
