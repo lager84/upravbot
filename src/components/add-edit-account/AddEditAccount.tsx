@@ -1,19 +1,56 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { useFormik } from "formik";
 import { TState } from "../../utils/typesTS";
 import InputComponent from "../../components/imput-component/InputComponent";
 import { useMutation } from "@apollo/client";
-import { UPDATE_ACCOUNT } from "../../apollo/updateAccount";
+import { UPDATE_ACCOUNT } from "../../apollo/QLAccount";
 import Loader from "../loader/Loader";
 import { useNavigate } from "react-router-dom";
+import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox";
 
 type TPropsState = {
     card:boolean
 }
 type TProps = TPropsState & TState
 
+interface Category {
+  name: string; 
+  key: string;
+}
+
+
 const AddEditAccount: FC<TProps> = ({card , Email , FirstName , SecondName , userID , phone_number , role , GivenName , password  }) => {
   
+  const categories: Category[] = [
+    { name: 'Менеджер', key: '50C5D24A-D585-473C-82B2-411DA4120FA5' },
+    { name: 'Ответственный', key: 'B6FAFCA4-67E0-4CC6-ACE7-F285DEF6A0B6' },
+    { name: 'Исполнитель', key: 'CD1FEC0D-7828-4C6A-8BE3-25EF9E1A12C3' }
+    
+];
+
+const category = categories.find(cat => role?.includes(cat.name));
+const categoryKey = category ? category.key : null;
+
+const categoryIndex = categories.findIndex(cat => role?.includes(cat.name));
+
+
+
+const [selectedCategories, setSelectedCategories] = useState<Category[]>(card ? [categories[categoryIndex]] : []);
+
+const onCategoryChange = (e: CheckboxChangeEvent) => {
+  let _selectedCategories = [...selectedCategories];
+
+  if (e.checked)
+      _selectedCategories.push(e.value);
+  else
+      _selectedCategories = _selectedCategories.filter(category => category.key !== e.value.key);
+
+  setSelectedCategories(_selectedCategories);
+ 
+
+};
+
+
     const navigate = useNavigate();
     
     const formik = useFormik<TState>({
@@ -24,7 +61,7 @@ const AddEditAccount: FC<TProps> = ({card , Email , FirstName , SecondName , use
       SecondName:card? SecondName :"",
       phone_number:card? phone_number :"",
       password:card? "123456789" :"",
-      role:card? role: [],
+      role: card ? role : [],
       userID:card? userID :"",
    
     
@@ -40,7 +77,8 @@ const AddEditAccount: FC<TProps> = ({card , Email , FirstName , SecondName , use
           password: values.password,
           phoneNumber: values.phone_number,
           secondName: values.SecondName,
-          userID: values.userID, //
+          userID: values.userID,
+          role:selectedCategories.map((item) =>(item.name)) //
         }
       }, );
         }
@@ -70,7 +108,7 @@ const AddEditAccount: FC<TProps> = ({card , Email , FirstName , SecondName , use
   };
   if (load_update) return <Loader />;
   if (error_update) return <div>${error_update.message}</div>;
-  console.log(formik.values.role)
+
   return (
     <div className="col-sm-12 p-0">
       <div className="row p-4 m-0">
@@ -163,16 +201,24 @@ const AddEditAccount: FC<TProps> = ({card , Email , FirstName , SecondName , use
               required={true}
             />
 
-            <InputComponent
-              type="checkbox"
-              onChange={formik.handleChange}
-              value={formik.values.role}
-              children="Роль"
-              name="role"
-              classCss={"role"}
-              id_name="role"
-              required={true}
-            />
+
+
+<div className="card flex justify-content-center">
+            <div className="flex flex-column gap-3">
+                {categories.map((category) => {
+                    return (
+                        <div key={category.key} className="flex align-items-center">
+                            <Checkbox inputId={category.key} name="category" value={category} onChange={onCategoryChange} checked={selectedCategories.some((item) => item.key === category.key)} />
+                            <label htmlFor={category.key} className="ml-2">
+                                {category.name}
+                            </label>
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+
+
 
             <div className="row mt-3 mb-3">
               <div className="col-sm-12">

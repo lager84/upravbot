@@ -5,7 +5,7 @@ type TProps = {
     id_name:string;
     children:string;
     value:string | number | readonly string[] | undefined;
-    type?: 'text' | 'email' | 'password' | 'tel' | 'checkbox';
+    type?: 'text' | 'email' | 'password' | 'tel' ;
     name:string;
     classCss?:string
     disabled?: boolean;
