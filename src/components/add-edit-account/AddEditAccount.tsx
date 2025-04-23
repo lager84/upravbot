@@ -1,12 +1,16 @@
-import React, { FC, useState } from "react";
+import React, { FC, useRef, useState } from "react";
 import { useFormik } from "formik";
 import { TState } from "../../utils/typesTS";
 import InputComponent from "../../components/imput-component/InputComponent";
 import { useMutation } from "@apollo/client";
-import { UPDATE_ACCOUNT } from "../../apollo/QLAccount";
+import { UPDATE_ACCOUNT , ADD_ACCOUNT , DELETE_ACCOUNT} from "../../apollo/QLAccount";
 import Loader from "../loader/Loader";
 import { useNavigate } from "react-router-dom";
 import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox";
+import accountStore from "../../services/accountsStore";
+import imgBin from "../../img/ic-bin.svg";
+import { ConfirmDialog } from 'primereact/confirmdialog';
+import { Toast } from 'primereact/toast';
 
 type TPropsState = {
     card:boolean
@@ -20,7 +24,33 @@ interface Category {
 
 
 const AddEditAccount: FC<TProps> = ({card , Email , FirstName , SecondName , userID , phone_number , role , GivenName , password  }) => {
+
+  const toast = useRef<Toast>(null);
+  const [visible, setVisible] = useState<boolean>(false);
+      
+      const accept =  () => {
+      
+        const event = new Event('click');
+        handleDelete();
+       
+    }
+    const reject = () => {
+      toast.current?.show({ severity: 'warn', summary: 'Отмена', detail: 'Вы отменили удаление пользователя', life: 3000 });
   
+  }
+
+  const handleDelete = () => {
+   
+    deleteAccount({
+      variables: {
+        userID:userID
+      }
+ 
+    });
+  };
+
+var userInfo = accountStore((state) => state);
+
   const categories: Category[] = [
     { name: 'Менеджер', key: '50C5D24A-D585-473C-82B2-411DA4120FA5' },
     { name: 'Ответственный', key: 'B6FAFCA4-67E0-4CC6-ACE7-F285DEF6A0B6' },
@@ -28,14 +58,14 @@ const AddEditAccount: FC<TProps> = ({card , Email , FirstName , SecondName , use
     
 ];
 
-const category = categories.find(cat => role?.includes(cat.name));
-const categoryKey = category ? category.key : null;
+// const category = categories.find(cat => role?.includes(cat.name));
+// const categoryKey = category ? category.key : null;
 
-const categoryIndex = categories.findIndex(cat => role?.includes(cat.name));
+const categoryIndex = categories.filter(cat => role?.includes(cat.name));
 
 
 
-const [selectedCategories, setSelectedCategories] = useState<Category[]>(card ? [categories[categoryIndex]] : []);
+const [selectedCategories, setSelectedCategories] = useState<Category[]>(card ? categoryIndex : []);
 
 const onCategoryChange = (e: CheckboxChangeEvent) => {
   let _selectedCategories = [...selectedCategories];
@@ -81,9 +111,22 @@ const onCategoryChange = (e: CheckboxChangeEvent) => {
           role:selectedCategories.map((item) =>(item.name)) //
         }
       }, );
+
         }
         else{
-      alert(JSON.stringify(values, null, 2));
+      addAccount({
+        variables: {
+          clientID:userInfo.userID,
+          email: values.Email,
+          firstName: values.FirstName,
+          middleName: values.GivenName,
+          secondName: values.SecondName,
+          password: values.password,
+          phoneNumber: values.phone_number,
+          userName: values.Email,
+          role:selectedCategories.map((item) =>(item.name)) //
+        }
+      }, );
             }
     },
   });
@@ -92,6 +135,16 @@ const onCategoryChange = (e: CheckboxChangeEvent) => {
     onCompleted: () => {
       navigate(-1);
     },});
+
+    const [addAccount, { loading:load_add, error:error_add }] = useMutation(ADD_ACCOUNT, {
+      onCompleted: () => {
+        navigate(-1);
+      },});
+
+      const [deleteAccount, { loading:load_del, error:error_del }] = useMutation(DELETE_ACCOUNT, {
+        onCompleted: () => {
+          navigate(-1);
+        },});
 
   const GenPas = () => {
     var bigCases = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -108,6 +161,10 @@ const onCategoryChange = (e: CheckboxChangeEvent) => {
   };
   if (load_update) return <Loader />;
   if (error_update) return <div>${error_update.message}</div>;
+  if (load_add) return <Loader />;
+  if (error_add) return <div>${error_add.message}</div>;
+  if (load_del) return <Loader />;
+  if (error_del) return <div>${error_del.message}</div>;
 
   return (
     <div className="col-sm-12 p-0">
@@ -118,7 +175,24 @@ const onCategoryChange = (e: CheckboxChangeEvent) => {
             onSubmit={formik.handleSubmit}
           >
             <div className="flexHoriz w-100">
-              <h2 className="font24b textBlack mb-3">Добавить пользователя</h2>
+           {card?   
+           <>
+           <h2 className="font24b textBlack mb-3">Изменить данные пользователя</h2>
+              <Toast ref={toast} position="bottom-right" />
+              <ConfirmDialog className="modal-contentProject  bgWhite rounded16 p-4 shadow   col-12 col-lg-6" acceptLabel="Удалить" acceptClassName="btn btn1 h56 mr-2" rejectLabel="Отмена" rejectClassName="btn btn1 h56 mr-2ml-auto btn btn1 h56 outline shadow-none flexCenter CancelProject" group="declarative"  visible={visible} onHide={() => setVisible(false)} message="Вы уверены что хотите удалить проект?" 
+                  icon="pi pi-exclamation-triangle" accept={accept} reject={reject} />
+                <button id="DeleteUO" type="button" onClick={() => setVisible(true)} className="transp border-0 ml-auto">
+                  <img
+                    src={imgBin}
+                    className="mr-3 position-absolute d-flex ml-n4 "
+                    alt=""
+                  ></img>
+                  <span id="delspan" className="font16b reddish">
+                    Удалить пользователя
+                  </span>
+                </button>
+                </>
+           :<h2 className="font24b textBlack mb-3">Добавить пользователя</h2>}
             </div>
 
             <div className="flexHoriz justify-content-between mt-3">
@@ -201,14 +275,14 @@ const onCategoryChange = (e: CheckboxChangeEvent) => {
               required={true}
             />
 
-
+<h5 className="font16b pt-2 pb-1">Роли</h5>
 
 <div className="card flex justify-content-center">
             <div className="flex flex-column gap-3">
                 {categories.map((category) => {
                     return (
                         <div key={category.key} className="flex align-items-center">
-                            <Checkbox inputId={category.key} name="category" value={category} onChange={onCategoryChange} checked={selectedCategories.some((item) => item.key === category.key)} />
+                            <Checkbox   inputId={category.key} name="category" value={category} onChange={onCategoryChange} checked={selectedCategories.some((item) => item.key === category.key)} />
                             <label htmlFor={category.key} className="ml-2">
                                 {category.name}
                             </label>

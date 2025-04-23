@@ -45,26 +45,19 @@ export const UPDATE_ACCOUNT = gql`mutation UpdateAccount ($email:String! , $firs
   }
 }`
 
-
-export const CREATE_OBJECT = gql`
-mutation AddGilFindObject( $balanceCompanyId: Int!, $gilFindProjectId: Int!, $sprStreetId: Int!, $houseNumber: String!, $imageHouse: String){
-  addGilFindObject(
-    balanceCompanyId: $balanceCompanyId, gilFindProjectId: $gilFindProjectId, sprStreetId: $sprStreetId, houseNumber: $houseNumber, imageHouse: $imageHouse
-    )
-    {
-  id,
-  houseNumber,
-  sprStreetId,
-  gilFindProjectId,
-  balanceCompanyId,
-  imageHouse
+export const ADD_ACCOUNT = gql`mutation AddUser($clientID:String! , $email:String! , $firstName:String!, $middleName:String! , $secondName:String! , $password:String! , $phoneNumber:String!, $userName:String! , $role:[String]! ){
+  addUser(clientID:$clientID , email: $email, firstName: $firstName , middleName: $middleName, password: $password, phoneNumber: $phoneNumber,secondName: $secondName , userName: $userName , roles:$role){
+    firstName,
+    id
   }
-}
-`;
+}`
 
 
-export const DELETE_OBJECT = gql`
-mutation DeleteGilFindObjects($id: Int!  ){
-  deleteGilFindObjects(id: $id )
+
+
+
+export const DELETE_ACCOUNT = gql`
+mutation DeleteAccount($userID: String!  ){
+  deleteAccount(userID: $userID )
 }
 `

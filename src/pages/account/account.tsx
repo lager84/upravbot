@@ -122,12 +122,12 @@ const navigate = useNavigate();
       
       <div className="card">
             <DataTable  value={account}  onRowSelect={onRowSelect} selectionMode="single" selection={selectedProduct} onSelectionChange={(e:any) => setSelectedProduct(e.value)} dataKey="userId" sortMode="multiple" paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '50rem' }} filters={filters}  globalFilterFields={["userName", "secondName" , "firstName" , "middleName" , "clientPhoneNumber" , "role"]} header={header}  emptyMessage="No customers found." onFilter={(e) => setFilters(e.filters)}>
-                <Column field="userName" header="Пользователь" sortable style={{ width: '20%' }}></Column>
+                <Column field="userName" header="Пользователь" sortable style={{ width: '30%' }}></Column>
                 <Column field="secondName" header="Фамилия" sortable style={{ width: '10%' }} ></Column>
                 <Column field="firstName" header="Имя" sortable style={{ width: '10%' }}></Column>
                 <Column field="middleName" header="Отчество" sortable style={{ width: '10%' }}></Column>
                 <Column field="clientPhoneNumber" header="Телефон" sortable style={{ width: '10%' }}></Column>
-                <Column field="role" header="Роль" sortable style={{ width: '10%' }}></Column>
+                <Column field="role" body={(rowData) => rowData.role.join('\n')} header="Роль" sortable style={{ width: '20%' }}></Column>
             </DataTable>
         </div>
       <span className="h90"></span>
