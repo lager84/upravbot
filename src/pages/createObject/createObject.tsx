@@ -94,6 +94,8 @@ const CreateObject: FC = () => {
     }));
   };
 
+const [showWarning, setShowWarning] = useState(false);
+
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
@@ -114,7 +116,7 @@ const CreateObject: FC = () => {
     } = infoObject;
 
     if (selectedOUVarId === -1 || selectedProjectId === -1 || selectedStreetVarId === -1 ) {
-      alert('Пожалуйста, выберите все необходимые поля');
+      setShowWarning(true);
       return;
     }
   
@@ -193,7 +195,7 @@ const CreateObject: FC = () => {
              
             </div>
             <div className="flexHoriz justify-content-between mt-3">
-              <UOSelect cardId={infoObject.balanceCompanyId}/>
+              <UOSelect cardId={infoObject.balanceCompanyId}/>               
               <Link to="/registerUO/createOrg" title="Добавить УК" className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"  >         
                        <img src={plus} className="w16 reddishSvg" alt=""></img>
                      </Link>
@@ -222,7 +224,7 @@ const CreateObject: FC = () => {
                           maxLength={20}
                         /> 
 
-          
+{showWarning && <div style={{color:"red"}}>Пожалуйста, выберите все обязательные поля!</div>}
 
             <div className="row mt-3 mb-3">
               <div className="col-sm-12">

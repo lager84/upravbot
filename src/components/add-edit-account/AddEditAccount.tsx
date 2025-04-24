@@ -11,9 +11,11 @@ import accountStore from "../../services/accountsStore";
 import imgBin from "../../img/ic-bin.svg";
 import { ConfirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
+import * as Yup from 'yup';
 
 type TPropsState = {
     card:boolean
+    
 }
 type TProps = TPropsState & TState
 
@@ -21,6 +23,8 @@ interface Category {
   name: string; 
   key: string;
 }
+
+
 
 
 const AddEditAccount: FC<TProps> = ({card , Email , FirstName , SecondName , userID , phone_number , role , GivenName , password  }) => {
@@ -38,6 +42,10 @@ const AddEditAccount: FC<TProps> = ({card , Email , FirstName , SecondName , use
       toast.current?.show({ severity: 'warn', summary: 'Отмена', detail: 'Вы отменили удаление пользователя', life: 3000 });
   
   }
+
+
+
+
 
   const handleDelete = () => {
    
@@ -76,12 +84,15 @@ const onCategoryChange = (e: CheckboxChangeEvent) => {
       _selectedCategories = _selectedCategories.filter(category => category.key !== e.value.key);
 
   setSelectedCategories(_selectedCategories);
+  
  
 
 };
 
 
     const navigate = useNavigate();
+    const [showWarning, setShowWarning] = useState(false);
+
     
     const formik = useFormik<TState>({
     initialValues: {
@@ -91,14 +102,19 @@ const onCategoryChange = (e: CheckboxChangeEvent) => {
       SecondName:card? SecondName :"",
       phone_number:card? phone_number :"",
       password:card? "123456789" :"",
-      role: card ? role : [],
+      role:card ? role : [],
       userID:card? userID :"",
-   
-    
-    },
-    onSubmit: (values) => {
-        if(card){
-    
+     
+
+    }
+    , onSubmit: (values) => {
+      
+      if (selectedCategories.length === 0) {
+        setShowWarning(true);
+        return;
+    }
+      
+      if(card){
     updateAccount({
         variables: {
           email: values.Email,
@@ -127,9 +143,12 @@ const onCategoryChange = (e: CheckboxChangeEvent) => {
           role:selectedCategories.map((item) =>(item.name)) //
         }
       }, );
+  
             }
     },
   });
+
+
 
   const [updateAccount, { loading:load_update, error:error_update }] = useMutation(UPDATE_ACCOUNT, {
     onCompleted: () => {
@@ -140,6 +159,9 @@ const onCategoryChange = (e: CheckboxChangeEvent) => {
       onCompleted: () => {
         navigate(-1);
       },});
+
+      
+     
 
       const [deleteAccount, { loading:load_del, error:error_del }] = useMutation(DELETE_ACCOUNT, {
         onCompleted: () => {
@@ -282,13 +304,14 @@ const onCategoryChange = (e: CheckboxChangeEvent) => {
                 {categories.map((category) => {
                     return (
                         <div key={category.key} className="flex align-items-center">
-                            <Checkbox   inputId={category.key} name="category" value={category} onChange={onCategoryChange} checked={selectedCategories.some((item) => item.key === category.key)} />
+                            <Checkbox   name="category"   inputId={category.key} value={category} onChange={onCategoryChange } checked={selectedCategories.some((item) => item.key === category.key)  } />
                             <label htmlFor={category.key} className="ml-2">
                                 {category.name}
-                            </label>
-                        </div>
+                            </label>                           
+                        </div>                     
                     );
-                })}
+                })}   
+                {showWarning && <div style={{color:"red"}}>Пожалуйста, выберите хотя бы одну роль</div>}             
             </div>
         </div>
 
