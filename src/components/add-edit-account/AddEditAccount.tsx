@@ -92,6 +92,7 @@ const onCategoryChange = (e: CheckboxChangeEvent) => {
 
     const navigate = useNavigate();
     const [showWarning, setShowWarning] = useState(false);
+    const [showWarningIdentity, setShowWarningIdentity] = useState(false);
 
     
     const formik = useFormik<TState>({
@@ -155,9 +156,13 @@ const onCategoryChange = (e: CheckboxChangeEvent) => {
       navigate(-1);
     },});
 
-    const [addAccount, { loading:load_add, error:error_add }] = useMutation(ADD_ACCOUNT, {
+    const [addAccount, {data:data_add , loading:load_add, error:error_add }] = useMutation(ADD_ACCOUNT, {
       onCompleted: () => {
-        navigate(-1);
+        if (data_add?.addUser.succeeded) {
+          navigate(-1);
+        } else {
+          setShowWarningIdentity(true);
+        }
       },});
 
       
@@ -187,6 +192,8 @@ const onCategoryChange = (e: CheckboxChangeEvent) => {
   if (error_add) return <div>${error_add.message}</div>;
   if (load_del) return <Loader />;
   if (error_del) return <div>${error_del.message}</div>;
+
+
 
   return (
     <div className="col-sm-12 p-0">
@@ -315,7 +322,7 @@ const onCategoryChange = (e: CheckboxChangeEvent) => {
             </div>
         </div>
 
-
+        {showWarningIdentity && data_add.addUser?.errors?.map((errors:any) =>{ return( <div key={errors?.code} style={{color:"red"}}>{errors?.description}</div>)})}   
 
             <div className="row mt-3 mb-3">
               <div className="col-sm-12">

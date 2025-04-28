@@ -47,9 +47,8 @@ export const UPDATE_ACCOUNT = gql`mutation UpdateAccount ($email:String! , $firs
 
 export const ADD_ACCOUNT = gql`mutation AddUser($clientID:String! , $email:String! , $firstName:String!, $middleName:String! , $secondName:String! , $password:String! , $phoneNumber:String!, $userName:String! , $role:[String]! ){
   addUser(clientID:$clientID , email: $email, firstName: $firstName , middleName: $middleName, password: $password, phoneNumber: $phoneNumber,secondName: $secondName , userName: $userName , roles:$role){
-    firstName,
-    id
-  }
+    succeeded,
+    errors{code , description}  }
 }`
 
 
