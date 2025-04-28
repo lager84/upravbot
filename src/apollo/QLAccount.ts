@@ -40,15 +40,16 @@ query UsersInfo($id:ID ) {
 
 export const UPDATE_ACCOUNT = gql`mutation UpdateAccount ($email:String! , $firstName:String!, $middleName:String! , $secondName:String! , $password:String! , $phoneNumber:String! , $userID:String! , $role:[String]! ){
   updateAccount(email: $email, firstName: $firstName , middleName: $middleName, password: $password, phoneNumber: $phoneNumber,secondName: $secondName , userID: $userID , roles:$role){
-    firstName,
-    id
+   succeeded,
+   errors{code , description} 
   }
 }`
 
 export const ADD_ACCOUNT = gql`mutation AddUser($clientID:String! , $email:String! , $firstName:String!, $middleName:String! , $secondName:String! , $password:String! , $phoneNumber:String!, $userName:String! , $role:[String]! ){
   addUser(clientID:$clientID , email: $email, firstName: $firstName , middleName: $middleName, password: $password, phoneNumber: $phoneNumber,secondName: $secondName , userName: $userName , roles:$role){
     succeeded,
-    errors{code , description}  }
+    errors{code , description}  
+    }
 }`
 
 
