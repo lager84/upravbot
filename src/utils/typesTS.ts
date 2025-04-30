@@ -12,6 +12,7 @@ export type TState = {
 
 
 
+
 export type TBalanceCompany = {
   id: number;
   name: string;

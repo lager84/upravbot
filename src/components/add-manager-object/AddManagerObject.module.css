@@ -1,0 +1,5 @@
+
+  .mycontrol :global(.p-button) {
+    background-color: #D11B25; 
+    border: 1px solid #D11B25; 
+  }

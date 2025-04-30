@@ -7,6 +7,7 @@ import { makeVar } from '@apollo/client';
 export const selectedProjectIdVar = makeVar<number| null>(null);
 export const selectedOUVar = makeVar<number | null>(null);
 export const selectedStreetVar = makeVar<number | null>(null);
+export const selectedManagerVar = makeVar<string[] | null>(null);
 
 function getUser() {
   const oidcStorage = sessionStorage.getItem(`oidc.user:https://upravbot.ru/IDS4:mvc`)

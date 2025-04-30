@@ -1,21 +1,17 @@
 import InputComponent from "../../components/imput-component/InputComponent";
 import { FC, useEffect, useRef, useState } from "react";
-import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { TsprObject } from "../../utils/typesTS";
 import Loader from "../../components/loader/Loader";
-import { UPDATE_OBJECT , DELETE_OBJECT } from "../../apollo/QLObjects";
+import { UPDATE_OBJECT , DELETE_OBJECT, ADD_MANAGER_OBJECT, GET_MANAGER_OBJECT } from "../../apollo/QLObjects";
 import { READ_OBJECT_ITEM} from "../../apollo/QLObjects";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
+import { Link,  useNavigate, useParams } from "react-router-dom"
 import imgBin from "../../img/ic-bin.svg";
-import {
-  AutoComplete,
-  AutoCompleteCompleteEvent,
-} from "primereact/autocomplete";
 import 'primereact/resources/themes/lara-light-blue/theme.css'
 import accountStore from "../../services/accountsStore";
 import ProjectsSelect from "../../components/projects-select/ProjectsSelect";
 import { useReactiveVar } from '@apollo/client';
-import { selectedProjectIdVar } from "../../apollo/client";
+import { selectedManagerVar, selectedProjectIdVar } from "../../apollo/client";
 import { selectedOUVar } from "../../apollo/client";
 import { selectedStreetVar } from "../../apollo/client";
 import UOSelect from "../../components/UO-select/UOSelect";
@@ -23,6 +19,7 @@ import AddressSelect from "../../components/address-select/AddressSelect";
 import plus from "../../img/ic-plus.svg";
 import { ConfirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
+import AddManagerObject from "../../components/add-manager-object/AddManagerObject";
 
 
 
@@ -39,7 +36,8 @@ const EditObject: FC = () => {
   const selectedProjectId = useReactiveVar(selectedProjectIdVar);
   const selectedOUVarId = useReactiveVar(selectedOUVar);
   const selectedStreetVarId = useReactiveVar(selectedStreetVar);
-  
+  const selectedManagerVarId = useReactiveVar(selectedManagerVar);
+
 
     const [visible, setVisible] = useState<boolean>(false);
     const toast = useRef<Toast>(null);
@@ -91,6 +89,8 @@ const EditObject: FC = () => {
     }));
   };
 
+  const [showWarning, setShowWarning] = useState(false);
+
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
@@ -110,6 +110,10 @@ const EditObject: FC = () => {
 
     } = infoObject;
   
+    if (selectedOUVarId === -1 || selectedProjectId === -1 || selectedStreetVarId === -1 || selectedManagerVarId?.length === 0 || selectedManagerVarId === null ) {
+      setShowWarning(true); 
+      return;
+    }
     // Execute the mutation
     updateObject({
       variables: {
@@ -129,14 +133,29 @@ const EditObject: FC = () => {
     variables: { id },
   });
 
+ 
+
   const [
     updateObject,
     { data: data_upd_Object, loading: loading_upd_Object, error: error_upd_Object },
   ] = useMutation(UPDATE_OBJECT, {
     onCompleted: () => {
-      navigate("/objects");
+      updateManagerObject({variables:{
+        objectId:Math.floor(parseFloat(id || "")),
+        userId:selectedManagerVarId?.map((usersItem:any)=>usersItem?.userId)
+    } , awaitRefetchQueries: true,
+          refetchQueries: [GET_MANAGER_OBJECT, "GilFindManager"],})
     },
   });
+
+    const [
+      updateManagerObject,
+      { loading: loading_manager_Object, error: error_manager_Object },
+    ] = useMutation(ADD_MANAGER_OBJECT, {
+      onCompleted: () => {
+        navigate("/objects");
+      },
+    });
 
   const [
     deleteObject,
@@ -191,12 +210,15 @@ const EditObject: FC = () => {
   if (error_upd_Object) return <div>${error_upd_Object.message}</div>;
   if (loading_del_Object) return <Loader />;
   if (error_del_Object) return <div>${error_del_Object.message}</div>;
- 
+  if (loading_manager_Object) return <Loader />;
+  if (error_manager_Object) return <div>${error_manager_Object.message}</div>;
+  
+
 
   return (
     <div className="col-sm-12 p-0">
       <div className="row p-4 m-0">
-        <div className="col-lg-6 col-sm-12">
+        <div className="col-lg-9 col-sm-12">
           <form
             className="bgWhite rounded16 shadow w-100 p-4"
             onSubmit={handleSubmit}
@@ -249,6 +271,10 @@ const EditObject: FC = () => {
                         /> 
 
           
+<AddManagerObject/>
+
+{showWarning && <div style={{color:"red"}}>Пожалуйста, выберите все обязательные поля!</div>}
+
 
             <div className="row mt-3 mb-3">
               <div className="col-sm-12">

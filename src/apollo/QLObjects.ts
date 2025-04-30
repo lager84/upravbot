@@ -138,3 +138,22 @@ mutation DeleteGilFindObjects($id: Int!  ){
   deleteGilFindObjects(id: $id )
 }
 `
+
+export const ADD_MANAGER_OBJECT = gql`
+mutation AddGilFindManagers($objectId:Int! , $userId:[String!] ){
+  addGilFindManagers(objectId:$objectId , userId:$userId )
+  {
+    id
+  }
+}
+
+`
+
+export const GET_MANAGER_OBJECT = gql`
+query GilFindManager($gilFindObjectsId:Int! ){
+  gilFindManager(where:{ gilFindObjectsId:{eq:  $gilFindObjectsId}})
+  {
+    userId
+  }
+}
+`
