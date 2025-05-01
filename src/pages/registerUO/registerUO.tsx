@@ -1,5 +1,5 @@
 import styles from "../registerUO/registerUO.module.css";
-import { FC, SetStateAction, useCallback, useEffect, useState } from "react";
+import { FC,  useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import Loader from "../../components/loader/Loader";
 import plus from "../../img/ic-plus.svg";
@@ -8,7 +8,7 @@ import { GET_UO_ORG } from "../../apollo/GetUOorg";
 import accountStore from "../../services/accountsStore";
 import { TBalanceCompany } from "../../utils/typesTS";
 import InputSearch from "../../components/input-search/InputSearch";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { URL_CREATE_ORG } from "../../utils/routes";
 import sortStore from "../../services/sortStore";
 import {
@@ -17,7 +17,6 @@ import {
 } from "../../components/sorting-control/SortingControl";
 
 const RegisterUOPage: FC = () => {
-  
   const [ouorg, setOUorg] = useState<TBalanceCompany[]>();
 
   var userInfo = accountStore((state) => state);
@@ -33,17 +32,15 @@ const RegisterUOPage: FC = () => {
   });
 
   useEffect(() => {
-    if (!loading ) {
-      console.log(data);
+    if (!loading) {
       setOUorg(
         data.companyBills.map((comp: any) => ({
           cBid: comp.id,
           ...comp.balanceCompany,
         }))
       );
-     
     }
-  }, [ data, loading]);
+  }, [data, loading]);
 
   if (loading)
     return (
@@ -64,7 +61,7 @@ const RegisterUOPage: FC = () => {
           <InputSearch<TBalanceCompany[]> setOUorg={setOUorg} card={ouorg} />
         )}
 
-        <SortingControl  label={"Наименование организации:"} />
+        <SortingControl label={"Наименование организации:"} />
 
         <button
           onClick={() => navigate(`${URL_CREATE_ORG}`)}
@@ -81,7 +78,7 @@ const RegisterUOPage: FC = () => {
             .map((detail: TBalanceCompany) => (
               <UOListItem card={detail} key={detail.id} />
             ))
-            .sort(sortCb(sort.sortName,'name'))}
+            .sort(sortCb(sort.sortName, "name"))}
       </div>
       <span className="h90"></span>
     </div>

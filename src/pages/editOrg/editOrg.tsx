@@ -3,7 +3,7 @@ import { FC, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { TUOorg, TsprBank } from "../../utils/typesTS";
 import Loader from "../../components/loader/Loader";
-import { UPDATE_UO , DELETE_UO } from "../../apollo/updateUO";
+import { UPDATE_UO, DELETE_UO } from "../../apollo/updateUO";
 import { READ_OU_ITEM, Get_bik } from "../../apollo/GetUOorg";
 import { useNavigate, useParams } from "react-router-dom";
 import accountStore from "../../services/accountsStore";
@@ -12,9 +12,9 @@ import {
   AutoComplete,
   AutoCompleteCompleteEvent,
 } from "primereact/autocomplete";
-import { ConfirmDialog } from 'primereact/confirmdialog';
-import { Toast } from 'primereact/toast';
-import 'primereact/resources/themes/lara-light-blue/theme.css'
+import { ConfirmDialog } from "primereact/confirmdialog";
+import { Toast } from "primereact/toast";
+import "primereact/resources/themes/lara-light-blue/theme.css";
 
 type TState = TUOorg;
 type TStateBIK = TsprBank;
@@ -22,18 +22,21 @@ type TStateBIK = TsprBank;
 const EditOrg: FC = () => {
   const navigate = useNavigate();
 
-    const toast = useRef<Toast>(null);
-    const [visible, setVisible] = useState<boolean>(false);
+  const toast = useRef<Toast>(null);
+  const [visible, setVisible] = useState<boolean>(false);
 
-    const accept =  () => { 
-      onDelete(); 
-     
-  }
-  
+  const accept = () => {
+    onDelete();
+  };
+
   const reject = () => {
-      toast.current?.show({ severity: 'warn', summary: 'Отмена', detail: 'Вы отменили удаление проекта', life: 3000 });
-  
-  }
+    toast.current?.show({
+      severity: "warn",
+      summary: "Отмена",
+      detail: "Вы отменили удаление проекта",
+      life: 3000,
+    });
+  };
 
   var userInfo = accountStore((state) => state);
   let { id } = useParams();
@@ -43,17 +46,21 @@ const EditOrg: FC = () => {
     useLazyQuery(Get_bik);
   const [filteredBIK, setFilteredBIK] = useState<TStateBIK[]>();
 
-  const [deleteUO, { loading: loadingDUO, error: errorDUO, data: dataDUO }] =
-  useMutation(DELETE_UO , {onCompleted: () => {
-    navigate("/registerUO");
-  },});
+  const [deleteUO, { loading: loadingDUO, error: errorDUO }] =
+    useMutation(DELETE_UO, {
+      onCompleted: () => {
+        navigate("/registerUO");
+      },
+    });
 
-  const onDelete = () =>{
-    deleteUO({variables:{
-      idCB:Math.floor(parseFloat(id || "")),
-      idC:Math.floor(parseFloat(infoUO.balanceCompanyId || ""))
-    }})
-  }
+  const onDelete = () => {
+    deleteUO({
+      variables: {
+        idCB: Math.floor(parseFloat(id || "")),
+        idC: Math.floor(parseFloat(infoUO.balanceCompanyId || "")),
+      },
+    });
+  };
 
   const search = (event: AutoCompleteCompleteEvent) => {
     let _filteredBIK;
@@ -160,7 +167,7 @@ const EditOrg: FC = () => {
 
   const [
     updateUO,
-    { data: data_upd_UO, loading: loading_upd_UO, error: error_upd_UO },
+    {  loading: loading_upd_UO, error: error_upd_UO },
   ] = useMutation(UPDATE_UO, {
     onCompleted: () => {
       navigate("/registerUO");
@@ -195,14 +202,16 @@ const EditOrg: FC = () => {
     }
   }, [data]);
 
-  console.log(infoUO);
+
 
   if (loading) return <Loader />;
   if (error) return <div>${error.message}</div>;
   if (loading_upd_UO) return <Loader />;
   if (error_upd_UO) return <div>${error_upd_UO.message}</div>;
   if (loadingBIK) return <Loader />;
-  if (errorBIK) return <div>{errorBIK.message}</div>;
+  if (errorBIK) return <div>{errorBIK.message}</div>; 
+  if (loadingDUO) return <Loader />;
+  if (errorDUO) return <div>{errorDUO.message}</div>;
 
   return (
     <div className="col-sm-12 p-0">
@@ -216,9 +225,26 @@ const EditOrg: FC = () => {
               <h2 className="font24b textBlack">{infoUO.name}</h2>
 
               <Toast ref={toast} position="bottom-right" />
-    <ConfirmDialog className="modal-contentProject  bgWhite rounded16 p-4 shadow   col-12 col-lg-6" acceptLabel="Удалить" acceptClassName="btn btn1 h56 mr-2" rejectLabel="Отмена" rejectClassName="btn btn1 h56 mr-2ml-auto btn btn1 h56 outline shadow-none flexCenter CancelProject" group="declarative"  visible={visible} onHide={() => setVisible(false)} message="Вы уверены что хотите удалить проект?" 
-                icon="pi pi-exclamation-triangle" accept={accept} reject={reject} />
-              <button id="DeleteUO" type="button" onClick={() => setVisible(true)} className="transp border-0 ml-auto">
+              <ConfirmDialog
+                className="modal-contentProject  bgWhite rounded16 p-4 shadow   col-12 col-lg-6"
+                acceptLabel="Удалить"
+                acceptClassName="btn btn1 h56 mr-2"
+                rejectLabel="Отмена"
+                rejectClassName="btn btn1 h56 mr-2ml-auto btn btn1 h56 outline shadow-none flexCenter CancelProject"
+                group="declarative"
+                visible={visible}
+                onHide={() => setVisible(false)}
+                message="Вы уверены что хотите удалить проект?"
+                icon="pi pi-exclamation-triangle"
+                accept={accept}
+                reject={reject}
+              />
+              <button
+                id="DeleteUO"
+                type="button"
+                onClick={() => setVisible(true)}
+                className="transp border-0 ml-auto"
+              >
                 <img
                   src={imgBin}
                   className="mr-3 position-absolute d-flex ml-n4 "

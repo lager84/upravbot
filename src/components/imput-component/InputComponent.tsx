@@ -1,5 +1,4 @@
-import styles from "../imput-component/imput.module.css";
-import { FC, useState } from "react";
+import { FC } from "react";
 
 type TProps = {
     id_name:string;

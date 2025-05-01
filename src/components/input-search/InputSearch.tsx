@@ -1,4 +1,4 @@
-import { SetStateAction, useCallback, useEffect, useState } from "react";
+import { SetStateAction, useCallback, useEffect, useMemo, useState } from "react";
 import searchImg from "../../img/search-ic.svg";
 import { useSearchParams } from "react-router-dom";
 
@@ -14,6 +14,7 @@ const InputSearch = function <T>(props: TProp<T>) {
   const [query, setQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
   //const [queryFilter, setQueryFilter] = useState("");
+  const { setOUorg } = props;
 
    useEffect(() => {
       if (searchParams.get("name") && searchParams.get("query")) {
@@ -43,15 +44,17 @@ const InputSearch = function <T>(props: TProp<T>) {
 
 
   
+ 
+
   useEffect(() => {
    
     if (query) {
-      props.setOUorg(searchCB(value));
+      setOUorg(searchCB(value));
       searchParams.set("query", query);
       setSearchParams(searchParams);
     } 
     else {
-      props.setOUorg(value);
+      setOUorg(value);
       //setSearchParams({});
       searchParams.delete("query");
       setSearchParams(searchParams);

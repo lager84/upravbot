@@ -17,10 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { URL_CREATE_PROJECT } from "../../utils/routes";
 
 const ProjectsPage: FC = () => {
-
   const [ouorg, setOUorg] = useState<TsprProject[]>();
-
-
 
   var userInfo = accountStore((state) => state);
   var sort = sortStore((sortName) => sortName);
@@ -29,18 +26,15 @@ const ProjectsPage: FC = () => {
 
   const navigate = useNavigate();
 
-  const { data, loading, error ,refetch } = useQuery(GET_PROJECT, {
+  const { data, loading, error, refetch } = useQuery(GET_PROJECT, {
     //fetchPolicy: "network-only",
     variables: { client_ID },
   });
 
   useEffect(() => {
-    if (!loading ) {
-      console.log(data);
+    if (!loading) {
       setOUorg(data.sprGilFindProjects.map((comp: TsprProject) => comp));
-     
     }
-    
   }, [data, loading]);
 
   if (loading)
@@ -52,22 +46,20 @@ const ProjectsPage: FC = () => {
 
   if (error) return <>`Submission error! ${error.message}`</>;
 
- 
-
   return (
     <div className="col-lg-9half col-sm-12 p-0 min-vh-100 bgWhite  ">
       <span className="h90"></span>
       <h2 className=" font24b textBlack ml-0 p-4">Проекты</h2>
 
       <div id="TableTools" className="flexHoriz w-100 m-0 p-4 ml-4">
-      {ouorg &&
+        {ouorg && (
           <InputSearch<TsprProject[]>
             setOUorg={setOUorg}
             card={ouorg?.map(({ id, projectName }) => {
               return { id, projectName };
             })}
           />
-          }
+        )}
 
         <SortingControl label={"Наименование проекта:"} />
 
@@ -91,9 +83,13 @@ const ProjectsPage: FC = () => {
         {ouorg &&
           ouorg
             .map((detail: TsprProject) => (
-              <ProjectListItem card={detail} refetch={refetch} key={detail.id} />
+              <ProjectListItem
+                card={detail}
+                refetch={refetch}
+                key={detail.id}
+              />
             ))
-            .sort(sortCb(sort.sortName , 'projectName'))}
+            .sort(sortCb(sort.sortName, "projectName"))}
       </div>
       <span className="h90"></span>
     </div>

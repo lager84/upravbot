@@ -1,20 +1,14 @@
 import InputComponent from "../../components/imput-component/InputComponent";
-import { FC, useEffect, useRef, useState } from "react";
-import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
+import { FC, useState } from "react";
+import { useMutation } from "@apollo/client";
 import { TsprObject } from "../../utils/typesTS";
 import Loader from "../../components/loader/Loader";
 import { ADD_MANAGER_OBJECT, CREATE_OBJECT } from "../../apollo/QLObjects";
-import { READ_OBJECT_ITEM} from "../../apollo/QLObjects";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
-import imgBin from "../../img/ic-bin.svg";
-import {
-  AutoComplete,
-  AutoCompleteCompleteEvent,
-} from "primereact/autocomplete";
-import 'primereact/resources/themes/lara-light-blue/theme.css'
+import { Link,  useNavigate, } from "react-router-dom";
+import "primereact/resources/themes/lara-light-blue/theme.css";
 import accountStore from "../../services/accountsStore";
 import ProjectsSelect from "../../components/projects-select/ProjectsSelect";
-import { useReactiveVar } from '@apollo/client';
+import { useReactiveVar } from "@apollo/client";
 import { selectedManagerVar, selectedProjectIdVar } from "../../apollo/client";
 import { selectedOUVar } from "../../apollo/client";
 import { selectedStreetVar } from "../../apollo/client";
@@ -23,14 +17,7 @@ import AddressSelect from "../../components/address-select/AddressSelect";
 import plus from "../../img/ic-plus.svg";
 import AddManagerObject from "../../components/add-manager-object/AddManagerObject";
 
-
-
-
-
-
-
 type TState = TsprObject;
-
 
 const CreateObject: FC = () => {
   const navigate = useNavigate();
@@ -39,22 +26,18 @@ const CreateObject: FC = () => {
   const selectedOUVarId = useReactiveVar(selectedOUVar);
   const selectedStreetVarId = useReactiveVar(selectedStreetVar);
   const selectedManagerVarId = useReactiveVar(selectedManagerVar);
-  
 
-    const [visible, setVisible] = useState<boolean>(false);
 
-  //   const accept =  () => { 
-  //     onDelete(); 
-     
+
+  //   const accept =  () => {
+  //     onDelete();
+
   // }
-  
 
-  
   var userInfo = accountStore((state) => state);
-  const client_ID = userInfo.userID;
+
   // let { id } = useParams();
 
-  
   // const [deleteUO, { loading: loadingDUO, error: errorDUO, data: dataDUO }] =
   // useMutation(DELETE_UO , {onCompleted: () => {
   //   navigate("/registerUO");
@@ -67,25 +50,19 @@ const CreateObject: FC = () => {
   //   }})
   // }
 
-  
-
-
-
-
   const [infoObject, setInfoObject] = useState<TState>({
-   id:-1,
-   city:"",
-   balanceCompanyId:-1,
-   client_ID:userInfo.userID || "",
-   gilFindProjectId:-1,
-   houseNumber:"",
-   name:"",
-   oblast:"",
-   projectName:"",
-   sName:"",
-   sprStreetId:-1,
-   raion:""
-  
+    id: -1,
+    city: "",
+    balanceCompanyId: -1,
+    client_ID: userInfo.userID || "",
+    gilFindProjectId: -1,
+    houseNumber: "",
+    name: "",
+    oblast: "",
+    projectName: "",
+    sName: "",
+    sprStreetId: -1,
+    raion: "",
   });
 
   const onChange = (event: any) => {
@@ -96,45 +73,35 @@ const CreateObject: FC = () => {
     }));
   };
 
-const [showWarning, setShowWarning] = useState(false);
+  const [showWarning, setShowWarning] = useState(false);
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
-    const {
-     balanceCompanyId,
-     client_ID,
-     city,
-     gilFindProjectId,
-     houseNumber,
-     name,
-     //id,
-     sprStreetId,
-     oblast,
-     projectName,
-     sName,
-     raion
+    
 
-    } = infoObject;
-
-    if (selectedOUVarId === -1 || selectedProjectId === -1 || selectedStreetVarId === -1 || selectedManagerVarId?.length === 0 || selectedManagerVarId === null ) {
-      setShowWarning(true); 
+    if (
+      selectedOUVarId === -1 ||
+      selectedProjectId === -1 ||
+      selectedStreetVarId === -1 ||
+      selectedManagerVarId?.length === 0 ||
+      selectedManagerVarId === null
+    ) {
+      setShowWarning(true);
       return;
     }
-  
+
     // Execute the mutation
     createObject({
-      variables: { 
-       balanceCompanyId:selectedOUVarId, 
-       gilFindProjectId:selectedProjectId, 
-       sprStreetId:selectedStreetVarId,
-       houseNumber:infoObject.houseNumber,
-       //imageHouse:""
-        
+      variables: {
+        balanceCompanyId: selectedOUVarId,
+        gilFindProjectId: selectedProjectId,
+        sprStreetId: selectedStreetVarId,
+        houseNumber: infoObject.houseNumber,
+        //imageHouse:""
       },
     });
-  }
-  
+  };
 
   // const { data, loading, error } = useQuery(READ_OBJECT_ITEM, {
   //   variables: { id },
@@ -146,11 +113,16 @@ const [showWarning, setShowWarning] = useState(false);
   ] = useMutation(CREATE_OBJECT, {
     onCompleted: (data) => {
       const objectId = data.addGilFindObject.id;
-      createManagerObject({variables:{
-        objectId:objectId,
-        userId:selectedManagerVarId?.map((usersItem:any)=>usersItem?.userId)
-    }})
-}});
+      createManagerObject({
+        variables: {
+          objectId: objectId,
+          userId: selectedManagerVarId?.map(
+            (usersItem: any) => usersItem?.userId
+          ),
+        },
+      });
+    },
+  });
 
   const [
     createManagerObject,
@@ -177,23 +149,16 @@ const [showWarning, setShowWarning] = useState(false);
   //       name:data.gilFindObjects.balanceCompany.name,
   //       raion:data.gilFindObjects.sprStreet.raion,
 
-        
   //     });
-      
+
   //  }
-   
+
   // }, [data]);
-
-
-
-  
-
 
   if (loading_upd_Object) return <Loader />;
   if (error_upd_Object) return <div>${error_upd_Object.message}</div>;
   if (loading_manager_Object) return <Loader />;
   if (error_manager_Object) return <div>${error_manager_Object.message}</div>;
-
 
   return (
     <div className="col-sm-12 p-0">
@@ -205,43 +170,57 @@ const [showWarning, setShowWarning] = useState(false);
           >
             <div className="flexHoriz w-100">
               <h2 className="font24b textBlack">Добавить объект</h2>
-
-
-             
             </div>
             <div className="flexHoriz justify-content-between mt-3">
-              <UOSelect cardId={infoObject.balanceCompanyId}/>               
-              <Link to="/registerUO/createOrg" title="Добавить УК" className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"  >         
-                       <img src={plus} className="w16 reddishSvg" alt=""></img>
-                     </Link>
-
+              <UOSelect cardId={infoObject.balanceCompanyId} />
+              <Link
+                to="/registerUO/createOrg"
+                title="Добавить УК"
+                className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"
+              >
+                <img src={plus} className="w16 reddishSvg" alt=""></img>
+              </Link>
             </div>
             <div className="flexHoriz justify-content-between mt-3">
-             <ProjectsSelect  cardId={infoObject.gilFindProjectId} />
-             <Link to="/projects/createProject" title="Добавить проект" className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"  >         
-                       <img src={plus} className="w16 reddishSvg" alt=""></img>
-                     </Link>
+              <ProjectsSelect cardId={infoObject.gilFindProjectId} />
+              <Link
+                to="/projects/createProject"
+                title="Добавить проект"
+                className="btn btn1 mb-0 outline shadow-none w56 h56 flexCenter ml-auto"
+              >
+                <img src={plus} className="w16 reddishSvg" alt=""></img>
+              </Link>
             </div>
             <div className="flexHoriz justify-content-between mt-3">
-            <AddressSelect  id={infoObject.id} city={infoObject.city} oblast={infoObject.oblast} raion={infoObject.raion} sName={"Выберете улицу *"} client_ID="" />
+              <AddressSelect
+                id={infoObject.id}
+                city={infoObject.city}
+                oblast={infoObject.oblast}
+                raion={infoObject.raion}
+                sName={"Выберете улицу *"}
+                client_ID=""
+              />
             </div>
 
-              
-                         <InputComponent
-                          type="text"
-                          onChange={onChange}
-                          value={infoObject.houseNumber}
-                          children="Номер дома *"
-                          name="houseNumber"
-                          classCss="houseNumber"
-                          id_name="houseNumber"
-                          required={true}
-                          maxLength={20}
-                        /> 
+            <InputComponent
+              type="text"
+              onChange={onChange}
+              value={infoObject.houseNumber}
+              children="Номер дома *"
+              name="houseNumber"
+              classCss="houseNumber"
+              id_name="houseNumber"
+              required={true}
+              maxLength={20}
+            />
 
- <AddManagerObject/>
+            <AddManagerObject />
 
-{showWarning && <div style={{color:"red"}}>Пожалуйста, выберите все обязательные поля!</div>}
+            {showWarning && (
+              <div style={{ color: "red" }}>
+                Пожалуйста, выберите все обязательные поля!
+              </div>
+            )}
 
             <div className="row mt-3 mb-3">
               <div className="col-sm-12">

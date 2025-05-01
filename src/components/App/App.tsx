@@ -11,7 +11,7 @@ import { withAuthenticationRequired } from "react-oidc-context";
 import UserInfo from "../user-info/UserInfo";
 import LeftMenu from "../left-menu/LeftMenu";
 import accountStore from '../../services/accountsStore'
-import {  useEffect, useMemo, useState } from 'react';
+import {  useEffect } from 'react';
 import { PrimeReactProvider } from 'primereact/api';
 import CreateStreet from "../../pages/createStreet/createStreet";
 import Modal from "../modal/Modal";
@@ -23,11 +23,12 @@ const App = () => {
     const location = useLocation();
 
    const stateLocation = location.state && location.state.location;
+   
+
+   
+   const auth = useAuth();
 
  
-
-  const auth = useAuth();
-
 
    const navigate = useNavigate();
 
@@ -38,8 +39,7 @@ const App = () => {
   
 
 
-  useMemo(() => {
- 
+  useEffect(() => {
   accountStore.setState({SecondName: auth.user?.profile.family_name , 
     FirstName: auth.user?.profile.name, 
     GivenName: auth.user?.profile.given_name , 

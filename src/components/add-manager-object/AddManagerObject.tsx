@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PickList } from 'primereact/picklist';
-import { useQuery, useReactiveVar } from '@apollo/client';
+import { useQuery} from '@apollo/client';
 import { GET_ACCOUNTS } from '../../apollo/QLAccount';
 import Loader from '../loader/Loader';
 import styles from "./AddManagerObject.module.css";

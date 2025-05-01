@@ -1,7 +1,6 @@
 import { useEffect, useCallback, FC} from 'react';
 import styles from '../modal/modal.module.css'
 import ModalOverlay from '../modal-overlay/ModalOverlay';
-import { Button } from 'primereact/button';
 import closeIcon from '../../img/close.svg';
 
 

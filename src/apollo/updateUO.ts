@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql } from '@apollo/client';
 
 export const UPDATE_UO = gql`
 mutation UpdateOU($bank_OGRN:String ,$bank_NAME:String ,$bank_KRS: String , $bank_INN:String, $id: ID!, $ks: String, $rs: String, $balanceCompanyId: Int!, $sprBankId: String, $inn: String, $adress: String, $sprTypeBalanceCompanyId: Int!, $client_ID: String, $email: String, $kpp: String, $licence: String, $name: String, $ogrn_OgrnIP: String, $okpo: String, $phone: String) {

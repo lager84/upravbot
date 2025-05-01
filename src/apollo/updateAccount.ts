@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql} from '@apollo/client';
 
 
 export const UPDATE_ACCOUNT = gql`mutation UpdateAccount ($email:String! , $firstName:String!, $middleName:String! , $secondName:String! , $password:String! , $phoneNumber:String! , $userID:String! ){

@@ -38,13 +38,13 @@ const AddressSelect: FC<TState> = ({id , oblast , city , raion , sName}) => {
 
     const [disabled , setDisabled] = useState(true);
 
-     const { data, loading, error ,refetch } = useQuery(GET_STREETS, {
+     const { data, loading, error  } = useQuery(GET_STREETS, {
         variables: { client_ID },
       });
 
       const [
           updateStreet,
-          { data: data_upd_Street, loading: loading_upd_Street, error: error_upd_Street },
+          {  loading: loading_upd_Street, error: error_upd_Street },
         ] = useMutation(EDIT_STREET, {
           onCompleted: () => {
            setDisabled(true);
@@ -82,7 +82,7 @@ const AddressSelect: FC<TState> = ({id , oblast , city , raion , sName}) => {
 
       useEffect(() => {
         selectedStreetVar(id);
-    }, [selectedStreetVar]);
+    }, [id]);
 
       const onChange = (event: any) => {
         const { name, value } = event.target;
@@ -171,7 +171,7 @@ const AddressSelect: FC<TState> = ({id , oblast , city , raion , sName}) => {
                   onChange={onChange}
                   className="pt-3 select2-hidden-accessible"
                 >
-                  {id==-1 &&  <option value={id}>{sName}</option>}
+                  {id===-1 &&  <option value={id}>{sName}</option>}
                   {data && data.sprStreets.map((ditail:TState)=>(<option key={ditail.id} value={ditail.id}>{ditail.sName}</option>))}
                   
                 </select>

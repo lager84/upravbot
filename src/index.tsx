@@ -20,7 +20,7 @@ const root = ReactDOM.createRoot(
 
 
 root.render(
-  <React.StrictMode>
+ <React.StrictMode>
   <AuthProvider {...oidcConfig}>
   <Router>
   <ApolloProvider client={client}>
@@ -28,7 +28,7 @@ root.render(
   </ApolloProvider>
   </Router>
   </AuthProvider>
-  </React.StrictMode>
+</React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

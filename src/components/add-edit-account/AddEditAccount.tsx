@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from "react";
+import React, { FC,  useRef, useState } from "react";
 import { useFormik } from "formik";
 import { TState } from "../../utils/typesTS";
 import InputComponent from "../../components/imput-component/InputComponent";
@@ -15,7 +15,7 @@ import accountStore from "../../services/accountsStore";
 import imgBin from "../../img/ic-bin.svg";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { Toast } from "primereact/toast";
-import * as Yup from "yup";
+
 
 type TPropsState = {
   card: boolean;
@@ -42,7 +42,7 @@ const AddEditAccount: FC<TProps> = ({
   const [visible, setVisible] = useState<boolean>(false);
 
   const accept = () => {
-    const event = new Event("click");
+    //const event = new Event("click");
     handleDelete();
   };
   const reject = () => {
@@ -149,7 +149,8 @@ const AddEditAccount: FC<TProps> = ({
     updateAccount,
     { data: data_update, loading: load_update, error: error_update },
   ] = useMutation(UPDATE_ACCOUNT, {
-    onCompleted: () => {
+    onCompleted: (data_update) => {
+      
       if (data_update?.updateAccount.succeeded) {
         navigate(-1);
       } else {
@@ -158,9 +159,10 @@ const AddEditAccount: FC<TProps> = ({
     },
   });
 
+
   const [addAccount, { data: data_add, loading: load_add, error: error_add }] =
     useMutation(ADD_ACCOUNT, {
-      onCompleted: () => {
+      onCompleted: (data_add) => {
         if (data_add?.addUser.succeeded) {
           navigate(-1);
         } else {
@@ -198,7 +200,7 @@ const AddEditAccount: FC<TProps> = ({
   if (load_del) return <Loader />;
   if (error_del) return <div>${error_del.message}</div>;
 
-  console.log(data_update);
+
 
   return (
     <div className="col-sm-12 p-0">

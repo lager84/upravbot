@@ -26,13 +26,13 @@ const ProjectsSelect: FC<TProp> = ({cardId}) => {
       client_id:""
     });
 
-     const { data, loading, error ,refetch } = useQuery(GET_PROJECT, {
+     const { data, loading, error } = useQuery(GET_PROJECT, {
         variables: { client_ID },
       });
 
       useEffect(() => {
       selectedProjectIdVar(cardId);
-    }, [selectedProjectIdVar]);
+    }, [cardId]);
 
       const onChange = (event: any) => {
         const { name, value } = event.target;
@@ -52,7 +52,7 @@ const ProjectsSelect: FC<TProp> = ({cardId}) => {
         );
     
       if (error) return <>`Submission error! ${error.message}`</>;
-console.log(projects)
+
     return (
         <div className="posRel flex-grow-1 mr-3">
                 <label className="transp backLab">Проект *</label>
@@ -63,7 +63,7 @@ console.log(projects)
                   onChange={onChange}
                   className="pt-3 select2-hidden-accessible"
                 >
-                  {cardId==-1 &&  <option value={cardId}>{projects.projectName}</option>}
+                  {cardId===-1 &&  <option value={cardId}>{projects.projectName}</option>}
                   {data && data.sprGilFindProjects.map((ditail:TState)=>(<option key={ditail.id} value={ditail.id}>{ditail.projectName}</option>))}
                   
                 </select>

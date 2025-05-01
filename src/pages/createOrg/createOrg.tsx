@@ -1,18 +1,17 @@
 import InputComponent from "../../components/imput-component/InputComponent";
-import { FC, useEffect, useState } from "react";
-import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
+import { FC,  useState } from "react";
+import { useMutation,  useLazyQuery } from "@apollo/client";
 import { TUOorg, TsprBank } from "../../utils/typesTS";
 import Loader from "../../components/loader/Loader";
-import { UPDATE_UO , DELETE_UO, CREATE_UO } from "../../apollo/updateUO";
-import { READ_OU_ITEM, Get_bik } from "../../apollo/GetUOorg";
-import { useNavigate, useParams } from "react-router-dom";
+import {  CREATE_UO } from "../../apollo/updateUO";
+import {  Get_bik } from "../../apollo/GetUOorg";
+import { useNavigate} from "react-router-dom";
 import accountStore from "../../services/accountsStore";
-import imgBin from "../../img/ic-bin.svg";
 import {
   AutoComplete,
   AutoCompleteCompleteEvent,
 } from "primereact/autocomplete";
-import { URL_REGISTER_UO } from "../../utils/routes";
+
 
 type TState = TUOorg;
 type TStateBIK = TsprBank;
@@ -22,14 +21,10 @@ const CreateOrg: FC = () => {
 
   var userInfo = accountStore((state) => state);
 
-
   const [itemsBik, setItemsBik] = useState<TStateBIK[]>([]);
   const [getBIK, { loading: loadingBIK, error: errorBIK, data: dataBIK }] =
     useLazyQuery(Get_bik);
   const [filteredBIK, setFilteredBIK] = useState<TStateBIK[]>();
-
-
-
 
   const search = (event: AutoCompleteCompleteEvent) => {
     let _filteredBIK;
@@ -87,19 +82,15 @@ const CreateOrg: FC = () => {
     event.preventDefault();
 
     const {
-      id,
       adress,
       email,
       inn,
       kpp,
-      sprBank: { bank_NAME, bank_KRS, bank_INN, bank_OGRN },
       name,
       ogrn_OgrnIP,
       okpo,
       phone,
-      rs,
-      ks,
-      balanceCompanyId,
+      rs
     } = infoUO;
 
     // Execute the mutation
@@ -118,25 +109,19 @@ const CreateOrg: FC = () => {
           parseFloat(infoUO.sprTypeBalanceCompany)
         ),
         sprBankId: infoUO.sprBank.bank_BIK,
-        ks:infoUO.sprBank.bank_KRS,
+        ks: infoUO.sprBank.bank_KRS,
         client_ID: userInfo.userID,
       },
     });
   };
 
-
-  const [
-    createUO,
-    { data, loading, error },
-  ] = useMutation(CREATE_UO, {
+  const [createUO, { loading, error }] = useMutation(CREATE_UO, {
     onCompleted: () => {
       navigate(-1);
     },
   });
 
 
-
-  console.log(infoUO);
 
   if (loading) return <Loader />;
   if (error) return <div>${error.message}</div>;
@@ -152,7 +137,9 @@ const CreateOrg: FC = () => {
             onSubmit={handleSubmit}
           >
             <div className="flexHoriz w-100">
-              <h2 className="font24b textBlack">Создание Управляющей организации</h2>
+              <h2 className="font24b textBlack">
+                Создание Управляющей организации
+              </h2>
             </div>
 
             <div className="flexHoriz justify-content-between mt-3">
@@ -331,7 +318,14 @@ const CreateOrg: FC = () => {
                 <button className="btn btn1 h56 mr-2" type="submit">
                   <strong>Сохранить</strong>
                 </button>
-                <button onClick={() => navigate(-1)} type="button" className="btn btn1 h56 outline shadow-none flexCenter" id="backUo">Назад</button>
+                <button
+                  onClick={() => navigate(-1)}
+                  type="button"
+                  className="btn btn1 h56 outline shadow-none flexCenter"
+                  id="backUo"
+                >
+                  Назад
+                </button>
               </div>
             </div>
           </form>

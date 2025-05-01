@@ -1,20 +1,16 @@
 import InputComponent from "../../components/imput-component/InputComponent";
-import { FC, useEffect, useState } from "react";
+import { FC,  useState } from "react";
 import { useMutation } from "@apollo/client";
 import { TsprProject } from "../../utils/typesTS";
 import Loader from "../../components/loader/Loader";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import accountStore from "../../services/accountsStore";
-import { URL_PROJECTS } from "../../utils/routes";
 import { CREATE_PROJECT, GET_PROJECT } from "../../apollo/QLProjects";
-
 
 type TState = TsprProject;
 
 const CreateProject: FC = () => {
   const navigate = useNavigate();
-
-
 
   var userInfo = accountStore((state) => state);
 
@@ -35,7 +31,7 @@ const CreateProject: FC = () => {
   const handleSubmit = (event: any) => {
     event.preventDefault();
 
-    const { id, projectName, client_id } = infoProject;
+    const { projectName } = infoProject;
 
     // Execute the mutation
     createProject({
@@ -48,18 +44,14 @@ const CreateProject: FC = () => {
     });
   };
 
-  const [createProject, { data, loading, error }] = useMutation(
+  const [createProject, { loading, error }] = useMutation(
     CREATE_PROJECT,
     {
       onCompleted: () => {
-     
         navigate(-1);
-
       },
     }
   );
-
-
 
   if (loading) return <Loader />;
   if (error) return <div>${error.message}</div>;
@@ -93,7 +85,7 @@ const CreateProject: FC = () => {
                   <strong>Сохранить</strong>
                 </button>
                 <button
-                  onClick={() => navigate(-1) }
+                  onClick={() => navigate(-1)}
                   type="button"
                   className="btn btn1 h56 outline shadow-none flexCenter"
                   id="backUo"
