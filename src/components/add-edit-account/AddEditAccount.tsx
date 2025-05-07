@@ -94,8 +94,8 @@ const AddEditAccount: FC<TProps> = ({
   const navigate = useNavigate();
   const [showWarning, setShowWarning] = useState(false);
   const [showWarningIdentity, setShowWarningIdentity] = useState(false);
-  const [showWarningIdentityUpdate, setShowWarningIdentityUpdate] =
-    useState(false);
+  const [showWarningIdentityUpdate, setShowWarningIdentityUpdate] = useState(false);
+  const [showWarningIdentityDelete, setShowWarningIdentityDelete] = useState(false);
 
   const formik = useFormik<TState>({
     initialValues: {
@@ -171,11 +171,15 @@ const AddEditAccount: FC<TProps> = ({
       },
     });
 
-  const [deleteAccount, { loading: load_del, error: error_del }] = useMutation(
+  const [deleteAccount, {data:data_dell, loading: load_del, error: error_del }] = useMutation(
     DELETE_ACCOUNT,
     {
-      onCompleted: () => {
+      onCompleted: (data_dell) => {
+        if (data_dell?.deleteAccount.succeeded) {
         navigate(-1);
+      } else {
+        setShowWarningIdentityDelete(true);
+      }
       },
     }
   );
@@ -200,7 +204,7 @@ const AddEditAccount: FC<TProps> = ({
   if (load_del) return <Loader />;
   if (error_del) return <div>${error_del.message}</div>;
 
-
+console.log(data_dell);
 
   return (
     <div className="col-sm-12 p-0">
@@ -377,6 +381,14 @@ const AddEditAccount: FC<TProps> = ({
                 return (
                   <div key={errors?.code} style={{ color: "red" }}>
                     {errors?.description}
+                  </div>
+                );
+              })}
+               {showWarningIdentityDelete &&              
+              data_dell.deleteAccount?.errors?.map((errors: any) => {
+                return (
+                  <div key={errors?.code} style={{ color: "red" }}>
+                  Этот пользователь единственный менеджер у объекта {errors?.description}
                   </div>
                 );
               })}

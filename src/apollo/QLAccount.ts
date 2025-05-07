@@ -59,5 +59,9 @@ export const ADD_ACCOUNT = gql`mutation AddUser($clientID:String! , $email:Strin
 export const DELETE_ACCOUNT = gql`
 mutation DeleteAccount($userID: String!  ){
   deleteAccount(userID: $userID )
+  {
+    succeeded,
+    errors{code, description}  
+  }
 }
 `
