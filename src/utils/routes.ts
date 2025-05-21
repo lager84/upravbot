@@ -14,5 +14,8 @@ export const URL_CREATE_STREET ="createStreet";
 export const URL_ACCOUNT = "/account";
 export const URL_CREATE_ACCOUNT ="createAccount";
 export const URL_EDIT_ACCOUNT = "editAccount";
+export const URL_DISP = "/disp";
+export const URL_CREATE_DISP ="createDisp";
+export const URL_EDIT_DISP = "editDisp";
 
 

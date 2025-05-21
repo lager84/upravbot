@@ -89,3 +89,11 @@ export type TsprObject  =  sprStreet & gilFindProject & balanceCompany &{
   balanceCompanyId: number,
   imageHouse?:string
 }
+
+export type sprDisp = {
+  id: number,
+    dispStatus:boolean,
+    phoneDisp?:string,
+    dispName:string,
+    userId:string
+}

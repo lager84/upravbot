@@ -15,7 +15,9 @@ import CreateObjectPage from "./createObject/createObject"
 import AccountPage from "./account/account"
 import CreateAccountPage from "./createAccount/createAccount"
 import EditAccountPage from "./editAccount/editAccount"
-
+import DispPage from "./disp/disp"
+import CreateDispPage from "./createDisp/createDisp"
+import EditDispPage from "./editDisp/editDisp"
 
 export {
   MainPage,
@@ -34,7 +36,9 @@ export {
   CreateObjectPage,
   AccountPage,
   CreateAccountPage,
-  EditAccountPage
-
+  EditAccountPage,
+  DispPage,
+  CreateDispPage,
+  EditDispPage
 
 };
