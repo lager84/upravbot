@@ -1,12 +1,13 @@
 import { Formik , Form , Field } from 'formik';
 import * as Yup from 'yup';
+import DispObjects from '../../components/disp-objects/DispObjects';
 
 
 
 const validationSchema = Yup.object().shape({
   disp: Yup.string().required('Необходимо ввести название диспетчерской'),
 //   users: Yup.array().of(Yup.string()).min(1, 'Нужно хотя бы одного пользователя'),
-//   objects: Yup.array().of(Yup.string()).min(1, 'Нужно хотя бы один объект')
+  objects: Yup.array().of(Yup.object()).min(1, 'Нужно хотя бы один объект')
 });
 
 const CreateDispPage = () => {
@@ -14,6 +15,7 @@ const CreateDispPage = () => {
     const initialValues = {
     disp: '',
     active:true,
+    phone_disp:'',
     users: [],
     objects: []
   };
@@ -32,7 +34,7 @@ const CreateDispPage = () => {
   };
 
     return (
-     <div className='col-lg-5 col-sm-12'>
+     <div className='col-lg-8 col-sm-12'>
       <div className='bgWhite rounded16 p-4 shadow'>
         <div className='flexHoriz w-100 mb-4'>
           <h3 className="font18b mb-0">Создание диспетчерской</h3>
@@ -46,10 +48,13 @@ const CreateDispPage = () => {
         <Form>
           <div className ="flexHoriz justify-content-between mt-3">
             <div className="posRel h56 rounded-lg w-100">
-      
         <Field name="disp" type="text" className="DispName" />
         <label className="transp backLab" htmlFor="disp">Название диспетчерской</label>
         </div>
+        </div>
+        <div className="posRel h56 rounded-lg w-100">
+        <Field name="phone_disp" type="text" className="DispName" />
+        <label className="transp backLab" htmlFor="phone_disp">Телефон диспетчерской</label>
         </div>
          <div>       
         <Field name="active" id="active" type="checkbox" className="checkbox-item" /> 
@@ -57,8 +62,8 @@ const CreateDispPage = () => {
         Активна
         </label>     
         </div>
-          {/*  <Field name="disp" component={Disp} />
-         <Disp field={getFieldProps('disp')} form={{ touched, errors }} /> */}
+            <Field name="objects" component={DispObjects} />
+        {/* <Disp field={getFieldProps('disp')} form={{ touched, errors }} /> */}
           {/* <Field component={Users} label="Пользователи"/>
           <Field component={Objects} label="Объекты"/> */}
           <button type="submit" className="btn btn1 h56 mr-2">

@@ -91,7 +91,7 @@ export type TsprObject  =  sprStreet & gilFindProject & balanceCompany &{
 }
 
 export type sprDisp = {
-  id: number,
+    id: number,
     dispStatus:boolean,
     phoneDisp?:string,
     dispName:string,

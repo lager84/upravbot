@@ -28,3 +28,11 @@ query SprDisp($id:ID ) {
   }
 }
 `
+
+export const READ_DISP_OBJECTS = gql`  
+query DispObjects{
+  dispObjects{
+    gilFindObjectsId 
+  }
+}
+`
