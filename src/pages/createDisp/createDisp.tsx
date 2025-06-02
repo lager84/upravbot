@@ -34,7 +34,7 @@ const CreateDispPage = () => {
   };
 
     return (
-     <div className='col-lg-8 col-sm-12'>
+     <div className='col-lg-9 col-sm-12'>
       <div className='bgWhite rounded16 p-4 shadow'>
         <div className='flexHoriz w-100 mb-4'>
           <h3 className="font18b mb-0">Создание диспетчерской</h3>
