@@ -15,6 +15,7 @@ import accountStore from "../../services/accountsStore";
 import imgBin from "../../img/ic-bin.svg";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { Toast } from "primereact/toast";
+import { Roles , IRoles } from "../../utils/roles";
 
 
 type TPropsState = {
@@ -22,10 +23,7 @@ type TPropsState = {
 };
 type TProps = TPropsState & TState;
 
-interface Category {
-  name: string;
-  key: string;
-}
+
 
 const AddEditAccount: FC<TProps> = ({
   card,
@@ -64,18 +62,13 @@ const AddEditAccount: FC<TProps> = ({
 
   var userInfo = accountStore((state) => state);
 
-  const categories: Category[] = [
-    { name: "Менеджер", key: "50C5D24A-D585-473C-82B2-411DA4120FA5" },
-    { name: "Ответственный", key: "B6FAFCA4-67E0-4CC6-ACE7-F285DEF6A0B6" },
-    { name: "Исполнитель", key: "CD1FEC0D-7828-4C6A-8BE3-25EF9E1A12C3" },
-  ];
 
   // const category = categories.find(cat => role?.includes(cat.name));
   // const categoryKey = category ? category.key : null;
 
-  const categoryIndex = categories.filter((cat) => role?.includes(cat.name));
+  const categoryIndex = Roles.filter((cat) => role?.includes(cat.name));
 
-  const [selectedCategories, setSelectedCategories] = useState<Category[]>(
+  const [selectedCategories, setSelectedCategories] = useState<IRoles[]>(
     card ? categoryIndex : []
   );
 
@@ -342,20 +335,20 @@ console.log(data_dell);
 
             <div className="card flex justify-content-center">
               <div className="flex flex-column gap-3">
-                {categories.map((category) => {
+                {Roles.map((Roles) => {
                   return (
-                    <div key={category.key} className="flex align-items-center">
+                    <div key={Roles.key} className="flex align-items-center">
                       <Checkbox
                         name="category"
-                        inputId={category.key}
-                        value={category}
+                        inputId={Roles.key}
+                        value={Roles}
                         onChange={onCategoryChange}
                         checked={selectedCategories.some(
-                          (item) => item.key === category.key
+                          (item) => item.key === Roles.key
                         )}
                       />
-                      <label htmlFor={category.key} className="ml-2">
-                        {category.name}
+                      <label htmlFor={Roles.key} className="ml-2">
+                        {Roles.name}
                       </label>
                     </div>
                   );

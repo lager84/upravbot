@@ -21,6 +21,27 @@ export const GET_ACCOUNTS = gql`
 }
 `;
 
+export const GET_ACCOUNTS_NO_MANAGER = gql`
+ query UsersInfo{
+  usersInfo(where:  {
+     role:  {
+       some:  {
+          in: ["Ответственный" , "Исполнитель" , "Диспетчер" ]
+       }
+     }
+  })
+  {
+    userId
+    userName
+    secondName
+    firstName
+    middleName
+    clientPhoneNumber
+    role
+    
+  }}
+`;
+
 export const READ_ACCOUNT_ITEM = gql`  
 query UsersInfo($id:ID ) {
   usersInfo(id:$id ) {

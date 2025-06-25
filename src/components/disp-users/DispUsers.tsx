@@ -4,7 +4,7 @@ import { Column, ColumnFilterElementTemplateOptions } from 'primereact/column';
 import accountStore from '../../services/accountsStore';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { GET_OBJECTS } from '../../apollo/QLObjects';
+import { GET_ACCOUNTS_NO_MANAGER } from '../../apollo/QLAccount';
 
 import Loader from '../loader/Loader';
 import { READ_DISP_OBJECTS } from '../../apollo/QLDisp';
@@ -15,17 +15,20 @@ import { InputIcon } from 'primereact/inputicon';
 import { InputText } from 'primereact/inputtext';
 import { MultiSelect, MultiSelectChangeEvent } from 'primereact/multiselect';
 import { GET_PROJECT } from '../../apollo/QLProjects';
+import { Roles } from '../../utils/roles';
 
 type Form = {
  touched: { [key: string]: boolean | boolean[] };
   errors: { [key: string]: string | string[] };
 }
 
-const DispObjects = ({ field, form }: { field: any, form: Form }) => {
+
+
+const DispUsers = ({ field, form }: { field: any, form: Form }) => {
 
    const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },  
-        'gilFindProject.projectName': { value:null, matchMode: FilterMatchMode.IN },
+        role: { value:null, matchMode: FilterMatchMode.IN },
     
     });
 
@@ -57,10 +60,10 @@ const DispObjects = ({ field, form }: { field: any, form: Form }) => {
     
 
 
-    const [objects, setObjects] = useState([]);
+    const [users, setUsers] = useState([]);
     const [selectedObjects, setSelectedObjects] = useState([]);
     const [rowClick, setRowClick] = useState(true);
-    const [projects , setProjects] = useState<{ name: string, id: string }[]>([]);
+    const [roles , setRoles] = useState<{ name: string, id: string }[]>([]);
 
     var userInfo = accountStore((state) => state);
 
@@ -68,28 +71,24 @@ const DispObjects = ({ field, form }: { field: any, form: Form }) => {
 
   const navigate = useNavigate();
   
-  const { data, loading, error} = useQuery(GET_OBJECTS, {
+  const { data, loading, error} = useQuery(GET_ACCOUNTS_NO_MANAGER, {
     variables: { client_ID },
   });
 
-   const { data:data_projects, loading:loading_projects, error:error_projects} = useQuery(GET_PROJECT, {
-    variables: { client_ID },
-  });
 
-  const { data:data_disp_objects, loading:loading_disp_objects, error: error_disp_objects} = useQuery(READ_DISP_OBJECTS);
+
+  
 
   useEffect(() => {
 
-    if (data?.gilFindObjects && data_disp_objects?.dispObjects) {
-        const filteredObjects = data.gilFindObjects.filter((obj:any) => 
-            data_disp_objects.dispObjects.some((dispObj:any) => dispObj.gilFindObjectsId !== obj.id)
-        );
-        
-        setObjects(filteredObjects);
-        setProjects(data_projects.sprGilFindProjects.map((project:any) => ({ name: project.projectName, id: project.id })));
+    if (data?.usersInfo) {
         
         
-  }} ,[data , data_disp_objects , data_projects]);
+        setUsers(data?.usersInfo);
+        setRoles(Roles.map((roles:any) => ({ name: roles.name, id: roles.key })).filter((roles:any)=>roles.id !== "50C5D24A-D585-473C-82B2-411DA4120FA5"));
+        
+        
+  }} ,[data]);
 
    const { name, value } = field;
 
@@ -98,16 +97,16 @@ const DispObjects = ({ field, form }: { field: any, form: Form }) => {
    
 
  const representativeRowFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {  
-    
+   console.log(options.value)
       return (
             <MultiSelect
                 value={options.value}
-                options={projects}
-                onChange={(e: MultiSelectChangeEvent) => options.filterApplyCallback(e.value)}
+                options={roles}
+                onChange={(e: MultiSelectChangeEvent) => options.filterApplyCallback(e.value )}
                 optionLabel="name"
                 optionValue="name"
                 itemTemplate={(option:any) => <span>{option.name}</span>}
-                placeholder="Проект"
+                placeholder="Роль"
                 className="p-column-filter"
                 maxSelectedLabels={4}
                 style={{ minWidth: '14rem' }}
@@ -120,53 +119,50 @@ const DispObjects = ({ field, form }: { field: any, form: Form }) => {
   
  const header = renderHeader();
 
- console.log(objects)
+ 
 
   if (loading) return <><Loader /></>;
   if (error) return <>`Submission error! ${error.message}`</>;
-  if (loading_disp_objects) return <> <Loader /></>;
-  if (error_disp_objects) return <>`Submission error! ${error_disp_objects.message}`</>;
-  if (loading_projects) return <><Loader /></>;
-  if (error_projects) return <>`Submission error! ${error_projects.message}`</>;
+
   return (
     <div className="distributor">
  <Field name={name}>
    {({ field, form }: FieldProps) => (
- <DataTable value={objects} selectionMode={rowClick ? null : 'checkbox'} scrollHeight='400px' selection={selectedObjects} onSelectionChange={(e:any) => {setSelectedObjects(e.value); form.setFieldValue( name, e.value);}} dataKey="id" tableStyle={{ minWidth: '50rem' }}
- filters={filters} filterDisplay="row" globalFilterFields={['sprStreet.sName', 'houseNumber', 'sprStreet.oblast', 'sprStreet.city' , 'gilFindProject.projectName']} header={header} emptyMessage="Нет значений" >
+ <DataTable value={users} selectionMode={rowClick ? null : 'checkbox'} scrollHeight='400px' selection={selectedObjects} onSelectionChange={(e:any) => {setSelectedObjects(e.value); form.setFieldValue( name, e.value);}} dataKey="userId" tableStyle={{ minWidth: '50rem' }}
+ filters={filters} filterDisplay="row" globalFilterFields={['secondName', 'firstName', 'middleName', 'userName' , 'role']} header={header} emptyMessage="Нет значений" >
                 <Column selectionMode="multiple" headerStyle={{ width: '1rem' }} style={{ width: "2%" }}></Column>
                 <Column
-                           field="sprStreet.oblast"
-                           header="Область"
+                           field="secondName"
+                           header="Фамилия"
                            sortable
-                           style={{ width: "5%" }}
+                           style={{ width: "10%" }}
                          ></Column>
                          <Column
-                           field="sprStreet.city"
-                           header="Город"
+                           field="firstName"
+                           header="Имя"
                            sortable
-                           style={{ width: "5%" }}
+                           style={{ width: "10%" }}
                          ></Column>
                          <Column
-                           field="sprStreet.sName"
-                           header="Улица"
+                           field="middleName"
+                           header="Отчество"
                            sortable
-                           style={{ width: "5%" }}
+                           style={{ width: "10%" }}
                          ></Column>
                          <Column
-                           field="houseNumber"
-                           header="Номер дома"
+                           field="userName"
+                           header="Email"
                            sortable
-                           style={{ width: "5%" }}
+                           style={{ width: "30%" }}
                          ></Column>
                          <Column  
-                          field='gilFindProject.projectName'                                     
-                           header="Проект"
+                          field="role"                                     
+                           header="Роль"
                            sortable
-                           style={{ width: "5%" }}
-                           filterField='gilFindProject.projectName'
+                           style={{ width: "20%" }}
+                           filterField="role"
                            showFilterMenu={false} filterMenuStyle={{ width: '14rem' }}
-                           //body={representativeBodyTemplate} 
+                           body={(rowData) => rowData.role.join("\n")} 
                            filter 
                            filterElement={representativeRowFilterTemplate}                           
                          ></Column>
@@ -190,4 +186,4 @@ const DispObjects = ({ field, form }: { field: any, form: Form }) => {
   );
 };
 
-export default DispObjects;
+export default DispUsers;

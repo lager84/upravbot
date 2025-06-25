@@ -1,6 +1,7 @@
 import { Formik , Form , Field } from 'formik';
 import * as Yup from 'yup';
 import DispObjects from '../../components/disp-objects/DispObjects';
+import DispUsers from '../../components/disp-users/DispUsers';
 
 
 
@@ -63,6 +64,7 @@ const CreateDispPage = () => {
         </label>     
         </div>
             <Field name="objects" component={DispObjects} />
+             <Field name="objects" component={DispUsers} />
         {/* <Disp field={getFieldProps('disp')} form={{ touched, errors }} /> */}
           {/* <Field component={Users} label="Пользователи"/>
           <Field component={Objects} label="Объекты"/> */}
