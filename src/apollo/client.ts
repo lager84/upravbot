@@ -2,6 +2,7 @@ import {ApolloClient , createHttpLink, InMemoryCache} from '@apollo/client'
 import { setContext } from '@apollo/client/link/context';
 import { User } from "oidc-client-ts"
 import { makeVar } from '@apollo/client';
+ 
 
 
 export const selectedProjectIdVar = makeVar<number| null>(null);

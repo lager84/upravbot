@@ -2,12 +2,9 @@ import React,  { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column, ColumnFilterElementTemplateOptions } from 'primereact/column';
 import accountStore from '../../services/accountsStore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate  } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { GET_OBJECTS } from '../../apollo/QLObjects';
-
 import Loader from '../loader/Loader';
-import { READ_DISP_OBJECTS } from '../../apollo/QLDisp';
 import { Field, FieldProps } from 'formik';
 import { FilterMatchMode } from 'primereact/api';
 import { IconField } from 'primereact/iconfield';
@@ -21,7 +18,7 @@ type Form = {
   errors: { [key: string]: string | string[] };
 }
 
-const DispObjects = ({ field, form }: { field: any, form: Form }) => {
+const DispObjects = ({ field, form , selectDispObjects , filteredObjects  }: { field: any, form: Form , selectDispObjects: any , filteredObjects:any }) => {
 
    const [filters, setFilters] = useState({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },  
@@ -68,28 +65,28 @@ const DispObjects = ({ field, form }: { field: any, form: Form }) => {
 
   const navigate = useNavigate();
   
-  const { data, loading, error} = useQuery(GET_OBJECTS, {
-    variables: { client_ID },
-  });
+
+
 
    const { data:data_projects, loading:loading_projects, error:error_projects} = useQuery(GET_PROJECT, {
     variables: { client_ID },
   });
 
-  const { data:data_disp_objects, loading:loading_disp_objects, error: error_disp_objects} = useQuery(READ_DISP_OBJECTS);
+ 
 
   useEffect(() => {
 
-    if (data?.gilFindObjects && data_disp_objects?.dispObjects) {
-        const filteredObjects = data.gilFindObjects.filter((obj:any) => 
-            data_disp_objects.dispObjects.some((dispObj:any) => dispObj.gilFindObjectsId !== obj.id)
-        );
+   
+
         
+        setSelectedObjects(selectDispObjects)
         setObjects(filteredObjects);
-        setProjects(data_projects.sprGilFindProjects.map((project:any) => ({ name: project.projectName, id: project.id })));
+        setProjects(data_projects?.sprGilFindProjects.map((project:any) => ({ name: project.projectName, id: project.id })));
+       
         
+
         
-  }} ,[data , data_disp_objects , data_projects]);
+  } ,[ selectDispObjects , filteredObjects , data_projects]);
 
    const { name, value } = field;
 
@@ -101,7 +98,7 @@ const DispObjects = ({ field, form }: { field: any, form: Form }) => {
     
       return (
             <MultiSelect
-                value={options.value}
+                value={options.value || []}
                 options={projects}
                 onChange={(e: MultiSelectChangeEvent) => options.filterApplyCallback(e.value)}
                 optionLabel="name"
@@ -120,12 +117,10 @@ const DispObjects = ({ field, form }: { field: any, form: Form }) => {
   
  const header = renderHeader();
 
- console.log(objects)
 
-  if (loading) return <><Loader /></>;
-  if (error) return <>`Submission error! ${error.message}`</>;
-  if (loading_disp_objects) return <> <Loader /></>;
-  if (error_disp_objects) return <>`Submission error! ${error_disp_objects.message}`</>;
+
+ 
+
   if (loading_projects) return <><Loader /></>;
   if (error_projects) return <>`Submission error! ${error_projects.message}`</>;
   return (
