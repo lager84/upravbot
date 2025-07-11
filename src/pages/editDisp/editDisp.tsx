@@ -7,7 +7,7 @@ import { GET_ACCOUNTS_NO_MANAGER } from '../../apollo/QLAccount';
 import accountStore from '../../services/accountsStore';
 import { useEffect, useState } from 'react';
 import Loader from '../../components/loader/Loader';
-import { CREATE_DISP, GET_DISP, READ_DISP_OBJECTS , READ_DISP_ITEM } from '../../apollo/QLDisp';
+import { CREATE_DISP, GET_DISP, READ_DISP_OBJECTS , READ_DISP_ITEM, UPDATE_DISP } from '../../apollo/QLDisp';
 import { useNavigate, useParams } from 'react-router-dom';
 import { GET_OBJECTS } from '../../apollo/QLObjects';
 
@@ -39,8 +39,8 @@ const[filteredObjects , setfilteredObjects] = useState([]);
        phone_disp:  data_gdi?.sprDisp[0]?.phoneDisp||'',
        objects: selectDispObjects || [],
        dispetcher:data_gdi?.sprDisp[0]?.dispUsers .filter((dispetcher: any) => dispetcher.roleId === "DAA3E2D6-F57F-4906-B9C3-788B37DCA1C5").map((dispetcher:any)=>dispetcher.userId) || [],
-       otvetstvenniy:data_gdi?.sprDisp[0]?.dispUsers .filter((dispetcher: any) => dispetcher.roleId === "B6FAFCA4-67E0-4CC6-ACE7-F285DEF6A0B6").map((dispetcher:any)=>dispetcher.userId) ||[],
-       ispolnitel:data_gdi?.sprDisp[0]?.dispUsers .filter((dispetcher: any) => dispetcher.roleId === "CD1FEC0D-7828-4C6A-8BE3-25EF9E1A12C3").map((dispetcher:any)=>dispetcher.userId) || []
+       otvetstvenniy:data_gdi?.sprDisp[0]?.dispUsers .filter((otvetstvenniy: any) => otvetstvenniy.roleId === "B6FAFCA4-67E0-4CC6-ACE7-F285DEF6A0B6").map((dispetcher:any)=>dispetcher.userId) ||[],
+       ispolnitel:data_gdi?.sprDisp[0]?.dispUsers .filter((ispolnitel: any) => ispolnitel.roleId === "CD1FEC0D-7828-4C6A-8BE3-25EF9E1A12C3").map((dispetcher:any)=>dispetcher.userId) || []
      };
      var userInfo = accountStore((state) => state);
      const client_ID = userInfo.userID;
@@ -56,18 +56,18 @@ const[filteredObjects , setfilteredObjects] = useState([]);
      });
    
      const [
-         createDisp,
-         { loading: loading_create_disp, error: error_create_disp },
-       ] = useMutation(CREATE_DISP,{
+         updateDisp,
+         { loading: loading_update_disp, error: error_update_disp },
+       ] = useMutation(UPDATE_DISP,{
          onCompleted: () => {
            navigate(-1);
          },
            awaitRefetchQueries: true,
             refetchQueries: [
        {
-         query: GET_DISP, 
+         query: READ_DISP_ITEM, 
          variables: {
-           client_ID: client_ID, // Явно передаем client_ID
+           id: id 
          },
        },
        {
@@ -133,15 +133,34 @@ const[filteredObjects , setfilteredObjects] = useState([]);
    
       const handleSubmit = async (values:any, actions:any) => {
        console.log(values);
+
+       const normalizeUserInput = (input: any) => {
+  // Приводим к массиву, если не массив
+  const arr = Array.isArray(input) ? input : [input];
+  return arr.map((item) => {
+    if (typeof item === "string") {
+      return { userId: item }; // Если это строка — оборачиваем в объект
+    } else if (item?.userId) {
+      return { userId: item.userId }; // Если это объект с userId — используем его
+    } else {
+      return item; // Иначе возвращаем как есть (на случай ошибок)
+    }
+  });
+};
+
    
-    //  const dispObjects = 
-    //   values.objects.map((item:any) => ({
-    //    gilFindObjectsId: item.id,
-    //  }));
+     const dispObjects = 
+      values.objects.map((item:any) => ({
+       gilFindObjectsId: item.id,
+     }));
    
+
+const dispetcher = normalizeUserInput(values.dispetcher);
+const otvetstvenniy = normalizeUserInput(values.otvetstvenniy);
+const ispolnitel = normalizeUserInput(values.ispolnitel);
     //  const dispetcher = 
     //  values.dispetcher.map((item:any) => ({
-    //    userId: item.userId,
+    //    userId: item.userId ,
     //  }));
    
     // const otvetstvenniy = 
@@ -157,18 +176,20 @@ const[filteredObjects , setfilteredObjects] = useState([]);
    
    
    
-    // createDisp({
-    //      variables: {
-    //  dispName:values.disp,
-    //  dispStatus:values.active,
-    //  phoneDisp:values.phone_disp,
-    //  dispObjects:dispObjects,
-    //  dispetcher:dispetcher,
-    //  otvetstvenniy:otvetstvenniy,
-    //  ispolnitel:ispolnitel
+    updateDisp({
+     variables: {
+     id:Number(id),
+     dispName:values.disp,
+     dispStatus:values.active,
+     phoneDisp:values.phone_disp,
+     userId:client_ID,
+     dispObjects:dispObjects,
+     dispetcher:dispetcher,
+     otvetstvenniy:otvetstvenniy,
+     ispolnitel:ispolnitel
    
-    //      },
-    //    });
+         },
+       });
      
    
        // try {
@@ -187,8 +208,8 @@ const[filteredObjects , setfilteredObjects] = useState([]);
 
        if (loading) return <><Loader /></>;
        if (error) return <>`Submission error! ${error.message}`</>;
-       if (loading_create_disp) return <><Loader /></>;
-       if (error_create_disp) return <>`Submission error! ${error_create_disp.message}`</>;
+       if (loading_update_disp) return <><Loader /></>;
+       if (error_update_disp) return <>`Submission error! ${error_update_disp.message}`</>;
        if (loading_gdi) return <><Loader /></>;
        if (error_gdi) return <>`Submission error! ${error_gdi.message}`</>;
        if (loading_go) return <><Loader /></>;

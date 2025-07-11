@@ -63,3 +63,16 @@ mutation AddDisp($dispName:String ,$dispStatus:Boolean! , $phoneDisp:String , $d
   }
 }
 `
+
+export const UPDATE_DISP = gql`
+mutation UpdateDisp($id:Int! , $dispStatus:Boolean! , $dispName:String , $phoneDisp:String , $userId:String ,$dispObjects:[DispObjectsDtoInput] , $dispetcher:[DispUsersDtoInput] , $otvetstvenniy:[DispUsersDtoInput] , $ispolnitel:[DispUsersDtoInput] ){
+  updateDisp(sprDisp: {id:$id, dispStatus:$dispStatus , dispName:$dispName , phoneDisp:$phoneDisp, userId:$userId } ,dispObjects: $dispObjects, dispetcher: $dispetcher, otvetstvenniy: $otvetstvenniy, ispolnitel: $ispolnitel)
+  {
+    id
+    dispStatus
+    phoneDisp
+    dispName
+    userId
+  }
+}
+`
