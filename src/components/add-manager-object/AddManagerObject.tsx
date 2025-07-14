@@ -35,8 +35,12 @@ const { data:data_manager, loading:loading_manager, error: error_manager} = useQ
   useEffect(() => {
   if(data_manager){
     const userItems = data_manager?.gilFindManager?.map((comp:any) => comp.userId);
-    const filterAccount = data?.usersInfo.filter((comp:any) => !userItems.includes( comp.userId))
-    const filterTarget = data?.usersInfo.filter((comp:any) => userItems.includes( comp.userId))
+    const filterAccount = data?.usersInfo.filter(
+        (comp: any) => !userItems.includes(comp.userId) && comp.role.includes('Менеджер')
+      );
+      const filterTarget = data?.usersInfo.filter(
+        (comp: any) => userItems.includes(comp.userId) && comp.role.includes('Менеджер')
+      );
     setAccount(filterAccount); 
     setTarget(filterTarget);  
     selectedManagerVar(filterTarget) 
@@ -44,7 +48,7 @@ const { data:data_manager, loading:loading_manager, error: error_manager} = useQ
   else
   {
     
-    setAccount(data?.usersInfo.map((comp: any) => comp)); 
+    setAccount(data?.usersInfo.filter((comp: any) => comp.role.includes('Менеджер')))
     selectedManagerVar([])
   }
   }, [data, loading , data_manager]);

@@ -197,7 +197,7 @@ const AddEditAccount: FC<TProps> = ({
   if (load_del) return <Loader />;
   if (error_del) return <div>${error_del.message}</div>;
 
-console.log(data_dell);
+
 
   return (
     <div className="col-sm-12 p-0">

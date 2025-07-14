@@ -21,6 +21,8 @@ export const GET_ACCOUNTS = gql`
 }
 `;
 
+
+
 export const GET_ACCOUNTS_NO_MANAGER = gql`
  query UsersInfo{
   usersInfo(where:  {

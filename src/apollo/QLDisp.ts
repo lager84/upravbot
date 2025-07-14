@@ -76,3 +76,8 @@ mutation UpdateDisp($id:Int! , $dispStatus:Boolean! , $dispName:String , $phoneD
   }
 }
 `
+export const DELETE_DISP = gql`
+mutation DeleteDisp($id:Int!){
+  deleteDisp(id:$id)
+}
+`

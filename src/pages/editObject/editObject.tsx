@@ -47,7 +47,7 @@ const EditObject: FC = () => {
     toast.current?.show({
       severity: "warn",
       summary: "Отмена",
-      detail: "Вы отменили удаление проекта",
+      detail: "Вы отменили удаление объекта",
       life: 3000,
     });
   };
