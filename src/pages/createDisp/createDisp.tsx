@@ -65,7 +65,7 @@ const CreateDispPage = () => {
       {
         query: GET_DISP,
         variables: {
-          client_ID: client_ID, // Явно передаем client_ID
+          client_ID: client_ID, 
         },
       },
       {
