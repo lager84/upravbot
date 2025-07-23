@@ -136,15 +136,7 @@ const CreateDispPage = () => {
       },
     });
 
-    // try {
-    //   await createForm({ variables: { input: values } });
-    //   alert("Форма успешно отправлена!");
-    //   actions.setSubmitting(false);
-    // } catch (err) {
-    //   console.error(err.message);
-    //   alert("Ошибка отправки формы");
-    //   actions.setSubmitting(false);
-    // }
+    
   };
 
   if (loading)
