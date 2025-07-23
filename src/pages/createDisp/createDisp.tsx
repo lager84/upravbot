@@ -13,7 +13,7 @@ import { GET_OBJECTS } from "../../apollo/QLObjects";
 
 const validationSchema = Yup.object().shape({
   disp: Yup.string().required("Необходимо ввести название диспетчерской"),
-  //   users: Yup.array().of(Yup.string()).min(1, 'Нужно хотя бы одного пользователя' ),
+  //   users: Yup.array().of(Yup.string()).min(1, 'Нужно хотя бы одного пользователя'),
   objects: Yup.array().of(Yup.object()).min(1, "Нужно хотя бы один объект"),
 });
 
